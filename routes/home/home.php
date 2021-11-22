@@ -1,5 +1,5 @@
 <?php
-use app\controllers\SiteController;
+use controllers\SiteController;
 
 $app->router->get('/contact' , [SiteController::class , 'contact']);
 

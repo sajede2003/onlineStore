@@ -1,6 +1,6 @@
-<?php namespace app\core;
+<?php namespace core;
 
-use app\controllers\SiteController;
+use controllers\SiteController;
 
 /**
  * 

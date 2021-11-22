@@ -1,4 +1,4 @@
-<?php namespace app\core;
+<?php namespace core;
 
 class Response
 {

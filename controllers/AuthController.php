@@ -1,8 +1,8 @@
-<?php namespace app\controllers;
+<?php namespace controllers;
 
-use app\core\controller;
-use app\core\Request;
-use app\models\RegisterModel;
+use core\controller;
+use core\Request;
+use models\RegisterModel;
 
 class AuthController extends controller{
     public function login(){

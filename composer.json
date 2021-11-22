@@ -2,8 +2,10 @@
     "name": "sajede/tmrin",
     "autoload": {
         "psr-4": {
-            "app\\":"./" ,
-            "Sajede\\Tmrin\\": "src/" 
+            "core\\":"core/",
+            "controllers\\":"controllers/",
+            "models\\":"models/",
+            "Sajede\\Tmrin\\": "src/"
         }
     },
     "authors": [

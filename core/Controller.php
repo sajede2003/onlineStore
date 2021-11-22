@@ -1,7 +1,8 @@
-<?php namespace app\core;
+<?php namespace core;
 
+use core\Database;
 
-class controller
+class controller 
 {
     public string $layout = 'main';
 

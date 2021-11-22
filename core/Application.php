@@ -1,5 +1,6 @@
-<?php namespace app\core;
+<?php namespace core;
 
+use core\controller;
 
 /**
  * 
@@ -30,12 +31,12 @@ class Application{
     }
 
 
-    public function getController() : \app\core\Controller
+    public function getController() : Controller
     {
         return $this->controller;
     }
 
-    public function setController(\app\core\controller $controller): void
+    public function setController(controller $controller): void
 
     {
         $this -> controller = $controller;

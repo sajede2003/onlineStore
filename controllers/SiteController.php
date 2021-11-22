@@ -1,25 +1,40 @@
-<?php namespace app\controllers;
+<?php namespace controllers;
 
-use app\core\Application;
-use app\core\controller;
-use app\core\Request;
+// use core\Application;
+// use core\BaseRepository;
+use core\controller;
+use core\Database;
+use core\Request;
+use PDO;
 
-class SiteController extends controller {
+class SiteController extends controller
+{
 
-    public function home(){
-        $params=[
-            'name'=>"TheCodeholic",
+    public function home()
+    {
+        $params = [
+            'name' => "TheCodeholic",
         ];
-        return $this->render('home' , $params);
+        return $this->render('home', $params);
     }
 
-    public function contact(){
+    public function contact()
+    {
         return $this->render('contact');
     }
 
-    public function handleContact(Request $request){
-        $body = $request->getBody();
-        return 'handling submitted data';
+    public function handleContact(Request $request)
+    {
+        $db = new Database();
+        $pdo = $db->pdo();
+        $data = $_POST;
+        $sql = "INSERT INTO contact_us (subject , body, email) VALUES (:subject, :body, :email)";
+        $stmt = $pdo->prepare($sql);
+        $result=$stmt->execute($data);
+
+        if($result){
+            header('location://');
+        }
     }
 
 }
