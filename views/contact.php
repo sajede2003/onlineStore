@@ -1,7 +1,7 @@
 <h1>contact page</h1>
 
 
-<form action="/table" method="POST">
+<form action="/contact" method="POST">
     <div class="mb-3">
         <label>subject</label>
         <input type="text" name="subject" class="form-control">

@@ -19,27 +19,30 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">تیتر</th>
+            <th scope="col">موضوع</th>
             <th scope="col">ایمیل</th>
             <th scope="col">توضیحات</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
+          <?php foreach($fetch as $key => $value):
+            
+            ?>
+
           <tr>
-            <th scope="row">1</th>
-            <td>محسن</td>
-            <td>جوادی</td>
+            <th scope="row"><?= $value['id'] ?></th>
+            <td><?= $value['subject']?></td>
+            <td><?= $value['email']?></td>
             <td class="w-25 ">
-              <p style="height: 100px; overflow: hidden;">
-              یسسسسیسیسی
-              </p>
+              <p style="height: 100px; overflow: hidden;"><?= $value ['body'];?></p>
             </td>
             <td>
               <button class="btn btn-danger "> حذف</button>
               <button class="btn btn-success"> ویرایش</button>
             </td>
           </tr>
+          <?php endforeach ; ?>
         </tbody>
       </table>
     </div>

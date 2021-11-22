@@ -21,7 +21,20 @@ class SiteController extends controller
     }
 
     public function table(){
-        return $this-> render('table');
+
+        $db = new Database();
+
+        $pdo = $db->pdo();
+                
+        $query = $pdo -> prepare("SELECT * FROM contact_us");
+        $query ->execute();
+        $fetch = $query -> fetchAll();
+        
+        $params = [
+            'fetch' =>  $fetch ,
+        ];
+        
+        return $this-> render('table', $params);
     }
 
     public function handleContact()
@@ -42,5 +55,7 @@ class SiteController extends controller
             header('Location:/table');
         }
     }
+
+    
 
 }
