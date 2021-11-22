@@ -1,0 +1,87 @@
+@import "_varibels.scss";
+
+input , textarea, button{
+    font-family: $mainFont;
+}
+
+
+html,
+    body {
+      position: relative;
+      height: 100%; 
+      
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+      font-family: $mainFont;
+      
+    }
+// global style\
+    .intro{
+
+        .content{
+            height: 500px;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+    .intrduse{
+        width: 100%;
+        .content{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+    footer{
+        background: $dark100;
+        padding-top: 40px;}
+    // swiper css
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+    .post_img{
+        height: 500px;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }

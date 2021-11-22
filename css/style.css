@@ -1,0 +1,125 @@
+/*Fonts*/
+@font-face {
+  font-family: IRANSans;
+  font-weight: bold;
+  src: url("../fonts/IRANSansWeb_Bold.eot");
+  src: url("../fonts/IRANSansWeb_Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/IRANSansWeb_Bold.woff2") format("woff2"), url("../fonts/IRANSansWeb_Bold.woff") format("woff"), url("../fonts/IRANSansWeb_Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/IRANSansWeb_Medium.eot");
+  src: url("../fonts/IRANSansWeb_Medium.eot?#iefix") format("embedded-opentype"), url("../fonts/IRANSansWeb_Medium.woff2") format("woff2"), url("../fonts/IRANSansWeb_Medium.woff") format("woff"), url("../fonts/IRANSansWeb_Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/IRANSansWeb_Light.eot");
+  src: url("../fonts/IRANSansWeb_Light.eot?#iefix") format("embedded-opentype"), url("../fonts/IRANSansWeb_Light.woff2") format("woff2"), url("../fonts/IRANSansWeb_Light.woff") format("woff"), url("../fonts/IRANSansWeb_Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 200;
+  src: url("../fonts/IRANSansWeb_UltraLight.eot");
+  src: url("../fonts/IRANSansWeb_UltraLight.eot?#iefix") format("embedded-opentype"), url("../fonts/IRANSansWeb_UltraLight.woff2") format("woff2"), url("../fonts/IRANSansWeb_UltraLight.woff") format("woff"), url("../fonts/IRANSansWeb_UltraLight.ttf") format("truetype");
+}
+
+input, textarea, button {
+  font-family: IRANSans;
+}
+
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+  font-family: IRANSans;
+}
+
+.intro .content {
+  height: 500px;
+}
+
+.intro .content img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.intrduse {
+  width: 100%;
+}
+
+.intrduse .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.intrduse .content img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+footer {
+  background: #343A40;
+  padding-top: 40px;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.post_img {
+  height: 500px;
+}
+
+.post_img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+/*# sourceMappingURL=style.css.map */
