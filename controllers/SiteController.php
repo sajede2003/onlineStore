@@ -1,11 +1,8 @@
 <?php namespace controllers;
 
-// use core\Application;
-// use core\BaseRepository;
+
 use core\controller;
 use core\Database;
-use core\Request;
-use PDO;
 
 class SiteController extends controller
 {
@@ -27,17 +24,22 @@ class SiteController extends controller
         return $this-> render('table');
     }
 
-    public function handleContact(Request $request)
+    public function handleContact()
     {
         $db = new Database();
+
         $pdo = $db->pdo();
+        
         $data = $_POST;
+        
         $sql = "INSERT INTO contact_us (subject , body, email) VALUES (:subject, :body, :email)";
+        
         $stmt = $pdo->prepare($sql);
+        
         $result=$stmt->execute($data);
 
         if($result){
-            header('location:/table');
+            header('Location:/table');
         }
     }
 

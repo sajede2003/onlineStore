@@ -25,7 +25,10 @@ use core\Application;
     $app->router->post('/register' , [AuthController::class , 'register' ]);
 
     // go in table page
-    $app->router->get('/table' , [SiteController::class , 'table']);
+    // $app->router->get('/table' , [SiteController::class , 'table']);
+
+    $app->router->post('/table' , [SiteController::class , 'table']);
+
 
     $app->run();
 
