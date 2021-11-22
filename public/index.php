@@ -23,5 +23,9 @@ use core\Application;
     
     // click submit 
     $app->router->post('/register' , [AuthController::class , 'register' ]);
+
+    // go in table page
+    $app->router->get('/table' , [SiteController::class , 'table']);
+
     $app->run();
 

@@ -23,6 +23,10 @@ class SiteController extends controller
         return $this->render('contact');
     }
 
+    public function table(){
+        return $this-> render('table');
+    }
+
     public function handleContact(Request $request)
     {
         $db = new Database();
@@ -33,7 +37,7 @@ class SiteController extends controller
         $result=$stmt->execute($data);
 
         if($result){
-            header('location://');
+            header('location:/table');
         }
     }
 
