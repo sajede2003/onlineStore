@@ -26,12 +26,12 @@
           </tr>
         </thead>
         <tbody>
-          <?php foreach($fetch as $key => $value):
-            
-            ?>
+          <?php
+          $counter=1;
+          foreach($allData as $key => $value): ?>
 
           <tr>
-            <th scope="row"><?= $value['id'] ?></th>
+            <th scope="row"><?= $counter++ ?></th>
             <td><?= $value['subject']?></td>
             <td><?= $value['email']?></td>
             <td class="w-25 ">

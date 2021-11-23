@@ -6,16 +6,18 @@ use Models\RegisterModel;
 
 class AuthController extends Controller{
 
-    public function __construct() {
-        $this-> setLayout('auth');
+    public function __construct()
+    {
+        $this->setLayout('main');
     }
+
     /**
      *  render login function
      *
      * @return void
      */
     public function login(){
-        $this-> setLayout('auth');
+        $this-> setLayout('main');
         return $this -> render('login');
     }
 

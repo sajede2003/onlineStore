@@ -1,6 +1,8 @@
 <?php namespace Controllers;
 
 use Core\Controller;
+use Controllers\SiteController;
+use Helper\Data;
 
 /**
  * render dashboard content class
@@ -31,8 +33,11 @@ class AdminController extends Controller
 
     public function users()
     {
-        
-        return $this->render('users');
+        $allData = Data::getData("contact_us");
+        $params=[
+            'fetch' =>  $allData ,
+        ];
+        return $this->render('users' , $params);
     }
 
     /**

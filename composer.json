@@ -5,6 +5,7 @@
             "Core\\":"Core/",
             "Controllers\\":"Controllers/",
             "Models\\":"Models/",
+            "Helper\\":"Helper/",
             "Sajede\\Tmrin\\": "src/"
         }
     },

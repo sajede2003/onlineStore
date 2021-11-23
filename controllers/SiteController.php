@@ -3,6 +3,7 @@
 
 use Core\Controller;
 use Core\Database;
+use Helper\Data;
 
 class SiteController extends Controller
 {
@@ -21,17 +22,13 @@ class SiteController extends Controller
     }
 
     public function table(){
-
-        $db = new Database();
-
-        $pdo = $db->pdo();
-                
-        $query = $pdo -> prepare("SELECT * FROM contact_us");
-        $query ->execute();
-        $fetch = $query -> fetchAll();
         
+        // get all contact data from db with get data method
+        $allData= Data::getData("contact_us");
+        
+
         $params = [
-            'fetch' =>  $fetch ,
+            'allData' =>  $allData ,
         ];
         
         return $this-> render('table', $params);
