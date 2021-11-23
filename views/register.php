@@ -4,29 +4,29 @@
 <form action="" method="POST">
     <div class="row">
         <div class="col">
-            <div class="mb-3">
-                <label>first name</label>
-                <input type="text" name="firstname" class="form-control">
+            <div class=" form-floating mb-3">
+                <input type="text" name="firstname" id="floatingInput" class="form-control" placeholder="name@example.com">
+                <label for="floatingInput">first name</label>
             </div>
         </div>
         <div class="col">
-            <div class="mb-3">
-                <label>last name</label>
-                <input type="text" name="lastname" class="form-control">
+            <div class=" form-floating mb-3">
+                <input type="text" name="lastname" id="floatingInput" class="form-control" placeholder="name@example.com">
+                <label for="floatingInput">last name</label>
             </div>
         </div>
     </div>
-    <div class="mb-3">
-        <label>Email address</label>
-        <input type="email" name="email" class="form-control">
+    <div class="form-floating mb-3">
+        <input type="email" name="email" id="floatingPassword" class="form-control" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
     </div>
-    <div class="mb-3">
-        <label>password</label>
-        <input type="password" name="password" class="form-control">
+    <div class="form-floating mb-3">
+        <input type="password" name="password" id="floatingPassword" class="form-control" placeholder="name@example.com">
+        <label for="floatingInput">password</label>
     </div>
-    <div class="mb-3">
-        <label>confirm password</label>
-        <input type="password" name="confirmPassword" class="form-control">
+    <div class="form-floating mb-3">
+        <input type="password" name="confirmPassword" id="floatingPassword" class="form-control" placeholder="name@example.com">
+        <label for="floatingInput">confirm password</label>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

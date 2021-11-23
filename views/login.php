@@ -1,32 +1,15 @@
 <h1>login account</h1>
+<br>
 
-<!-- 
 <form action="" method="POST">
-    <div class="row">
-        <div class="col">
-            <div class="mb-3">
-                <label>first name</label>
-                <input type="text" name="firstname" class="form-control">
-            </div>
-        </div>
-        <div class="col">
-            <div class="mb-3">
-                <label>last name</label>
-                <input type="text" name="lastname" class="form-control">
-            </div>
-        </div>
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
     </div>
-    <div class="mb-3">
-        <label>Email address</label>
-        <input type="email" name="email" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label>password</label>
-        <input type="password" name="password" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label>confirm password</label>
-        <input type="password" name="confirmPassword" class="form-control">
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+        <br>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-</form> -->
+</form>
