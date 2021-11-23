@@ -2,9 +2,9 @@
     "name": "sajede/tmrin",
     "autoload": {
         "psr-4": {
-            "core\\":"core/",
-            "controllers\\":"controllers/",
-            "models\\":"models/",
+            "Core\\":"Core/",
+            "Controllers\\":"Controllers/",
+            "Models\\":"Models/",
             "Sajede\\Tmrin\\": "src/"
         }
     },

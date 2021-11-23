@@ -1,6 +1,7 @@
-<?php namespace core;
+<?php namespace Core;
 
-class controller 
+use core\Application;
+class Controller 
 {
     public string $layout = 'main';
 

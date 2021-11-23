@@ -1,14 +1,24 @@
-<?php namespace controllers;
+<?php namespace Controllers;
 
-use core\controller;
-use core\Request;
-use models\RegisterModel;
+use Core\Controller;
+use Core\Request;
+use Models\RegisterModel;
 
-class AuthController extends controller{
+class AuthController extends Controller{
+
+    public function __construct() {
+        $this-> setLayout('auth');
+    }
+    /**
+     *  render login function
+     *
+     * @return void
+     */
     public function login(){
         $this-> setLayout('auth');
         return $this -> render('login');
     }
+
 
     public function register (Request $request){
 

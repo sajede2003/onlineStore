@@ -1,6 +1,8 @@
 <?php
-use controllers\SiteController;
+use Controllers\SiteController;
 
 $app->router->get('/contact' , [SiteController::class , 'contact']);
 
 $app->router->post('/contact' , [SiteController::class , 'handleContact']);
+
+

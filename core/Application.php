@@ -1,10 +1,10 @@
-<?php namespace core;
+<?php namespace Core;
 
-use core\controller;
+use Core\Controller;
 
 /**
  * 
- * @package app\core
+ * @package Core
  * 
  */
 class Application{
@@ -36,7 +36,7 @@ class Application{
         return $this->controller;
     }
 
-    public function setController(controller $controller): void
+    public function setController(Controller $controller): void
 
     {
         $this -> controller = $controller;

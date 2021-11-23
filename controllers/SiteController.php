@@ -1,10 +1,10 @@
-<?php namespace controllers;
+<?php namespace Controllers;
 
 
-use core\controller;
-use core\Database;
+use Core\Controller;
+use Core\Database;
 
-class SiteController extends controller
+class SiteController extends Controller
 {
 
     public function home()
@@ -36,6 +36,8 @@ class SiteController extends controller
         
         return $this-> render('table', $params);
     }
+
+    
 
     public function handleContact()
     {

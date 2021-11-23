@@ -1,4 +1,4 @@
-<?php namespace core;
+<?php namespace Core;
 
 use pdo;
 /**
@@ -16,17 +16,6 @@ class Database{
     // DB password
     public $password = '';
     
-
-    // public function __construct(){
-    //     try{
-    //         $this->pdo = new PDO("{$this->DBType}:host = {$this -> host}; dbname = {$this -> DBName}" , $this->userName , $this-> password);
-
-    //     }catch (\Throwable $e){
-
-    //         echo 'connecting in DB is wrong';
-
-    //     }
-    // }
 
     public function pdo()
     {

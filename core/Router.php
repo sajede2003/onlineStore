@@ -1,6 +1,4 @@
-<?php namespace core;
-
-use controllers\SiteController;
+<?php namespace Core;
 
 /**
  * 
@@ -48,8 +46,10 @@ class Router{
   
         if(!$callback)
         {
+            Application::$app->controller = new \Core\Controller();
             $this->response->setStatusCode(404);
             return $this->renderView("_404");
+            die;
         }
 
        if(is_string($callback)){
