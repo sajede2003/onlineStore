@@ -4,14 +4,8 @@ use Core\Controller;
 use Core\Request;
 use Models\RegisterModel;
 
-class AuthController extends Controller{
-/**
- * show main view function
- */
-    // public function __construct()
-    // {
-    //     $this->setLayout('auth');
-    // }
+class MainController extends Controller{
+
 
     /**
      *  render login function and set main view
@@ -23,26 +17,36 @@ class AuthController extends Controller{
         return $this -> render('login');
     }
 
+
+    /**
+     * 
+     * control register page
+     * 
+     */
+
     public function registerPost(Request $request){
 
         $registerModel = new RegisterModel();
      
-
+        if($request -> isPost()){
             $registerModel -> loadData($request->getBody());
            
 
             if($registerModel -> validation() && $registerModel -> register()){
                 return 'Success';
             }
-
-            dd($registerModel->errors);
-
             return $this -> render('register' , [
                 'model' => $registerModel
             ]);
+        }
     }
         
-
+    /**
+     * render register function and set main view
+     *
+     * @param Request $request
+     * @return void
+     */
     public function registerGet (Request $request){
 
         $this->setLayout('main');

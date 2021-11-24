@@ -3,7 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Controllers\AdminController;
-use Controllers\AuthController;
+use Controllers\MainController;
 use Controllers\SiteController;
 use Core\Application;
 
@@ -14,16 +14,16 @@ use Core\Application;
    require_once('../Routes/Home/Home.php');
 
     // go in login page
-    $app->router->get('/login' , [AuthController::class , 'login' ]);
+    $app->router->get('/login' , [MainController::class , 'login' ]);
 
     // after click submit
-    $app->router->post('/login' , [AuthController::class , 'login' ]);
+    $app->router->post('/login' , [MainController::class , 'login' ]);
 
     // go in register page
-    $app->router->get('/register' , [AuthController::class , 'registerGet' ]);
+    $app->router->get('/register' , [MainController::class , 'registerGet' ]);
     
     // click submit 
-    $app->router->post('/register' , [AuthController::class , 'registerPost' ]);
+    $app->router->post('/register' , [MainController::class , 'registerPost' ]);
 
     // go in table page
 
