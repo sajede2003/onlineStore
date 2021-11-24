@@ -8,10 +8,10 @@ class AuthController extends Controller{
 /**
  * show main view function
  */
-    public function __construct()
-    {
-        $this->setLayout('main');
-    }
+    // public function __construct()
+    // {
+    //     $this->setLayout('auth');
+    // }
 
     /**
      *  render login function and set main view
@@ -45,7 +45,7 @@ class AuthController extends Controller{
 
     public function registerGet (Request $request){
 
-        $this->setLayout('auth');
+        $this->setLayout('main');
         return $this -> render('register');
     }
 }
