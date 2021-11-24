@@ -5,13 +5,8 @@
     <div class="row">
         <div class="col">
             <div class=" form-floating mb-3">
-                <input type="text" name="firstname" id="floatingInput" 
-                value=""
-                class="form-control" placeholder="name@example.com">
+                <input type="text" name="firstname" id="floatingInput" class="form-control" placeholder="name@example.com">
                 <label for="floatingInput">First Name *</label>
-                <div class="invalid_feedback">
-                    
-                </div>
             </div>
         </div>
         <div class="col">
