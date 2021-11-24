@@ -10,13 +10,14 @@
   <tbody>
       <?php
         $counter=1;
-      foreach ($item as $key => $value) {?>
+      foreach ($item as $key => $value): ?>
           <tr>
-              <th scope="row"><?=$counter ?></th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+              <th scope="row"><?=$counter++ ?></th>
+              <td><?=$value['name'];?></td>
+              <td><?=$value['email']?></td>
+              <td><?=$value['phoneNumber']?></td>
             </tr>
-        <?php $counter++; } ?>
+        <?php endforeach; ?>
   </tbody>
 </table>
+

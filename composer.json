@@ -7,8 +7,12 @@
             "Models\\":"Models/",
             "Helper\\":"Helper/",
             "Sajede\\Tmrin\\": "src/"
-        }
+        },
+        "files":[
+           "./Helper/Helper.php"
+        ]
     },
+
     "authors": [
         {
             "name": "sajede2003",

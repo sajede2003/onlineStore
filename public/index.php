@@ -7,10 +7,10 @@ use Controllers\AuthController;
 use Controllers\SiteController;
 use Core\Application;
 
+
     $app = new Application(dirname(__DIR__));
 
     $app->router->get('/' , [SiteController::class , 'home']);
-
    require_once('../Routes/Home/Home.php');
 
     // go in login page
@@ -20,10 +20,10 @@ use Core\Application;
     $app->router->post('/login' , [AuthController::class , 'login' ]);
 
     // go in register page
-    $app->router->get('/register' , [AuthController::class , 'register' ]);
+    $app->router->get('/register' , [AuthController::class , 'registerGet' ]);
     
     // click submit 
-    $app->router->post('/register' , [AuthController::class , 'register' ]);
+    $app->router->post('/register' , [AuthController::class , 'registerPost' ]);
 
     // go in table page
 

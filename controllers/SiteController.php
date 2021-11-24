@@ -53,8 +53,7 @@ class SiteController extends Controller
         if($result){
             header('Location:/table');
         }
-    }
 
-    
+    }
 
 }

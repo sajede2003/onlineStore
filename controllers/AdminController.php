@@ -45,6 +45,7 @@ class AdminController extends Controller
      * and show category page in dashboard
      *
      */
+    
     public function category()
     {
         return $this->render('category');
@@ -56,6 +57,7 @@ class AdminController extends Controller
      * and show product page in dashboard
      *
      */
+
     public function product()
     {
         return $this->render('product');
