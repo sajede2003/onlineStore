@@ -1,6 +1,6 @@
-<?php namespace models;
+<?php namespace App\Models;
 
-use Core\Model;
+use App\Core\Model;
 
 class RegisterModel extends Model
 {

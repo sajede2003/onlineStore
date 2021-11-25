@@ -1,8 +1,7 @@
-<?php namespace Controllers;
+<?php namespace App\Controllers;
 
-use Core\Controller;
-use Controllers\SiteController;
-use Helper\Data;
+use App\Core\Controller;
+use App\Helper\Data;
 
 /**
  * render dashboard content class

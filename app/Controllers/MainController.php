@@ -1,8 +1,8 @@
-<?php namespace Controllers;
+<?php namespace App\Controllers;
 
-use Core\Controller;
-use Core\Request;
-use Models\RegisterModel;
+use App\Core\Controller;
+use App\Core\Request;
+use App\Models\RegisterModel;
 
 class MainController extends Controller{
 

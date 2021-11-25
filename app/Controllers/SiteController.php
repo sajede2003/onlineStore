@@ -1,9 +1,9 @@
-<?php namespace Controllers;
+<?php namespace App\Controllers;
 
 
-use Core\Controller;
-use Core\Database;
-use Helper\Data;
+use App\Core\Controller;
+use App\Core\Database;
+use App\Helper\Data;
 
 class SiteController extends Controller
 {

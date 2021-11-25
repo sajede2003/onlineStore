@@ -2,14 +2,11 @@
     "name": "sajede/tmrin",
     "autoload": {
         "psr-4": {
-            "Core\\":"Core/",
-            "Controllers\\":"Controllers/",
-            "Models\\":"Models/",
-            "Helper\\":"Helper/",
+            "App\\":"app/",
             "Sajede\\Tmrin\\": "src/"
         },
         "files":[
-           "./Helper/Helper.php"
+           "./app/Helper/Helper.php"
         ]
     },
 

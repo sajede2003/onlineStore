@@ -2,16 +2,16 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Controllers\AdminController;
-use Controllers\MainController;
-use Controllers\SiteController;
-use Core\Application;
+use App\Controllers\AdminController;
+use App\Controllers\MainController;
+use App\Controllers\SiteController;
+use App\Core\Application;
 
 
     $app = new Application(dirname(__DIR__));
 
     $app->router->get('/' , [SiteController::class , 'home']);
-   require_once('../Routes/Home/Home.php');
+   require_once('../app/Routes/Home/Home.php');
 
     // go in login page
     $app->router->get('/login' , [MainController::class , 'login' ]);

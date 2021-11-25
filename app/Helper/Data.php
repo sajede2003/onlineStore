@@ -1,6 +1,6 @@
-<?php namespace Helper;
+<?php namespace App\Helper;
 
-use Core\Database;
+use App\Core\Database;
 
 
 class Data{

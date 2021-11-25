@@ -1,4 +1,5 @@
-<?php namespace Core;
+<?php namespace App\Core;
+
 
 
 abstract class Model
