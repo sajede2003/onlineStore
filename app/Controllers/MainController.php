@@ -2,6 +2,7 @@
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Core\Validation;
 use App\Models\RegisterModel;
 
 class MainController extends Controller{
@@ -27,18 +28,19 @@ class MainController extends Controller{
     public function registerPost(Request $request){
 
         $registerModel = new RegisterModel();
+        $validation = new Validation();
      
-        if($request -> isPost()){
-            $registerModel -> loadData($request->getBody());
+        $validation -> loadData($request->getBody());
            
 
-            if($registerModel -> validation() && $registerModel -> register()){
-                return 'Success';
-            }
-            return $this -> render('register' , [
-                'model' => $registerModel
-            ]);
+        if($registerModel -> validate() && $registerModel -> register()){
+            // go in dashboard page
+            return 'Success';
         }
+        // dd($registerModel -> errors);
+        return $this -> render('register' , [
+            'model' => $registerModel
+        ]);
     }
         
     /**

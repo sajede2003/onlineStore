@@ -2,123 +2,123 @@
 
 
 
-abstract class Model
-{
+// abstract class Model
+// {
 
-    public const RULE_REQUIRED = 'required';
-    public const RULE_EMAIL = 'email';
-    public const RULE_EQUAL = 'phoneNumber';
-    public const RULE_MIN = 'min';
-    public const RULE_MAX = 'max';
-    public const RULE_MATCH = 'match';
-
-
-    public function loadData($data)
-    {
-
-        foreach($data as $key => $value){
-
-            if(property_exists($this , $key)){
-                $this -> {$key} = $value;
-            }
-        }
-    }
+//     public const RULE_REQUIRED = 'required';
+//     public const RULE_EMAIL = 'email';
+//     public const RULE_EQUAL = 'phoneNumber';
+//     public const RULE_MIN = 'min';
+//     public const RULE_MAX = 'max';
+//     public const RULE_MATCH = 'match';
 
 
+//     public function loadData($data)
+//     {
+//         foreach($data as $key => $value){
 
-    abstract public function rules():array;
+//             if(property_exists($this , $key)){
+//                 $this -> {$key} = $value;
+//             }
+//         }
+        
+//     }
 
-    public array $errors = [];
 
-    public function validation()
-    {
 
-        foreach($this->rules() as $attribute => $rules){
-            $value = $this->{$attribute};
-            foreach($rules as $rule){
+//     abstract public function rules():array;
 
-                $ruleName = $rule;
+//     public array $errors = [];
 
-                if(!is_string($ruleName)){
-                    $ruleName = $rule[0];
-                }
+//     public function validation()
+//     {
 
-                if ($ruleName === self::RULE_REQUIRED && !$value){
-                    $this->addError($attribute , self::RULE_REQUIRED);
-                }
+//         foreach($this->rules() as $attribute => $rules){
+//             $value = $this->{$attribute};
+//             foreach($rules as $rule){
 
-                if ($ruleName === self::RULE_EMAIL && !filter_var($value , FILTER_VALIDATE_EMAIL)){
-                    $this->addError($attribute , self::RULE_EMAIL);
-                }
+//                 $ruleName = $rule;
 
-                if($ruleName === self::RULE_EQUAL && strlen($value) !== $rule['phoneNumber']){
-                    $this->addError($attribute , self::RULE_EQUAL ,$rule);
-                }
+//                 if(!is_string($ruleName)){
+//                     $ruleName = $rule[0];
+//                 }
 
-                if($ruleName === self::RULE_MIN && strlen($value) < $rule['min']){
-                    $this->addError($attribute , self::RULE_MIN ,$rule);
-                }
+//                 if ($ruleName === self::RULE_REQUIRED && !$value){
+//                     $this->addError($attribute , self::RULE_REQUIRED);
+//                 }
 
-                if($ruleName === self::RULE_MAX && strlen($value) > $rule['max']){
-                    $this->addError($attribute , self::RULE_MAX , $rule);
-                }
+//                 if ($ruleName === self::RULE_EMAIL && !filter_var($value , FILTER_VALIDATE_EMAIL)){
+//                     $this->addError($attribute , self::RULE_EMAIL);
+//                 }
 
-                if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}){
-                    $this->addError($attribute , self::RULE_MATCH , $rule);
-                }
+//                 if($ruleName === self::RULE_EQUAL && strlen($value) !== $rule['phoneNumber']){
+//                     $this->addError($attribute , self::RULE_EQUAL ,$rule);
+//                 }
 
-            }
-        }
+//                 if($ruleName === self::RULE_MIN && strlen($value) < $rule['min']){
+//                     $this->addError($attribute , self::RULE_MIN ,$rule);
+//                 }
 
-        return empty($this->errors);
-    }
+//                 if($ruleName === self::RULE_MAX && strlen($value) > $rule['max']){
+//                     $this->addError($attribute , self::RULE_MAX , $rule);
+//                 }
 
-    /**
-     * 
-     * add and show errors 
-     *
-     * @param string $attribute
-     * @param string $rule
-     * @param array $params
-     * @return void 
-     */
-    public function addError(string $attribute , string $rule , $params = [])
-    {
-        $massage = $this->errorMassages()[$rule]??'';
+//                 if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}){
+//                     $this->addError($attribute , self::RULE_MATCH , $rule);
+//                 }
 
-        foreach($params as $key => $value){
-            $massage = str_replace( "{{$key}}" , $value ,$massage );
-        }
-        // show errors
-        $this->errors[$attribute][]= $massage ;
-    }
+//             }
+//         }
 
-    /**
-     * 
-     * errors text
-     * 
-     */
+//         return empty($this->errors);
+//     }
 
-    public function errorMassages()
-    {
-        return [
-            self::RULE_REQUIRED => 'this field is required',
-            self::RULE_EMAIL => 'this field must be valid email address',
-            self::RULE_EQUAL => 'length of this field must be {phoneNumber}',
-            self::RULE_MIN => 'min length of this field must be {min}',
-            self::RULE_MAX => 'max length of this field must be {max}',
-            self::RULE_MATCH => 'this field must be the same as {match}',
-        ];
-    }
+//     /**
+//      * 
+//      * add and show errors 
+//      *
+//      * @param string $attribute
+//      * @param string $rule
+//      * @param array $params
+//      * @return void 
+//      */
+//     public function addError(string $attribute , string $rule , $params = [])
+//     {
+//         $massage = $this->errorMassages()[$rule]??'';
 
-    public function hasError($attribute)
-    {
-        return $this->errors[$attribute] ?? false;
-    }
+//         foreach($params as $key => $value){
+//             $massage = str_replace( "{{$key}}" , $value ,$massage );
+//         }
+//         // show errors
+//         $this->errors[$attribute][]= $massage ;
+//     }
 
-    public function getFirstError($attribute)
-    {
-        return $this->errors[$attribute][0]??false;
-    }
+//     /**
+//      * 
+//      * errors text
+//      * 
+//      */
 
-}
+//     public function errorMassages()
+//     {
+//         return [
+//             self::RULE_REQUIRED => 'this field is required',
+//             self::RULE_EMAIL => 'this field must be valid email address',
+//             self::RULE_EQUAL => 'length of this field must be {phoneNumber}',
+//             self::RULE_MIN => 'min length of this field must be {min}',
+//             self::RULE_MAX => 'max length of this field must be {max}',
+//             self::RULE_MATCH => 'this field must be the same as {match}',
+//         ];
+//     }
+
+//     public function hasError($attribute)
+//     {
+//         return $this->errors[$attribute] ?? false;
+//     }
+
+//     public function getFirstError($attribute)
+//     {
+//         return $this->errors[$attribute][0]??false;
+//     }
+
+// }

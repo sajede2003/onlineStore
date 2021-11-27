@@ -6,9 +6,15 @@ use App\Controllers\AdminController;
 use App\Controllers\MainController;
 use App\Controllers\SiteController;
 use App\Core\Application;
+use App\Core\Error;
+
+error_reporting(E_ALL);
+set_error_handler('App\Core\Error::errorHandler');
+set_exception_handler('App\Core\Error::exceptionHandler');
 
 
-    $app = new Application(dirname(__DIR__));
+    
+    $app2 = new Application(dirname(__DIR__));
 
     $app->router->get('/' , [SiteController::class , 'home']);
    require_once('../app/Routes/Home/Home.php');

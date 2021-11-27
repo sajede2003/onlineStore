@@ -1,0 +1,16 @@
+[27-Nov-2021 08:28:03 Europe/Berlin] 
+<h1> Fatal error :</h1>
+<p> Uncaught exception 'ErrorException '</p>
+<p> Massage : 'Undefined variable $app'</p>
+<p> stack trace <pre>:#0 C:\Users\Negin Rayaneh\Desktop\onlineStore\public\index.php(19): App\Core\Error::errorHandler(2, 'Undefined varia...', 'C:\\Users\\Negin ...', 19)
+#1 {main}</pre></p>
+<p> throw in'C:\Users\Negin Rayaneh\Desktop\onlineStore\public\index.php'on line19</p>
+
+[27-Nov-2021 08:28:48 Europe/Berlin] 
+<h1> Fatal error :</h1>
+<p> Uncaught exception 'ErrorException '</p>
+<p> Massage : 'Undefined variable $app'</p>
+<p> stack trace <pre>:#0 C:\Users\Negin Rayaneh\Desktop\onlineStore\public\index.php(19): App\Core\Error::errorHandler(2, 'Undefined varia...', 'C:\\Users\\Negin ...', 19)
+#1 {main}</pre></p>
+<p> throw in'C:\Users\Negin Rayaneh\Desktop\onlineStore\public\index.php'on line19</p>
+

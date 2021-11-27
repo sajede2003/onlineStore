@@ -6,6 +6,8 @@
  * 
  */
 
+ use App\Core\Controller;
+
 class Router{
 
     public Request $request;
@@ -46,7 +48,7 @@ class Router{
   
         if(!$callback)
         {
-            Application::$app->controller = new \Core\Controller();
+            Application::$app->controller = new Controller();
             $this->response->setStatusCode(404);
             return $this->renderView("_404");
             die;
