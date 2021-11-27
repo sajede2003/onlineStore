@@ -1,46 +1,50 @@
 <?php namespace App\Models;
 
-use App\Core\Validation;
+use App\Core\Database;
 
-class RegisterModel extends Validation
+class RegisterModel 
 {
-    
 
+    private $db;
 
-    // get input data
-    public string $firstname;
-    public string $lastname;
-    public string $phoneNumber;
-    public string $email;
-    public string $password;
-    public string $confirmPassword;
-
-
-
-
-    public function register()
-    {
-        // insert data to db
-        echo "creating new user";
+    public function __construct() {
+        $this->db =  new Database;
     }
 
-    // public function rules(): array {
 
-    //     return [
-    //         'firstname' => [self::RULE_REQUIRED],
-    //         'lastname' => [self::RULE_REQUIRED],
-    //         'email' => [self::RULE_REQUIRED , self::RULE_EMAIL],
-    //         'phoneNumber' => [self::RULE_REQUIRED ,
-    //             [self::RULE_EQUAL , 'phoneNumber' => 11]],
-    //         'password' => [self::RULE_REQUIRED ,
-    //             [self::RULE_MIN , 'min' => 8] ,
-    //             [self::RULE_MAX , 'max' => 24]],
-    //         'confirmPassword' => [self::RULE_REQUIRED , 
-    //             [self::RULE_MATCH , 'match' => 'password']],
-    //     ];
+    public function registerPost($data)
+    {
+        $this->db->query('INSERT INTO users
+            VALUES (:firstName , :lastName , :phoneNumber , :email , :password');
 
-    // }
+        // bind values
+        $this->db->bind(':firstName' , $data['firstName']);
+        $this->db->bind(':lastName' , $data['lastName']);
+        $this->db->bind(':phoneNumber' , $data['phoneNumber']);
+        $this->db->bind(':email' , $data['email']);
+        $this->db->bind(':password' , $data['password']);
+
+        // Execute function
+        if($this->db->execute()){
+            return true;
+        }else return false;
+        
+    }
 
 
+    // Find user by email. Email is passed in by the controller
+    public function findUserByEmail($email)
+    {
+        // prepared statement
+        $this->db->query('SELECT * FROM users WHERE email = :email ');
+
+        // Email param will be binded with the email variable
+        $this->db->bind(':email' , $email);
+
+        // check if email is already registered 
+        if($this->db->rowCount > 0){
+            return true;
+        }else return false;
+    }
 
 }

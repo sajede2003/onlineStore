@@ -22,10 +22,10 @@ class Error
         http_response_code($code);
 
 
-        if(false){
+        if(true){
             echo "<h1> Fatal error :</h1>";
             echo "<p> Uncaught exception '" . get_class($exception) . " '</p>";
-            echo "<p> Massage : '" . $exception->getMessage() . "'</p>"; 
+            echo "<p> Message : '" . $exception->getMessage() . "'</p>"; 
             echo "<p> stack trace <pre>:". $exception->getTraceAsString() . "</pre></p>";
             echo "<p> throw in'" . $exception->getFile() ."'on line". $exception ->getLine() ."</p>";
         }

@@ -13,4 +13,10 @@ class Controller
     public function render($view , $params=[]){
         return Application::$app->router->renderView($view , $params);
     }
+
+    public function renderModel($model)
+    {
+        include_once Application::$ROOT_DIR."/app/Models/$model.php";
+    }
+
 }

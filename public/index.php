@@ -3,10 +3,10 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use App\Controllers\AdminController;
-use App\Controllers\MainController;
 use App\Controllers\SiteController;
 use App\Core\Application;
-use App\Core\Error;
+use App\Controllers\UsersController;
+use App\Models\RegisterModel;
 
 error_reporting(E_ALL);
 set_error_handler('App\Core\Error::errorHandler');
@@ -14,22 +14,22 @@ set_exception_handler('App\Core\Error::exceptionHandler');
 
 
     
-    $app2 = new Application(dirname(__DIR__));
+    $app = new Application(dirname(__DIR__));
 
     $app->router->get('/' , [SiteController::class , 'home']);
    require_once('../app/Routes/Home/Home.php');
 
     // go in login page
-    $app->router->get('/login' , [MainController::class , 'login' ]);
+    $app->router->get('/login' , [UsersController::class , 'loginGet']);
 
     // after click submit
-    $app->router->post('/login' , [MainController::class , 'login' ]);
+    $app->router->post('/login' , [UsersController::class , 'loginPost']);
 
     // go in register page
-    $app->router->get('/register' , [MainController::class , 'registerGet' ]);
+    $app->router->get('/register' , [UsersController::class , 'registerGet' ]);
     
     // click submit 
-    $app->router->post('/register' , [MainController::class , 'registerPost' ]);
+    $app->router->post('/register' , [RegisterModel::class , 'registerPost' ]);
 
     // go in table page
 

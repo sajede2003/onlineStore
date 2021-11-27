@@ -72,7 +72,7 @@ class Router{
        $layoutContent = $this->layoutContent();
        $viewContent = $this->renderOnlyView($view , $params);
        return str_replace('{{content}}' , $viewContent , $layoutContent);
-       include_once Application::$ROOT_DIR."/views/$view.php";
+       include_once Application::$ROOT_DIR."/app/views/$view.php";
    }
 
    public function renderContent($viewContent)
@@ -86,16 +86,17 @@ class Router{
    {
        $layout= Application::$app->controller->layout;
        ob_start();
-       include_once Application::$ROOT_DIR."/views/layouts/$layout.php";
+       include_once Application::$ROOT_DIR."/app/views/layouts/$layout.php";
        return ob_get_clean();
    }
+
 
    protected function renderOnlyView($view , $params){
        foreach($params as $key => $value){
            $$key = $value;
        }
        ob_start();
-       include_once Application::$ROOT_DIR."/views/$view.php";
+       include_once Application::$ROOT_DIR."/app/views/$view.php";
        return ob_get_clean();
    }
 
