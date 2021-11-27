@@ -16,7 +16,7 @@ class RegisterModel extends Controller
     public function registerPost($data)
     {
         $this->db->query('INSERT INTO users 
-            VALUES (:firstName , :lastName , :phoneNumber , :email , :password)');
+        VALUES (:firstName , :lastName , :phoneNumber , :email , :password)');
 
         // bind values
         $this->db->bind(':firstName' , $data['firstName']);
