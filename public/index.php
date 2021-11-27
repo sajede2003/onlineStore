@@ -29,7 +29,7 @@ set_exception_handler('App\Core\Error::exceptionHandler');
     $app->router->get('/register' , [UsersController::class , 'registerGet' ]);
     
     // click submit 
-    $app->router->post('/register' , [UsersController::class , 'registerPost' ]);
+    $app->router->post('/register' , [RegisterModel::class , 'registerPost' ]);
 
     // go in table page
 

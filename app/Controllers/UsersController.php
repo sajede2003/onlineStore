@@ -135,24 +135,26 @@ class UsersController extends Controller{
      * @return void
      */
 
-    public function registerPost($data)
-    {
-        $this->db->query('INSERT INTO users (firstName , lastName , phoneNumber , email , password) 
-            VALUES (:firstName , :lastName , :phoneNumber , :email , :password');
+    // public function registerPost($data)
+    // {
+    //     dd($data);
 
-        // bind values
-        $this->db->bind(':firstName' , $data['firstName']);
-        $this->db->bind(':lastName' , $data['lastName']);
-        $this->db->bind(':phoneNumber' , $data['phoneNumber']);
-        $this->db->bind(':email' , $data['email']);
-        $this->db->bind(':password' , $data['password']);
+    //     $this->db->query("INSERT INTO users (id , firstName , lastName , phoneNumber , email , password) 
+    //         VALUES ('' , :firstName , :lastName , :phoneNumber , :email , :password')");
 
-        // Execute function
-        if($this->db->execute()){
-            return true;
-        }else return false;
+    //     // bind values
+    //     $this->db->bind(':firstName' , $data['firstName']);
+    //     $this->db->bind(':lastName' , $data['lastName']);
+    //     $this->db->bind(':phoneNumber' , $data['phoneNumber']);
+    //     $this->db->bind(':email' , $data['email']);
+    //     $this->db->bind(':password' , $data['password']);
+
+    //     // Execute function
+    //     if($this->db->execute()){
+    //         return true;
+    //     }else return false;
         
-    }
+    // }
 
 
     // Find user by email. Email is passed in by the controller
