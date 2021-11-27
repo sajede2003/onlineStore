@@ -2,6 +2,7 @@
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Core\Database;
 
 
 
@@ -9,8 +10,10 @@ class UsersController extends Controller{
 
     public function __construct() {
         $model = $this->userModel = $this->renderModel('RegisterModel');
-    }
+        $this->db =  new Database;
 
+    }
+    private $db;
 
 
     /**
@@ -123,6 +126,50 @@ class UsersController extends Controller{
         $this->setLayout('main');
         return $this -> render('register' , $params);
     }
+
+
+    /**
+     * controller register page function
+     *
+     * @param [type] $data
+     * @return void
+     */
+
+    public function registerPost($data)
+    {
+        $this->db->query('INSERT INTO users (firstName , lastName , phoneNumber , email , password) 
+            VALUES (:firstName , :lastName , :phoneNumber , :email , :password');
+
+        // bind values
+        $this->db->bind(':firstName' , $data['firstName']);
+        $this->db->bind(':lastName' , $data['lastName']);
+        $this->db->bind(':phoneNumber' , $data['phoneNumber']);
+        $this->db->bind(':email' , $data['email']);
+        $this->db->bind(':password' , $data['password']);
+
+        // Execute function
+        if($this->db->execute()){
+            return true;
+        }else return false;
+        
+    }
+
+
+    // Find user by email. Email is passed in by the controller
+    public function findUserByEmail($email)
+    {
+        // prepared statement
+        $this->db->query('SELECT * FROM users WHERE email = :email ');
+
+        // Email param will be binded with the email variable
+        $this->db->bind(':email' , $email);
+
+        // check if email is already registered 
+        if($this->db->rowCount > 0){
+            return true;
+        }else return false;
+    }
+
 
 
 
