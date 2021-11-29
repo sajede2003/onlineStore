@@ -1,35 +1,35 @@
 <?php namespace App\Models;
 
-use App\Core\Controller;
 use App\Core\Database;
 
-class RegisterModel extends Controller
+class RegisterModel
 {
 
     private $db;
 
-    public function __construct() {
-        $this->db =  new Database;
+    public function __construct()
+    {
+        $this->db = new Database;
     }
 
-
-    public function registerPost($data)
+    public function register($data)
     {
-        $this->db->query('INSERT INTO users 
-        VALUES (:firstName , :lastName , :phoneNumber , :email , :password)');
-
+        $this->db->query("INSERT INTO users (firstName , lastName , phoneNumber , email , password)
+        VALUES (:firstName , :lastName , :phoneNumber , :email , :password)");
         // bind values
-        $this->db->bind(':firstName' , $data['firstName']);
-        $this->db->bind(':lastName' , $data['lastName']);
-        $this->db->bind(':phoneNumber' , $data['phoneNumber']);
-        $this->db->bind(':email' , $data['email']);
-        $this->db->bind(':password' , $data['password']);
+        $this->db->bind(':firstName', $data['firstName']);
+        $this->db->bind(':lastName', $data['lastName']);
+        $this->db->bind(':phoneNumber', $data['phoneNumber']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':password', $data['password']);
 
         // Execute function
-        if($this->db->execute()){
+        if ($this->db->execute()) {
             return true;
-        }else return false;
-        
+        } else {
+            return false;
+        }
+
     }
 
 
@@ -40,12 +40,15 @@ class RegisterModel extends Controller
         $this->db->query('SELECT * FROM users WHERE email = :email ');
 
         // Email param will be binded with the email variable
-        $this->db->bind(':email' , $email);
+        $this->db->bind(':email', $email);
 
-        // check if email is already registered 
-        if($this->db->rowCount > 0){
+        // check if email is already registered
+        if ($this->db->rowCount() > 0) {
             return true;
-        }else return false;
+        } else {
+            return false;
+        }
+
     }
 
 }

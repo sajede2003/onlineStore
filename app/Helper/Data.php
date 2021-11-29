@@ -2,22 +2,20 @@
 
 use App\Core\Database;
 
-
-class Data{
+class Data
+{
 
     public static function getData($table)
     {
-        
+
         $db = new Database();
 
         $pdo = $db->pdo();
-         
-        
-        $query = $pdo -> prepare("SELECT * FROM $table");
-        $query ->execute();
-        $fetch = $query -> fetchAll();
+
+        $query = $pdo->prepare("SELECT * FROM $table");
+        $query->execute();
+        $fetch = $query->fetchAll();
         return $fetch;
     }
-
 
 }

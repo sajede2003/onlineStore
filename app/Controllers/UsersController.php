@@ -1,132 +1,30 @@
 <?php namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Core\Request;
 use App\Core\Database;
+use App\Core\Request;
+use App\Models\LoginModel;
+use App\Models\RegisterModel;
+use App\Core\ErrorMessage;
+use App\Core\Validation;
 
-
-
-class UsersController extends Controller{
-
-    public function __construct() {
-        $model = $this->userModel = $this->renderModel('RegisterModel');
-        $this->db =  new Database;
-
-    }
+class UsersController extends Controller
+{
     private $db;
+    protected RegisterModel $registerModel;
+    protected LoginModel $loginModel;
+    protected ErrorMessage $errorMessage;
+    protected Validation $validation;
+    public function __construct()
+    {
+        $this->registerModel = new RegisterModel();
+        $this->loginModel = new LoginModel();
+        $this->errorMessage = new ErrorMessage();
+        $this->db = new Database();
+        $this->validation = new Validation();
 
 
-    /**
-     * render register function and set main view
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function registerGet (Request $request){
-    
-
-        $params=[
-            'data' => [
-                'firstName' => '', 
-                'lastName' =>'', 
-                'phoneNumber' => '', 
-                'email' => '',
-                'password' =>'',
-                'confirmPassword' =>'',
-                'phoneNumberError' => '',
-                'emailError' => '',
-                'passwordError' => '' ,
-                'confirmPasswordError' => ''
-            ]
-        ];
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-
-            $_POST = filter_input_array(INPUT_POST , FILTER_SANITIZE_STRING);
-
-            $inputData = [
-                'firstName' => trim($params['data']['firstName']), 
-                'lastName' => trim($params['data']['lastName']), 
-                'phoneNumber' => trim($params['data']['phoneNumber']), 
-                'email' => trim($params['data']['email']),
-                'password' => trim($params['data']['password']),
-                'confirmPassword' => trim($params['data']['confirmPassword']),
-                'phoneNumberError' => '',
-                'emailError' => '',
-                'passwordError' => '' ,
-                'confirmPasswordError' => ''
-                
-            ];
-
-            $numberValidation = "/^[0-9]*$/";
-            $passwordValidation = "/^(.{0,7} | [^a-z]*[^\d]*)$/i";
-
-
-            // validation phoneNumbers
-            if(empty($inputData['phoneNumber'])){
-                $inputData['phoneNumberError'] = 'please enter phoneNumber';
-            }elseif(!preg_match($numberValidation , $inputData['phoneNumber'])){
-                $inputData['phoneNumberError'] = 'phoneNumber can only contain number';
-            }elseif(strlen($inputData['phoneNumber'] < 11)){
-                $inputData['phoneNumberError'] = 'phoneNumber must be at least 11 characters.';
-            }
-            dd($inputData['phoneNumberError']);
-
-            
-            // validation email
-            if(empty($inputData['email'])){
-                $inputData['emailError'] = 'please enter your email';
-            }elseif(!filter_var($inputData['email'] , FILTER_VALIDATE_EMAIL)){
-                $inputData['emailError'] = 'please enter the correct format';
-            }else{
-                // check if email exists
-                if($this->userModel->findUserByEmail($inputData['email'])){
-                    $inputData['emailError'] = 'Email is already taken.';
-                }
-            }
-
-            // validate password on length and numeric value
-            if (empty($inputData['password'])){
-                $inputData['passwordError'] = 'please enter password.';
-            }elseif(strlen($inputData['password'] < 6)){
-                $inputData['passwordError'] = 'password must be at least 8 characters.';
-            }elseif(!preg_match($passwordValidation , $inputData['password'])){
-                $inputData['passwordError'] = 'password must have at least one numeric value.';
-            }
-
-            //validation confirm password
-            if (empty($inputData['confirmPassword'])){
-                $inputData['confirmPasswordError'] = 'please enter password.';
-            }elseif($inputData['password'] != $inputData['confirmPassword']){
-                $inputData['confirmPasswordError'] = 'passwords do not match, please try again.';
-            } 
-            
-            
-            // errors is empty?
-            if(empty($inputData['phoneNumberError'] && 
-                $inputData['emailError'] &&
-                $inputData['passwordError'] && 
-                $inputData['confirmPasswordError'] ))
-            {
-                // Hash password
-                $inputData['password'] = password_hash($inputData['password'],PASSWORD_DEFAULT);
-
-                // register user from model function
-                if($this->userModel->register($inputData)){
-                    // redirect to the login
-                    header('location:'.$this->renderModel('RegisterModel'));
-                }else die('something went wrong');
-
-            }
-
-
-
-        }
-
-
-        $this->setLayout('main');
-        return $this -> render('register' , $params);
     }
-
 
     /**
      * controller register page function
@@ -135,45 +33,192 @@ class UsersController extends Controller{
      * @return void
      */
 
-    // public function registerPost($data)
-    // {
-    //     dd($data);
-
-    //     $this->db->query("INSERT INTO users (id , firstName , lastName , phoneNumber , email , password) 
-    //         VALUES ('' , :firstName , :lastName , :phoneNumber , :email , :password')");
-
-    //     // bind values
-    //     $this->db->bind(':firstName' , $data['firstName']);
-    //     $this->db->bind(':lastName' , $data['lastName']);
-    //     $this->db->bind(':phoneNumber' , $data['phoneNumber']);
-    //     $this->db->bind(':email' , $data['email']);
-    //     $this->db->bind(':password' , $data['password']);
-
-    //     // Execute function
-    //     if($this->db->execute()){
-    //         return true;
-    //     }else return false;
-        
-    // }
-
-
-    // Find user by email. Email is passed in by the controller
-    public function findUserByEmail($email)
+    public function registerPost()
     {
-        // prepared statement
-        $this->db->query('SELECT * FROM users WHERE email = :email ');
 
-        // Email param will be binded with the email variable
-        $this->db->bind(':email' , $email);
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $_POST = array_map('trim' , $_POST);
 
-        // check if email is already registered 
-        if($this->db->rowCount > 0){
-            return true;
-        }else return false;
+
+
+
+        $result = $this->validation->make($_POST, [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            // |phone|min:11
+            'phoneNumber' => 'required | length',
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        if($result) { 
+            //   Hash password
+            //   $inputData['password'] = password_hash($inputData['password'], PASSWORD_DEFAULT);
+
+            //   register user from model function
+              if ($this->registerModel->register($_POST)) {
+                //   redirect to the login
+                  header('location:/login');
+              } else {
+                  die('something went wrong');
+              }
+        } else {
+            $params = [
+                "error" => $this->validation,
+            ];
+
+            dd($this->validation->errors);
+
+
+            $this->setLayout('main');
+            return $this->render('register', $params);
+        }
+        // }
+
+        // $numberValidation = "/^09|011[0-9]*$/";
+
+        // validation phoneNumbers
+        // if (empty($inputData['phoneNumber'])) {
+        //     $this->errorMessage->set('phoneNumber' , 'please enter phoneNumber');
+        // } elseif (!preg_match($numberValidation, $inputData['phoneNumber'])) {
+        //     $inputData['phoneNumberError'] = 'phoneNumber can only contain number';
+        // } elseif (strlen($inputData['phoneNumber'] < 11)) {
+        //     $inputData['phoneNumberError'] = 'phoneNumber must be at least 11 characters.';
+        // }
+
+    //     // validation email
+    //     if (empty($inputData['email'])) {
+    //        $this->errorMessage->set('email' , 'please enter email');
+    //     } elseif ($this->errorMessage->validateEmail('email')=== 0) {
+    //         $inputData['emailError'] = 'please enter the correct format';
+    //     } else {
+    //         // check if email exists
+    //         if ($this->registerModel->findUserByEmail($inputData['email'])) {
+    //             $inputData['emailError'] = 'Email is already taken.';
+    //         }
+    //     }
+
+    //     // validate password on length and numeric value
+    //     if (empty($inputData['password'])) {
+    //         $this->errorMessage->set('password' , 'please enter password');
+    //     } elseif (strlen($inputData['password'] < 8)) {
+    //         $inputData['passwordError'] = 'password must be at least 8 characters.';
+    //     }
+
+    //     //validation confirm password
+    //     if (empty($inputData['confirmPassword'])) {
+    //         $this->errorMessage->set('confirmPassword' , 'please enter confirm password.');
+    //     } elseif ($inputData['password'] != $inputData['confirmPassword']) {
+    //         $inputData['confirmPasswordError'] = 'passwords do not match, please try again.';
+    //     }
+
+
+    //     // errors is empty?
+    //     if ($this->errorMessage->count() <= 0) {
+    //         // Hash password
+    //         $inputData['password'] = password_hash($inputData['password'], PASSWORD_DEFAULT);
+
+    //         // register user from model function
+    //         if ($this->registerModel->register($inputData)) {
+    //             // redirect to the login
+    //             header('location:/login');
+    //         } else {
+    //             die('something went wrong');
+    //         }
+
+    //     }
+
+    //     $params = [
+    //         "error" => $this->errorMessage,
+    //     ];
+
+    //     $this->setLayout('main');
+    //     return $this->render('register', $params);
+
+    }
+
+    /**
+     * render register function and set main view
+     *
+     * @param Request $request
+     * @return void
+     */
+
+    public function registerGet(Request $request)
+    {
+
+        $params = [
+            "error" => $this->errorMessage,
+
+        ];
+
+        $this->setLayout('main');
+        return $this->render('register', $params);
     }
 
 
+    /**
+     *
+     * login controller
+     *
+     */
 
+    public function loginPost()
+    {
+
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+        $inputData = [
+            'email' => trim($_POST['email']),
+            'password' => trim($_POST['password']),
+            'emailError' => '',
+            'passwordError' => '',
+        ];
+
+        // validation email
+        if (empty($inputData['email'])) {
+            $inputData['emailError'] = 'please enter your email';
+        } elseif (!filter_var($inputData['email'], FILTER_VALIDATE_EMAIL)) {
+            $inputData['emailError'] = 'please enter the correct format';
+        }else {
+            // check if email exists
+            if ($this->registerModel->findUserByEmail($inputData['email'])) {
+                $inputData['emailError'] = 'Email is already taken.';
+            }
+        }
+
+        // validate password on length and numeric value
+        if (empty($inputData['password'])) {
+            $inputData['passwordError'] = 'please enter password.';
+        } elseif (strlen($inputData['password'] < 8)) {
+            $inputData['passwordError'] = 'password must be at least 8 characters.';
+        }
+
+        // check if all errors are empty
+        if (!empty($inputData['email']) && !empty($inputData['password'])) {
+            $loggedInUser = $this->loginModel->login($inputData['email'], $inputData['password']);
+
+            if ($loggedInUser) {
+                $this->createUserSession($loggedInUser);
+            } else {
+                $inputData['passwordError'] = 'email or password is incorrect. please try again.';
+            }
+
+        }
+            $params = [
+                "inputData" => $inputData,
+            ];
+
+    
+            $this->setLayout('main');
+            return $this->render('login', $params);
+    }
+
+    public function createUserSession($user)
+    {
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['email'] = $user->email;
+        $_SESSION['password'] = $user->password;
+    }
 
     /**
      *  render login function and set main view
@@ -181,20 +226,20 @@ class UsersController extends Controller{
      * @return void
      */
 
-    public function loginGet(){
+    public function loginGet()
+    {
 
         $params = [
-            'data' => [
-                'usernameError' => '',
-                'passwordError' => ''
-            ]
+            'inputData' => [
+                'email' => '',
+                'password' => '',
+                'emailError' => '',
+                'passwordError' => '',
+            ],
         ];
 
-
-        $this-> setLayout('main');
-        return $this -> render('login' , $params);
+        $this->setLayout('main');
+        return $this->render('login', $params);
     }
-    
-
 
 }

@@ -16,7 +16,7 @@ class Controller
 
     public function renderModel($model)
     {
-        // include_once Application::$ROOT_DIR."/app/Models/$model.php";
+        include_once Application::$ROOT_DIR."/app/Models/$model.php";
     }
 
 }
