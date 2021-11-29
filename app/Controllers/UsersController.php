@@ -66,7 +66,7 @@ class UsersController extends Controller
                 "error" => $this->validation,
             ];
 
-            dd($this->validation->errors);
+            // dd($this->validation->errors);
 
 
             $this->setLayout('main');
