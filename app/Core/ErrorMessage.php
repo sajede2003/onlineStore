@@ -2,19 +2,19 @@
 
 class ErrorMessage{
 
-    public $errors = [];
+    public array $errors = [];
 
     public function set($name , $error)
     {
         $this->errors[$name][]=$error;
     }
 
-    public function has($name)
+    public function has($name): bool
     {
         return isset($this->errors[$name]);
     }
 
-    public function count()
+    public function count(): bool
     {
         return count($this->errors);
     }
@@ -22,7 +22,7 @@ class ErrorMessage{
     public function get($name)
     {
         if($this->has($name)){
-            return $this->errors[$name][0];
+            return $this->errors[$name];
         }return null;
     }
 

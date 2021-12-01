@@ -11,24 +11,24 @@ class LoginModel{
     }
 
     
-    public function login($email , $password)
+    public function login($data)
     {
         $this->db->query("SELECT * FROM users WHERE email = :email ");
 
         // Email param will be binded with the email variable
-        $this->db->bind(':email', $email);
+        $this->db->bind(':email', $data['email']);
 
         $user = $this->db->single();
-
+dd($user);
 
         $hashedPassword = $user->password;
 
-        if(password_verify($password , $hashedPassword)){
+        if(password_verify($data['password'] , $hashedPassword)){
             header('location:/');
         }else return false;
     }
 
-    public function findUserByEmail($email)
+    public function checkExists($email)
     {
         // prepared statement
         $this->db->query('SELECT * FROM users WHERE email = :email ');

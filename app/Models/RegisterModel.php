@@ -14,6 +14,7 @@ class RegisterModel
 
     public function register($data)
     {
+        // dd($data);
         $this->db->query("INSERT INTO users (firstName , lastName , phoneNumber , email , password)
         VALUES (:firstName , :lastName , :phoneNumber , :email , :password)");
         // bind values
@@ -24,29 +25,29 @@ class RegisterModel
         $this->db->bind(':password', $data['password']);
 
         // Execute function
-        if ($this->db->execute()) {
+        if ($this->db->execute()) 
             return true;
-        } else {
+        else
             return false;
-        }
 
     }
 
 
     // Find user by email. Email is passed in by the controller
-    public function findUserByEmail($email)
+    public function checkExists($table ,$field , $col)
     {
         // prepared statement
-        $this->db->query('SELECT * FROM users WHERE email = :email ');
+        $this->db->query("SELECT * FROM {$table} WHERE {$field} = :{$field} ");
 
         // Email param will be binded with the email variable
-        $this->db->bind(':email', $email);
+        $this->db->bind(":{$field}" , $col);
 
-        // check if email is already registered
-        if ($this->db->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
+        // execute and checked email and phone number is existed or not.
+        if ($this->db->execute()) {
+            if ($this->db->rowCount() > 0) 
+                return true;
+            else
+                return false;
         }
 
     }
