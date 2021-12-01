@@ -134,12 +134,25 @@ class Validation extends ErrorMessage{
 
 
     // has user in db
-    public function hasUser()
+    public function loggedUser($key)
     {
+        $loggedInUser = $this->loginModel->login($_POST);
 
-        if($this->loginModel->user){
-
+        if ($loggedInUser) {
+            $this->createUserSession($loggedInUser);
+        } else {
+            $this->errors[$key][] = 'email or password is incorrect. please try again.';
         }
+    }
+
+    
+
+    public function createUserSession($user)
+    {
+        session_start();
+        $_SESSION['id'] = $user->id;
+        $_SESSION['email'] = $user->email;
+        $_SESSION['password'] = $user->password;
     }
 
     // finish validation functions 

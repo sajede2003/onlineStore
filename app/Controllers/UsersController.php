@@ -88,54 +88,40 @@ class UsersController extends Controller
      * login controller
      */
 
-    // public function loginPost()
-    // {
-    //     $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+    public function loginPost()
+    {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-    //     $_POST = array_map('trim', $_POST);
-    //     // set rules for inputs
-    //     $result = $this->validation->make($_POST, [
-    //         'email' => 'required|unique:users',
-    //         'password' => 'required|min:8'
-    //     ]);
-    //     if ($result) {
-    //         $loggedInUser = $this->loginModel->login($_POST);
+        $_POST = array_map('trim', $_POST);
+        // set rules for inputs
+        $result = $this->validation->make($_POST, [
+            'email' => 'required',
+            'password' => 'required|min:8|loggedUser'
+        ]);
+        if ($result) {
+            
 
-    //             // if ($loggedInUser) {
-    //             //     $this->createUserSession($loggedInUser);
-    //             // } else {
-    //             //     echo 'email or password is incorrect. please try again.';
-    //             // }
+            // register user from model function
+            if ($this->loginModel->login($_POST)) {
+                // redirect to the login
+                header('location:/');
+            } else {
+                die('something went wrong');
+            }
+        } else {
+            $params = [
+                "error" => $this->validation->errors,
+            ];
+            // show in register view
+            $this->setLayout('main');
+            return $this->render('login', $params);
 
-    //         // register user from model function
-    //         if ($this->registerModel->register($_POST)) {
-    //             // redirect to the login
-    //             header('location:/login');
-    //         } else {
-    //             die('something went wrong');
-    //         }
-    //     } else {
-    //         $params = [
-    //             "error" => $this->validation->errors,
-    //         ];
-    //         // show in register view
-    //         $this->setLayout('main');
-    //         return $this->render('login', $params);
-
-    //     }
+        }
 
 
 
 
-    // }
-
-    // public function createUserSession($user)
-    // {
-    //     session_start();
-    //     $_SESSION['user_id'] = $user->id;
-    //     $_SESSION['email'] = $user->email;
-    //     $_SESSION['password'] = $user->password;
-    // }
+    }
 
     /**
      *  render login function and set main view

@@ -19,7 +19,7 @@ class LoginModel{
         $this->db->bind(':email', $data['email']);
 
         $user = $this->db->single();
-dd($user);
+
 
         $hashedPassword = $user->password;
 
