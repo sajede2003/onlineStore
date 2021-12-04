@@ -27,7 +27,8 @@ class Validation extends ErrorMessage{
         foreach ($rulesInputs as $key => $ruleInput) {
             $this->explodeRules($ruleInput , $key);
         }
-        return $this->valid();
+
+        return $this;
     }
     /**
      *execute rules
@@ -133,27 +134,11 @@ class Validation extends ErrorMessage{
     }
 
 
-    // has user in db
-    public function loggedUser($key)
-    {
-        $loggedInUser = $this->loginModel->login($_POST);
-
-        if ($loggedInUser) {
-            $this->createUserSession($loggedInUser);
-        } else {
-            $this->errors[$key][] = 'email or password is incorrect. please try again.';
-        }
-    }
+  
 
     
 
-    public function createUserSession($user)
-    {
-        session_start();
-        $_SESSION['id'] = $user->id;
-        $_SESSION['email'] = $user->email;
-        $_SESSION['password'] = $user->password;
-    }
+
 
     // finish validation functions 
     /**

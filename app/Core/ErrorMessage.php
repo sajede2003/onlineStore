@@ -6,7 +6,7 @@ class ErrorMessage{
 
     public function set($name , $error)
     {
-        $this->errors[$name][]=$error;
+        $this->errors[$name][] = $error;
     }
 
     public function has($name): bool
