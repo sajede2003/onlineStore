@@ -1,8 +1,10 @@
 <?php namespace App\Models;
 
 use App\Core\Database;
+use App\Helper\CreateUserSession;
 
-class LoginModel{
+class LoginModel
+{
     private $db;
 
     public function __construct()
@@ -10,7 +12,13 @@ class LoginModel{
         $this->db = new Database;
     }
 
-    
+
+    /**
+     * check Equal password and email function
+     *
+     * @param [type] $data
+     * @return void
+     */
     public function login($data)
     {
         $this->db->query("SELECT * FROM users WHERE email = :email ");
@@ -20,12 +28,15 @@ class LoginModel{
 
         $user = $this->db->single();
 
-
         $hashedPassword = $user->password;
 
-        if(password_verify($data['password'] , $hashedPassword)){
+        if (password_verify($data['password'], $hashedPassword)) {
+            CreateUserSession::loginUserSession($user);
             header('location:/');
-        }else return false;
+        } else {
+            return false;
+        }
+
     }
 
     public function checkExists($email)
@@ -44,4 +55,7 @@ class LoginModel{
         }
 
     }
+
+
+
 }

@@ -69,7 +69,7 @@ class Validation extends ErrorMessage{
     public function required($key , $value = null)
     {       
         if(empty($this->data[$key]))
-            $this->errors[$key][] = "please enter {$key}" ;
+            $this->errors[$key][] = "please enter your {$key}" ;
     }
     /**
      * min length validation

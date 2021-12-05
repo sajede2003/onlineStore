@@ -25,23 +25,20 @@
           </tr>
         </thead>
         <tbody>
-          <?php
-          $counter=1;
-          foreach($allData as $key => $value): ?>
+        
 
           <tr>
-            <th scope="row"><?= $counter++ ?></th>
-            <td><?= $value['subject']?></td>
-            <td><?= $value['email']?></td>
-            <td class="w-25 ">
-              <p style="height: 100px; overflow: hidden;"><?= $value ['body'];?></p>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td class="w-25">
+              <p style="height: 100px; overflow: hidden;"></p>
             </td>
             <td>
               <button class="btn btn-danger "> حذف</button>
               <button class="btn btn-success"> ویرایش</button>
             </td>
           </tr>
-          <?php endforeach ; ?>
         </tbody>
       </table>
     </div>

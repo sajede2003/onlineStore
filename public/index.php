@@ -2,9 +2,12 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+session_start();
+
 use App\Controllers\AdminController;
 use App\Controllers\SiteController;
 use App\Controllers\UsersController;
+use App\Controllers\ContactController;
 use App\Core\Application;
 
 error_reporting(E_ALL);
@@ -25,11 +28,10 @@ $app->router->post('/login', [UsersController::class, 'loginPost']);
 // go in register page
 $app->router->get('/register', [UsersController::class, 'registerGet']);
 
-// click submit
+// register submit
 $app->router->post('/register', [UsersController::class, 'registerPost']);
 
 // go in table page
-
 $app->router->get('/table', [SiteController::class, 'table']);
 
 $app->router->get('/dashboard', [AdminController::class, 'dashboard']);

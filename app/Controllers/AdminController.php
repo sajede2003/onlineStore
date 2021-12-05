@@ -1,6 +1,8 @@
 <?php namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\DashboardValid;
+use App\Helper\CreateUserSession;
 use App\Helper\Data;
 
 /**
@@ -12,6 +14,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->setLayout('auth');
+        DashboardValid::checkAdminUser();
     }
 
     /**

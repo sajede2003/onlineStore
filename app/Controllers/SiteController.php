@@ -2,7 +2,6 @@
 
 
 use App\Core\Controller;
-use App\Core\Database;
 use App\Helper\Data;
 
 class SiteController extends Controller
@@ -16,11 +15,6 @@ class SiteController extends Controller
         return $this->render('home', $params);
     }
 
-    public function contact()
-    {
-        return $this->render('contact');
-    }
-
     public function table(){
         
         // get all contact data from db with get data method
@@ -32,28 +26,6 @@ class SiteController extends Controller
         ];
         
         return $this-> render('table', $params);
-    }
-
-    
-
-    public function handleContact()
-    {
-        $db = new Database();
-
-        $pdo = $db->pdo();
-        
-        $data = $_POST;
-        
-        $sql = "INSERT INTO contact_us (subject , body, email) VALUES (:subject, :body, :email)";
-        
-        $stmt = $pdo->prepare($sql);
-        
-        $result=$stmt->execute($data);
-
-        if($result){
-            header('Location:/table');
-        }
-
-    }
+    }   
 
 }

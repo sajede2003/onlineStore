@@ -10,17 +10,16 @@ use App\Models\RegisterModel;
 
 class UsersController extends Controller
 {
-    private $db;
     protected RegisterModel $registerModel;
     protected LoginModel $loginModel;
     protected ErrorMessage $errorMessage;
     protected Validation $validation;
+    
     public function __construct()
     {
         $this->registerModel = new RegisterModel();
         $this->loginModel = new LoginModel();
         $this->errorMessage = new ErrorMessage();
-        $this->db = new Database();
         $this->validation = new Validation();
 
     }
@@ -33,13 +32,11 @@ class UsersController extends Controller
      */
     public function registerPost()
     {
-        // get inputs and values
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         // trim inputs
         $_POST = array_map('trim', $_POST);
         // set rules for inputs
         $validation = $this->validation->make($_POST, [
-            'firstName' => 'required|min:5',
+            'firstName' => 'required|min:3',
             'lastName' => 'required',
             'phoneNumber' => 'required|phone|length:10|unique:users',
             'email' => 'required|unique:users,email',
@@ -53,7 +50,7 @@ class UsersController extends Controller
                 // redirect to the login
                 header('location:/login');
             } else {
-                die('something went wrong');
+                $this->validation->set('confirmPassword' , 'something is wrong. please try again.');
             }
         } else {
             $params = [
@@ -75,6 +72,7 @@ class UsersController extends Controller
     public function registerGet(Request $request)
     {
 
+
         $params = [
             "error" => $this->validation->errors,
         ];
@@ -89,7 +87,6 @@ class UsersController extends Controller
 
     public function loginPost()
     {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $_POST = array_map('trim', $_POST);
 
         // set rules for inputs
@@ -107,7 +104,6 @@ class UsersController extends Controller
                 return;
             } else {
                 $this->validation->set('password' , 'email or password is incorrect. please try again.');
-                // die('something went wrong');
             }
         }
 
@@ -121,14 +117,7 @@ class UsersController extends Controller
             return $this->render('login', $params);
     }
 
-        public function createUserSession($user)
-        {
-            session_start();
-            $_SESSION['id'] = $user->id;
-            $_SESSION['email'] = $user->email;
-            $_SESSION['password'] = $user->password;
-        }
-
+        
     /**
      *  render login function and set main view
      *
@@ -141,5 +130,6 @@ class UsersController extends Controller
         $this->setLayout('main');
         return $this->render('login');
     }
+
 
 }
