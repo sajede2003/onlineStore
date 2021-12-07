@@ -19,8 +19,8 @@ class IsAdmin{
         $db->bind(':id' , $userIdSession);
 
         $user = $db->single();
-
+        
         if($user->is_admin == 0)
-            header('Location:/');
+            header('Location:/dashboard');
     }
 }

@@ -36,6 +36,9 @@ $app->router->get('/table', [SiteController::class, 'table']);
 
 $app->router->get('/dashboard', [AdminController::class, 'dashboard']);
 $app->router->get('/dashboard/users', [AdminController::class, 'users']);
+$app->router->get('/dashboard/users/delete' , [AdminController::class , 'delete']);
+$app->router->get('/dashboard/users/edit' , [AdminController::class , 'edit']);
+$app->router->post('/dashboard/users/edit' , [AdminController::class , 'editPost']);
 $app->router->get('/dashboard/category', [AdminController::class, 'category']);
 $app->router->get('/dashboard/product', [AdminController::class, 'product']);
 

@@ -19,13 +19,13 @@ class SiteController extends Controller
         
         // get all contact data from db with get data method
         $allData= Data::getData("contact_us");
-        
+        // dd($allData);
 
         $params = [
             'allData' =>  $allData ,
         ];
         
         return $this-> render('table', $params);
-    }   
-
+    }
+    
 }

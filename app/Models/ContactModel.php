@@ -2,30 +2,27 @@
 
 use App\Core\Database;
 
-class ContactModel{
-private $db;
-    public function __construct() {
+class ContactModel
+{
+    private $db;
+    public function __construct()
+    {
         $this->db = new Database;
     }
 
     public function handleContact()
     {
-        $db = new Database();
-
-        $pdo = $db->pdo();
-        
         $data = $_POST;
-        
-        $sql = "INSERT INTO contact_us (subject , body, email) 
-            VALUES (:subject, :body, :email)";
-        
-        $stmt = $pdo->prepare($sql);
-        
-        $result=$stmt->execute($data);
 
-        if($result){
+        $this->db->query("INSERT INTO contact_us (subject , comment, email)
+            VALUES (:subject, :comment, :email)");
+
+        $this->db->bind(':subject', $data['subject']);
+        $this->db->bind(':comment', $data['comment']);
+        $this->db->bind(':email', $data['email']);
+
+        if ($this->db->execute())
             header('Location:/table');
-        }
 
     }
 }

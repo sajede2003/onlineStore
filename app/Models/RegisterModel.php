@@ -15,12 +15,11 @@ class RegisterModel
     public function register($data)
     {
         // dd($data);
-        $this->db->query("INSERT INTO users (firstName , lastName , phoneNumber , email , password)
-        VALUES (:firstName , :lastName , :phoneNumber , :email , :password)");
+        $this->db->query("INSERT INTO users (full_name , phone_number , email , password)
+        VALUES (:full_name  , :phone_number , :email , :password)");
         // bind values
-        $this->db->bind(':firstName', $data['firstName']);
-        $this->db->bind(':lastName', $data['lastName']);
-        $this->db->bind(':phoneNumber', $data['phoneNumber']);
+        $this->db->bind(':full_name', $data['full_name']);
+        $this->db->bind(':phone_number', $data['phone_number']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':password', $data['password']);
 
