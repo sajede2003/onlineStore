@@ -39,8 +39,6 @@ class ContactController extends Controller{
                 "error"=>$this->validation->errors
             ];
 
-            // dd($this->validation->errors);
-
             return $this->render('contact' ,$params);
         }
 

@@ -36,8 +36,8 @@ class UsersController extends Controller
         $_POST = array_map('trim', $_POST);
         // set rules for inputs
         $validation = $this->validation->make($_POST, [
-            'full_name' => 'required|min:3',
-            'phone_number' => 'required|phone|length:10|unique:users',
+            'full_name' => 'required|min:8',
+            'phone_number' => 'required|phone|length:11|unique:users',
             'email' => 'required|unique:users,email',
             'password' => 'required|min:8',
             'confirmPassword' => 'required|verify:password',

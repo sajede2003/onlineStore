@@ -21,4 +21,9 @@ class CreateUserSession{
         self::MakeSession('IsLogin' , true);
 
     }
+
+    public static function cartSession()
+    {
+        return isset($_SESSION['cart'])? $_SESSION['cart'] : $_SESSION['cart'] = [] ;
+    }
 }

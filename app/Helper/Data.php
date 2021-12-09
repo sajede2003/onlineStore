@@ -36,12 +36,12 @@ class Data
     }
 
     /**
-     * dynamic prepare data function
+     * dynamic prepare Update data function
      *
      * @param array $data
      * @return void
      */
-    public static function PrepareData(array $data)
+    public static function PrepareUpdateData(array $data)
     {
         $PrepareData = "";
 
@@ -51,6 +51,37 @@ class Data
         //remove last char(,)
         $PrepareData = substr_replace($PrepareData, "" , -1);
         return $PrepareData;
+    }
+
+    public static function PrepareInsertData(array $data)
+    {
+        $DataArray = [];
+        $fields = join(",", array_keys($data));
+        $DataArray['fields'] = $fields;
+        $params = join(",", array_map(fn ($item) => ":$item", array_keys($data)));
+        $DataArray['params'] = $params;
+        return $DataArray;
+    }
+
+    /**
+     * add item in table function
+     *
+     * @param [type] $table
+     * @param [type] $data
+     * @return void
+     */
+    public static function addItem($table , $data)
+    {
+        $db = new Database();
+        $PrepareData = self::PrepareInsertData(($data));
+        $db->query("INSERT INTO {$table} ({$PrepareData['fields']}) VALUES ({$PrepareData['params']})");
+        
+        foreach ($data as $key => $value) {
+           $db->bind(":{$key}", $value);
+        }
+
+        return $db->execute();
+        
     }
 
     /**
@@ -64,14 +95,13 @@ class Data
     {
         $db = new Database();
 
-        $PrepareData =self::PrepareData($data);
+        $PrepareData =self::PrepareUpdateData($data);
 
         $db->query("UPDATE {$table} SET {$PrepareData} WHERE id = :id");
 
         foreach ($data as $key => $value) {
             $db->bind(":{$key}", $value);
         }
-        
 
         return $db->execute();
 

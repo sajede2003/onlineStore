@@ -20,7 +20,6 @@ class Database
     public $password = '';
 
     private $statement;
-    private $dbHandler;
     private $error;
 
     public function pdo()

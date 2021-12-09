@@ -9,47 +9,45 @@
   <title>table</title>
 </head>
 <body>
-  <main>
-    <div class="container">
-      <div class="content">
-        <table class="table table-striped border">
-        <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Full name</th>
-              <th scope="col">Phone Number</th>
-              <th scope="col">Email</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-              $counter = 1;
-              foreach ($allData as $key => $data):
-            ?>
-            <tr>
-              <td><?= $counter++ ?></td>
-              <td><?=$data->full_name;?></td>
-              <td><?=$data->phone_number ;?></td>
-              <td><?=$data->email;?></td>
-              <td class="col-10 ">
-                <p style="height: 100px; overflow: hidden;"></p>
-              </td>
-              <td class="f-flex col-2">
-                <a href="/dashboard/users/delete?id=<?=$data->id?>" class="btn  btn-danger "> delete</a>
-                <a href="/dashboard/users/edit?id=<?=$data->id ?>" class="btn btn-info"> edit</a>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+  <div class="border backgroundWhite p-5">
+    <div class="row border-bottom pb-3" style="display: flex; justify-content:space-between;">
+      <div class="col-6">     
+        <h2 class="text-info" > users List</h2>
       </div>
     </div>
-  </main>
-
-  <script src="lib/jquery/dist/jquery.min.js"></script>
-  <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="js/app.js"></script>
+    <br/>
+    <br/>
+    <div>
+      <table class="table table-striped border">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            $counter = 1;
+            foreach ($allData as $key => $data):
+          ?>
+          <tr>
+            <td><?= $counter++ ?></td>
+            <td><?=$data->full_name?></td>
+            <td><?=$data->phone_number?></td>
+            <td><?=$data->email?></td>
+            <td class="f-flex col-2">
+              <a href="/dashboard/users/delete?id=<?=$data->id?>" class="btn  btn-danger "> delete</a>
+              <a href="/dashboard/users/edit?id=<?=$data->id ?>" class="btn btn-info"> edit</a>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 
 </html>

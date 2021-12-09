@@ -14,7 +14,7 @@
     <div class="form-floating mb-3">
         <input type="email" name="email"  class="form-control" id="floatingInput" placeholder="name@example.com">
         <label for="floatingPassword">Email address *</label>
-        <span class="invalidFeedback" style="color: red;">
+        <span class="invalidFeedback text-danger">
                 <?php if(isset($error['email'])): ?>
                     <?= $error['email'][0]; ?>
                 <?php endif; ?>
@@ -23,7 +23,7 @@
     <div class=" form-floating mb-3">
         <textarea name="comment" id="floatingInput" class="form-control"></textarea>
         <label for="floatingPassword">Body *</label>
-        <span class="invalidFeedback" style="color: red;">
+        <span class="invalidFeedback text-danger">
             <?php if(isset($error['comment'])): ?>
                 <?= $error['comment'][0];?>
             <?php endif;?>
