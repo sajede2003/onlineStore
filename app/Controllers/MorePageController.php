@@ -69,11 +69,18 @@ class MorePageController extends Controller
 
 
         // check for is user like the product
-        if($isLike =="0"){
+        if($isLike == 0){
             // like product
                 $result = Data::addItem('likes' , $data);
         }else
             $result = Data::deleteByUser('likes' , $userId , $productId);
+            // dd($result);
+        
+
+        if(!$result){
+            header("Location:/more?id={$productId}");
+        }
+        header("Location:/more?id={$productId}");
 
     }
 

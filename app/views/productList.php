@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <div class="card-title">
                                 <label for="Name"><?=$product->title?></label>
-                                <strong class=" "><?=$product->price?></strong>
+                                <strong class=""><?=$product->price?></strong>
                             </div>
                             <div class="card-text mb-4" style="height: 80px; overflow:hidden;">
                                 <?=$product->description?>

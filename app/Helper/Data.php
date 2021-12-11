@@ -178,10 +178,11 @@ class Data
     {
         $db = new Database();
 
-        $db->query("SELECT COUNT(user_id) FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
+
+        $db->query("SELECT COUNT(user_id) as count FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
         $db->bind(':user_id' , $userId);
         $db->bind(':product_id' , $productId);
-        $db->resultSet();
+        return $db->fetch();
     }
 
     public static function deleteByUser($table , $userId , $productId)
