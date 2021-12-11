@@ -24,7 +24,7 @@ class CartController extends Controller{
         $productId = $_GET['product_id'];
         
         // get ols=d data of product by product id 
-        $product = Data::getOldData('product' , $productId);
+        $product = Data::getOldData('products' , $productId);
 
         // add product to session 
         self::addDataInCartSession($product);
@@ -38,7 +38,7 @@ class CartController extends Controller{
     {
         $productId = $_GET['product_id'];
 
-        $product = Data::getOldData('product' , $productId);
+        $product = Data::getOldData('products' , $productId);
 
         self::removeDataInSession($product);
 
@@ -55,21 +55,22 @@ class CartController extends Controller{
     public static function addDataInCartSession($product)
     {
         $result = false;
+        // dd($product);
+
         foreach ($product as $key => $value) {
            // product id
-            $productId = $value->id;
+            $product_id = $value->id;
         }
-        
         
         // set the cart session
         $cart = CreateUserSession::cartSession();
         // cart page action
-        if(isset($cart[$productId])){
-            $_SESSION['cart'][$productId]['count'] +=1;
-            $_SESSION['cart'][$productId]['sum'] = $_SESSION['cart'][$productId]['count'] * $product[0]->price;
+        if(isset($cart[$product_id])){
+            $_SESSION['cart'][$product_id]['count'] +=1;
+            $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]->price;
         }else{
-            $_SESSION['cart'][$productId] = [
-                'product_id' => $productId,
+            $_SESSION['cart'][$product_id] = [
+                'product_id' => $product_id,
                 'name' => $product[0]->title,
                 'price' => $product[0]->price,
                 'count' => 1,
@@ -82,14 +83,14 @@ class CartController extends Controller{
     public static function removeDataInSession($product)
     {
         foreach ($product as $key => $value) {
-            $productId = $value->id;
+            $product_id = $value->id;
         }
 
-        $_SESSION['cart'][$productId]['count'] -=1;
-        $_SESSION['cart'][$productId]['sum'] = $_SESSION['cart'][$productId]['count'] * $product[0]->price;
+        $_SESSION['cart'][$product_id]['count'] -=1;
+        $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]->price;
 
-        if($_SESSION['cart'][$productId]['count']<=0)
-            unset($_SESSION['cart'][$productId]);
+        if($_SESSION['cart'][$product_id]['count']<=0)
+            unset($_SESSION['cart'][$product_id]);
     }
 
 

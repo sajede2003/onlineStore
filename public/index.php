@@ -8,7 +8,7 @@ use App\Controllers\AdminController;
 use App\Controllers\CartController;
 use App\Controllers\SiteController;
 use App\Controllers\UsersController;
-use App\Controllers\ContactController;
+use App\Controllers\MorePageController;
 use App\Core\Application;
 
 error_reporting(E_ALL);
@@ -47,6 +47,10 @@ $app->router->get('/product' , [SiteController::class , 'product']);
 $app->router->get('/cart' , [CartController::class , 'cart']);
 $app->router->get('/add-to-cart' , [CartController::class , 'addToCart']);
 $app->router->get('/remove-to-cart' , [CartController::class , 'removeFromCart']);
+
+// more page
+$app->router->get('/more' , [MorePageController::class , 'more']);
+$app->router->get('/like' , [MorePageController::class , 'addLike']);
 
 
 // dashboard

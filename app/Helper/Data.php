@@ -36,7 +36,7 @@ class Data
     }
 
     /**
-     * dynamic prepare Update data function
+     * dynamic prepare for Update data function
      *
      * @param array $data
      * @return void
@@ -52,7 +52,13 @@ class Data
         $PrepareData = substr_replace($PrepareData, "" , -1);
         return $PrepareData;
     }
-
+    
+    /**
+     * dynamic prepare for insert data function
+     *
+     * @param array $data
+     * @return void
+     */
     public static function PrepareInsertData(array $data)
     {
         $DataArray = [];
@@ -78,6 +84,7 @@ class Data
         
         foreach ($data as $key => $value) {
            $db->bind(":{$key}", $value);
+        //    dd($data);
         }
 
         return $db->execute();
@@ -122,5 +129,117 @@ class Data
         $db->bind(':id', $id);
         $db->execute();
     }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $table
+     * @param [type] $userId
+     * @param [type] $productId
+     * @return void
+     */
+    public static function getUserAndProduct($table , $productId , $userId)
+    {
+        $db =new Database();
+
+        $db->query("SELECT * FROM {$table} WHERE product_id = :product_id AND user_id = :user_id ");
+
+        $db->bind(':product_id' , $productId);
+        $db->bind(':user_id' , $userId);
+
+        return $db->single();
+    }
+
+
+    /**
+     * get by product for like and score function
+     *
+     * @param [type] $table
+     * @param [type] $productId
+     * @return void
+     */
+    public static function getByProduct($table , $productId)
+    {
+        
+        $db = new Database();
+
+        $n = $db->query("SELECT COUNT(id) from {$table} WHERE product_id = :product_id");
+
+        // dd($n);
+
+        $db->bind(':product_id' , $productId);
+
+        return $db->fetch();
+
+    }
+
+    public static function isUserLike($table , $userId , $productId)
+    {
+        $db = new Database();
+
+        $db->query("SELECT COUNT(user_id) FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
+        $db->bind(':user_id' , $userId);
+        $db->bind(':product_id' , $productId);
+        $db->resultSet();
+    }
+
+    public static function deleteByUser($table , $userId , $productId)
+    {
+        $db = new Database();
+
+        $db->query("DELETE FROM {$table} WHERE user_id = :user_id AND  product_id = :product_id ");
+        $db->bind(':user_id' , $userId);
+        $db->bind(':product_id' , $productId);
+
+        $db->execute();
+    }
+
+
+
+    public static function groupCommentByParent($productId)
+    {
+        $db = new Database();
+
+        $b =$db->query(
+            "SELECT * FROM comments
+            -- RIGHT JOIN comment on  users.id = comment.user_id 
+            WHERE product_id = {$productId} "
+        );
+        // $db->bind(':product_id' , $productId);
+
+        $result = $db->resultSet();
+
+
+
+        // dd($result);
+
+
+        $array = array();
+
+        foreach ($result as $key => $value) {
+            $array[$value['parent_comment']][] = $value;
+        }
+        return $array;
+    }
+
+    public static function avgScore($table , $productId)
+    {
+        $scores = self::getByProduct($table , $productId);
+
+        $avg = 0 ;
+
+        foreach ($scores as $item ) {
+            $avg += $item['value'];
+        }
+
+        if(count($scores) == 0)
+            return $avg ;
+
+
+        return $avg / count($scores);
+    }
+
+
 
 }

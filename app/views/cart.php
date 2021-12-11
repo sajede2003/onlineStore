@@ -32,7 +32,11 @@
                         <h3> there is no item to show </h3>
                     <?php else : ?>
                         <?php $counter = 1;
-                        foreach ($cartData as $key => $value) :?>
+                        foreach ($cartData as $key => $value):
+                        
+                        // dd($key);
+                        
+                        ?>
                             <tr>
                                 <th scope="row"><?=$counter++?>
                             </th>
@@ -41,11 +45,16 @@
                                 </td>
                                 <td>
                                     <p>
-                                        <?=$value['sum']?>
+                                        <?=$value['count']?>
                                     </p>
                                 </td>
                                 <td>
                                     <a href="/more?id=<?=$key?>"> more</a>
+                                </td>
+                                <td>
+                                    <p>
+                                        <?=$value['sum']?>
+                                    </p>
                                 </td>
                                 <td>
                                     <div style="display:flex; justify-content:end;">

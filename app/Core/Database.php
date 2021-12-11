@@ -84,6 +84,12 @@ class Database
         return $this->statement->fetch(PDO::FETCH_OBJ);
     }
 
+    public function fetch()
+    {
+        $this->execute();
+        return $this->statement->fetch(PDO::FETCH_ASSOC | PDO::FETCH_COLUMN);
+    }
+
 //     //Get's the row count
     public function rowCount()
     {

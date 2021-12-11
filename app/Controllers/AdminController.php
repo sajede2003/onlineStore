@@ -104,7 +104,7 @@ class AdminController extends Controller
      */
     public function Category()
     {
-        $allData = Data::getData('category');
+        $allData = Data::getData('categories');
 
         $params = [
             'allData' => $allData,
@@ -126,7 +126,7 @@ class AdminController extends Controller
             'title' => 'required',
         ]);
         if ($validation->valid()) {
-            if (Data::addItem('category', $data)) {
+            if (Data::addItem('categories', $data)) {
                 header("Location:/dashboard/category");
                 return;
             }
@@ -143,7 +143,7 @@ class AdminController extends Controller
     {
         // get inputs value
         $data = $_REQUEST;
-        if (Data::editItem('category', $data)) {
+        if (Data::editItem('categories', $data)) {
             header("Location:/dashboard/category");
         } else {
             $userId = $data['id'];
@@ -160,7 +160,7 @@ class AdminController extends Controller
     public function categoryEdit()
     {
         $userId = $_GET['id'];
-        $userData = Data::getOldData('category', $userId);
+        $userData = Data::getOldData('categories', $userId);
 
         $params = [
             'data' => $userData,
@@ -178,7 +178,7 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
 
-        $result = Data::deleteItem('category', $userId);
+        $result = Data::deleteItem('categories', $userId);
 
         if (!$result) {
             header("Location:/dashboard/category");
@@ -196,7 +196,7 @@ class AdminController extends Controller
 
     public function product()
     {
-        $allData = Data::getData('product');
+        $allData = Data::getData('products');
 
         $params = [
             'allData' => $allData,
@@ -207,7 +207,7 @@ class AdminController extends Controller
 
     public function addProduct()
     {
-        $category = Data::getData('category');
+        $category = Data::getData('categories');
         $params = [
             'category' => $category,
         ];
@@ -222,9 +222,8 @@ class AdminController extends Controller
         $imgPath = $this->imgUploader($pic);
 
         $data['pic'] = $imgPath;
-        dd($data);
 
-        if(Data::addItem('product' , $data)){
+        if(Data::addItem('products' , $data)){
             header("Location:/dashboard/product");
             return;
         }
@@ -242,7 +241,7 @@ class AdminController extends Controller
 
         $data['pic'] = $imgPath;
 
-        if (Data::editItem('product', $data)) {
+        if (Data::editItem('products', $data)) {
             header("Location:/dashboard/product");
         } else {
             $userId = $data['id'];
@@ -259,8 +258,8 @@ class AdminController extends Controller
     public function productEdit()
     {
         $userId = $_GET['id'];
-        $userData = Data::getOldData('product', $userId);
-        $category = Data::getData('category');
+        $userData = Data::getOldData('products', $userId);
+        $category = Data::getData('categories');
 
         $params = [
             'data' => $userData,
@@ -279,7 +278,7 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
 
-        $result = Data::deleteItem('product', $userId);
+        $result = Data::deleteItem('products', $userId);
 
         if (!$result) {
             header("Location:/dashboard/product");
