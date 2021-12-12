@@ -51,6 +51,8 @@ $app->router->get('/remove-to-cart' , [CartController::class , 'removeFromCart']
 // more page
 $app->router->get('/more' , [MorePageController::class , 'more']);
 $app->router->get('/like' , [MorePageController::class , 'addLike']);
+$app->router->post('/score' , [MorePageController::class , 'addScore']);
+$app->router->post('/comment' , [MorePageController::class , 'addComment']);
 
 
 // dashboard

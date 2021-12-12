@@ -49,10 +49,10 @@ class Data
             $PrepareData .= " {$key} = :{$key},";
         }
         //remove last char(,)
-        $PrepareData = substr_replace($PrepareData, "" , -1);
+        $PrepareData = substr_replace($PrepareData, "", -1);
         return $PrepareData;
     }
-    
+
     /**
      * dynamic prepare for insert data function
      *
@@ -64,7 +64,7 @@ class Data
         $DataArray = [];
         $fields = join(",", array_keys($data));
         $DataArray['fields'] = $fields;
-        $params = join(",", array_map(fn ($item) => ":$item", array_keys($data)));
+        $params = join(",", array_map(fn($item) => ":$item", array_keys($data)));
         $DataArray['params'] = $params;
         return $DataArray;
     }
@@ -76,19 +76,18 @@ class Data
      * @param [type] $data
      * @return void
      */
-    public static function addItem($table , $data)
+    public static function addItem($table, $data)
     {
         $db = new Database();
         $PrepareData = self::PrepareInsertData(($data));
         $db->query("INSERT INTO {$table} ({$PrepareData['fields']}) VALUES ({$PrepareData['params']})");
-        
+
         foreach ($data as $key => $value) {
-           $db->bind(":{$key}", $value);
-        //    dd($data);
+            $db->bind(":{$key}", $value);
         }
 
         return $db->execute();
-        
+
     }
 
     /**
@@ -101,12 +100,12 @@ class Data
     public static function editItem($table, $data)
     {
         $db = new Database();
-
-        $PrepareData =self::PrepareUpdateData($data);
+        $PrepareData = self::PrepareUpdateData($data);
 
         $db->query("UPDATE {$table} SET {$PrepareData} WHERE id = :id");
 
         foreach ($data as $key => $value) {
+
             $db->bind(":{$key}", $value);
         }
 
@@ -130,7 +129,6 @@ class Data
         $db->execute();
     }
 
-
     /**
      * Undocumented function
      *
@@ -139,18 +137,17 @@ class Data
      * @param [type] $productId
      * @return void
      */
-    public static function getUserAndProduct($table , $productId , $userId)
+    public static function getUserAndProduct($table, $productId, $userId)
     {
-        $db =new Database();
+        $db = new Database();
 
         $db->query("SELECT * FROM {$table} WHERE product_id = :product_id AND user_id = :user_id ");
 
-        $db->bind(':product_id' , $productId);
-        $db->bind(':user_id' , $userId);
+        $db->bind(':product_id', $productId);
+        $db->bind(':user_id', $userId);
 
         return $db->single();
     }
-
 
     /**
      * get by product for like and score function
@@ -159,88 +156,114 @@ class Data
      * @param [type] $productId
      * @return void
      */
-    public static function getByProduct($table , $productId)
+    public static function getByProduct($table, $productId)
     {
-        
+
         $db = new Database();
 
-        $n = $db->query("SELECT COUNT(id) from {$table} WHERE product_id = :product_id");
+        $n = $db->query("SELECT COUNT(id) as count from {$table} WHERE product_id = :product_id");
 
-        // dd($n);
-
-        $db->bind(':product_id' , $productId);
+        $db->bind(':product_id', $productId);
 
         return $db->fetch();
 
     }
 
-    public static function isUserLike($table , $userId , $productId)
+    public static function isUserLike($table, $userId, $productId)
     {
         $db = new Database();
-
 
         $db->query("SELECT COUNT(user_id) as count FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
-        $db->bind(':user_id' , $userId);
-        $db->bind(':product_id' , $productId);
+        $db->bind(':user_id', $userId);
+        $db->bind(':product_id', $productId);
         return $db->fetch();
     }
 
-    public static function deleteByUser($table , $userId , $productId)
+    public static function deleteByUser($table, $userId, $productId)
     {
         $db = new Database();
 
         $db->query("DELETE FROM {$table} WHERE user_id = :user_id AND  product_id = :product_id ");
-        $db->bind(':user_id' , $userId);
-        $db->bind(':product_id' , $productId);
+        $db->bind(':user_id', $userId);
+        $db->bind(':product_id', $productId);
 
         $db->execute();
     }
 
+    public static function isUserScore($table, $data)
+    {
+        $db = new Database();
 
+        $userId = $data['user_id'];
+        $productId = $data['product_id'];
+
+        $db->query("SELECT COUNT(user_id) as count , id FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
+
+        $db->bind(':user_id', $userId);
+        $db->bind(':product_id', $productId);
+
+        $result = $db->fetch();
+
+        if ($result == 0) {
+            self::addItem($table, $data);
+            return true;
+        } else {
+            self::editItem($table, $data);
+            return false;
+
+        }
+    }
 
     public static function groupCommentByParent($productId)
     {
         $db = new Database();
+        
 
-        $b =$db->query(
-            "SELECT * FROM comments
-            -- RIGHT JOIN comment on  users.id = comment.user_id 
-            WHERE product_id = {$productId} "
+        $db->query(
+            "SELECT * FROM   users
+                right join comments on  users.id = comments.user_id 
+                WHERE comments.product_id = $productId "
         );
-        // $db->bind(':product_id' , $productId);
-
-        $result = $db->resultSet();
-
-
-
-        // dd($result);
-
+      
+        $result =  $db->fetchAll();
 
         $array = array();
 
         foreach ($result as $key => $value) {
             $array[$value['parent_comment']][] = $value;
         }
+            
         return $array;
     }
 
-    public static function avgScore($table , $productId)
-    {
-        $scores = self::getByProduct($table , $productId);
 
-        $avg = 0 ;
+    public function deleteCommentsByProduct( $table ,$productId){
+        // try to update data in db
 
-        foreach ($scores as $item ) {
-            $avg += $item['value'];
+        $db = new Database();
+    
+            $db->query("DELETE FROM {$table}  WHERE product_id = :product_id");
+            $db->bind(':product_id', $productId);
+            return $db->execute();
         }
 
-        if(count($scores) == 0)
-            return $avg ;
 
 
-        return $avg / count($scores);
+    public static function avgScore($table, $productId)
+    {
+        $scores = self::getByProduct($table, $productId);
+
+        $scores = intval($scores);
+        $avg = 0;
+
+        $avg += $scores;
+
+        if ($scores == 0) {
+            return $avg;
+        }
+
+        return $avg / $scores;
+
     }
-
-
 
 }

@@ -21,10 +21,10 @@
             </span>
             <span>
                 <label for="score">score</label>
-                <small><= $score ?>/5 </small>
-                <form action="/add-score" method="POST">
-                    <input type="range" name="value" id="score" min="0" max="5">
-                    <input type="hidden" name="product_id" value="<?= $product[0]->id ?>">
+                <small id="score" ><?=$score?>/5 </small>
+                <form action="/score" method="POST">
+                    <input type="range" oninput="$('#score').value = this.value" name="value" id="score" min="0" max="5">
+                    <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
                     <button type="submit">send</button>
                 </form>
 
@@ -33,19 +33,19 @@
                 <form action="/add-bookmark" method="POST">
                     <label for="bookmark"> bookmark</label>
                     <input type="checkbox" id="bookmark">
-                    <input type="hidden" name="product_id" value="<?= $product[0]->id ?>">
+                    <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
                     <button type="submit" id="bookmark_btn" style="display:none;"></button>
                 </form>
             </span>
             <span>
-                <a href="/add-to-cart?product_id=<?= $product[0]->id ?>" class="btn btn-success">add to cart</a>
+                <a href="/add-to-cart?product_id=<?=$product[0]->id?>" class="btn btn-success">add to cart</a>
             </span>
         </div>
     </div>
     <hr>
     <div class="comments border py-5 px-2">
         <form action="/comment" method="POST">
-            <input type="hidden" name="product_id" value="<?= $product[0]->id ?>">
+            <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
             <div>
                 <label for="comment"> your comment : </label>
             </div>
@@ -56,5 +56,34 @@
             </span>
         </form>
         <h3>comments</h3>
+        <?php require_once 'comments.php'?>
     </div>
 </div>
+
+
+<script>
+    let BookmarkInput = document.querySelector('#bookmark');
+    let BookmarkBtn = document.querySelector('#bookmark_btn');
+    let replaysRadio = document.querySelectorAll('.replay');
+    let mainReplayBtn = document.querySelector('#replay');
+
+    BookmarkInput.addEventListener('click' , ()=>BookmarkBtn.click())
+
+
+    replaysRadio.forEach(item => {
+        console.log('as');
+        item.addEventListener('click', () => {
+            mainReplayBtn.value = item.value;
+        })
+    })
+    let link = document.querySelector('#contact');
+
+    var SweetAlertMessage = document.querySelector('#message').value;
+
+    if (SweetAlertMessage.trim() !== '') {
+        Swal.fire({
+            icon: 'success',
+            text: SweetAlertMessage,
+        })
+    }
+</script>

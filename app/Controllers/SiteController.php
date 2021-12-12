@@ -30,7 +30,6 @@ class SiteController extends Controller
     public function product()
     {
         $allProducts = Data::getData('products');
-        // dd($allProducts);
         $params = [
             'products' => $allProducts
         ];

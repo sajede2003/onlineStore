@@ -14,7 +14,6 @@ class RegisterModel
 
     public function register($data)
     {
-        // dd($data);
         $this->db->query("INSERT INTO users (full_name , phone_number , email , password)
         VALUES (:full_name  , :phone_number , :email , :password)");
         // bind values

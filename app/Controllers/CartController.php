@@ -55,7 +55,6 @@ class CartController extends Controller{
     public static function addDataInCartSession($product)
     {
         $result = false;
-        // dd($product);
 
         foreach ($product as $key => $value) {
            // product id
