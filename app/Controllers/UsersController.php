@@ -5,6 +5,7 @@ use App\Core\Database;
 use App\Core\ErrorMessage;
 use App\Core\Request;
 use App\Core\Validation;
+use App\Helper\CreateUserSession;
 use App\Models\LoginModel;
 use App\Models\RegisterModel;
 
@@ -70,12 +71,6 @@ class UsersController extends Controller
 
     public function registerGet(Request $request)
     {
-
-
-        $params = [
-            "error" => $this->validation->errors,
-        ];
-
         $this->setLayout('main');
         return $this->render('register');
     }
@@ -130,5 +125,9 @@ class UsersController extends Controller
         return $this->render('login');
     }
 
+    public function logOut()
+    {
+        CreateUserSession::logOutUser();
+    }
 
 }

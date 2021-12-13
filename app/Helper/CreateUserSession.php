@@ -17,9 +17,20 @@ class CreateUserSession{
 
     public static function loginUserSession($user)
     {
+        self::MakeSession('user_fullName' , $user->full_name);
         self::MakeSession('user' , $user->id);
         self::MakeSession('IsLogin' , true);
 
+    }
+
+    public static function logOutUser()
+    {
+        // dd($_SESSION);
+        if(isset($_SESSION['IsLogin'])||$_SESSION['IsLogin']==true){
+            session_destroy();
+            header("Location:/");
+            return true;
+        }
     }
 
     public static function cartSession()
@@ -27,3 +38,7 @@ class CreateUserSession{
         return isset($_SESSION['cart'])? $_SESSION['cart'] : $_SESSION['cart'] = [] ;
     }
 }
+
+isset($_SESSION['cart'])? $_SESSION['cart'] : $_SESSION['cart'] = [] ;
+
+isset($_SESSION['user_fullName'])?$_SESSION['user_fullName']:$_SESSION['user_fullName'] = null;

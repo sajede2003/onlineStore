@@ -79,6 +79,8 @@ class Data
     public static function addItem($table, $data)
     {
         $db = new Database();
+
+
         $PrepareData = self::PrepareInsertData(($data));
         $db->query("INSERT INTO {$table} ({$PrepareData['fields']}) VALUES ({$PrepareData['params']})");
 
@@ -99,6 +101,7 @@ class Data
      */
     public static function editItem($table, $data)
     {
+        // dd($data);
         $db = new Database();
         $PrepareData = self::PrepareUpdateData($data);
 
@@ -123,7 +126,7 @@ class Data
     public static function deleteItem($table, $id)
     {
         $db = new Database;
-
+      
         $db->query("DELETE FROM {$table} WHERE id = :id");
         $db->bind(':id', $id);
         $db->execute();
@@ -179,6 +182,26 @@ class Data
         return $db->fetch();
     }
 
+    public static function isUserChecked($table, $data)
+    {
+        // dd($data);
+        $db = new Database();
+
+        $db->query("SELECT * FROM {$table}
+        WHERE product_id = {$data['product_id']}
+        AND user_id = {$data['user_id']}");
+        $result = $db->fetch();
+// dd(isset($result));
+        if (!$result) {
+            self::addItem($table, $data);
+            return true;
+        } else {
+            
+            self::deleteBookmarkByUserIdAndProductId($table , $data);
+            return false;
+        }
+    }
+
     public static function deleteByUser($table, $userId, $productId)
     {
         $db = new Database();
@@ -197,18 +220,20 @@ class Data
         $userId = $data['user_id'];
         $productId = $data['product_id'];
 
-        $db->query("SELECT COUNT(user_id) as count , id FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
+        $db->query("SELECT * FROM {$table} WHERE user_id = :user_id AND product_id = :product_id");
 
         $db->bind(':user_id', $userId);
         $db->bind(':product_id', $productId);
 
-        $result = $db->fetch();
+        $result = $db->fetchAll();
 
-        if ($result == 0) {
+        // dd($result);
+
+        if ($result == null) {
             self::addItem($table, $data);
             return true;
         } else {
-            self::editItem($table, $data);
+            self::editScoreByUserIdAndProductId( $data);
             return false;
 
         }
@@ -217,37 +242,23 @@ class Data
     public static function groupCommentByParent($productId)
     {
         $db = new Database();
-        
 
         $db->query(
             "SELECT * FROM   users
-                right join comments on  users.id = comments.user_id 
+                right join comments on  users.id = comments.user_id
                 WHERE comments.product_id = $productId "
         );
-      
-        $result =  $db->fetchAll();
+
+        $result = $db->fetchAll();
 
         $array = array();
 
         foreach ($result as $key => $value) {
             $array[$value['parent_comment']][] = $value;
         }
-            
+
         return $array;
     }
-
-
-    public function deleteCommentsByProduct( $table ,$productId){
-        // try to update data in db
-
-        $db = new Database();
-    
-            $db->query("DELETE FROM {$table}  WHERE product_id = :product_id");
-            $db->bind(':product_id', $productId);
-            return $db->execute();
-        }
-
-
 
     public static function avgScore($table, $productId)
     {
@@ -265,5 +276,35 @@ class Data
         return $avg / $scores;
 
     }
+
+    public static function deleteBookmarkByUserIdAndProductId($data)
+    {
+        $db = new Database;
+      
+        $db->query("DELETE FROM bookmarks WHERE  product_id = :product_id and user_id = :user_id ");
+        $db->bind(':user_id', $data['user_id']);
+        $db->bind(':product_id', $data['product_id']);
+        $db->execute();
+    }
+
+    public static function editScoreByUserIdAndProductId($data)
+    {
+        $db = new Database;
+        $db->query("UPDATE scores SET score = :score WHERE user_id = :user_id and product_id = :product_id");
+        $db->bind(':score',$data['score']);
+        $db->bind(':user_id', $data['user_id']);
+        $db->bind(':product_id', $data['product_id']);
+        $db->execute();
+    }
+
+    public static function deleteProductByCategoryId($data)
+    {
+        $db = new Database;
+
+        $db->query("DELETE FROM products WHERE category_id = :category_id");
+        $db->bind(':category_id', $data);
+        $db->execute();
+    }
+
 
 }

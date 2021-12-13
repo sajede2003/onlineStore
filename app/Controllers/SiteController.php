@@ -2,6 +2,7 @@
 
 
 use App\Core\Controller;
+use App\Helper\CreateUserSession;
 use App\Helper\Data;
 
 class SiteController extends Controller
@@ -9,8 +10,9 @@ class SiteController extends Controller
 
     public function home()
     {
+        (isset($_SESSION['user_fullName']))?$_SESSION['user_fullName']:$_SESSION['user_fullName']=null;
         $params = [
-            'name' => "TheCodeholic",
+            'name' => $_SESSION['user_fullName'],
         ];
         return $this->render('home', $params);
     }

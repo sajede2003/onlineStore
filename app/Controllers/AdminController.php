@@ -277,7 +277,9 @@ class AdminController extends Controller
     public function productDelete()
     {
         $userId = $_GET['id'];
-
+        // dd($userId);
+        $userData = Data::getOldData('products', $userId);
+        // dd($userData);
         $result = Data::deleteItem('products', $userId);
 
         if (!$result) {

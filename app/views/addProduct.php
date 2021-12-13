@@ -19,7 +19,7 @@
         </div>
         <div class=" mb-3 col-5">
             <label for="description">description</label>
-            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+            <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
         </div>
         <div class=" mb-3 col-5">
             <label for="pic">pic</label>

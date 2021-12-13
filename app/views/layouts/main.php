@@ -17,7 +17,6 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
-          <li><a href="/contact" class="nav-link px-2 text-white">contact</a></li>
           <li><a href="/product" class="nav-link px-2 text-white"> product</a></li>
           <li><a href="/dashboard" class="nav-link px-2 text-white">dashboard</a></li>
         </ul>
@@ -25,6 +24,9 @@
         <a href="/cart" class="btn btn-success me-2">cart</a>
           <a href="/login" class="btn btn-outline-light me-2">Login</a>
           <a href="/register" class="btn btn-warning">Sign-up</a>
+          <?php if(!empty($_SESSION['user'])): ?>
+            <a href="/logout" class="btn btn-danger">logOut</a>
+          <?php endif; ?>
         </div>
       </div>
     </div>

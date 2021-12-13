@@ -25,11 +25,11 @@ class LoginModel
 
         // Email param will be binded with the email variable
         $this->db->bind(':email', $data['email']);
-
+        
         $user = $this->db->single();
-
+        
         $hashedPassword = $user->password;
-
+       
         if (password_verify($data['password'], $hashedPassword)) {
             CreateUserSession::loginUserSession($user);
             header('location:/');

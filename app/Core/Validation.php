@@ -87,7 +87,8 @@ class Validation extends ErrorMessage{
      */
     public function length($key , $value = null)
     {
-        if(strlen($this->data[$key]) === (int) $value)
+        
+        if(strlen($this->data[$key]) != (int) $value)
             $this->errors[$key][] = "{$key} must be {$value} characters.";
     }
     /**

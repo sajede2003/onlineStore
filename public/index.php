@@ -18,7 +18,6 @@ set_exception_handler('App\Core\Error::exceptionHandler');
 $app = new Application(dirname(__DIR__));
 
 $app->router->get('/', [SiteController::class, 'home']);
-require_once '../app/Routes/Home/Home.php';
 
 // go in login page
 $app->router->get('/login', [UsersController::class, 'loginGet']);
@@ -31,6 +30,9 @@ $app->router->get('/register', [UsersController::class, 'registerGet']);
 
 // register submit
 $app->router->post('/register', [UsersController::class, 'registerPost']);
+
+// log out submit
+$app->router->get('/logout' , [UsersController::class , 'logOut']);
 
 
 // cart button
@@ -53,6 +55,7 @@ $app->router->get('/more' , [MorePageController::class , 'more']);
 $app->router->get('/like' , [MorePageController::class , 'addLike']);
 $app->router->post('/score' , [MorePageController::class , 'addScore']);
 $app->router->post('/comment' , [MorePageController::class , 'addComment']);
+$app->router->post('/add-bookmark' , [MorePageController::class , 'addBookMark']);
 
 
 // dashboard

@@ -28,7 +28,7 @@ class MorePageController extends Controller
         $score = Data::avgScore('scores', $id);
 
         // is user book mark this product
-        // $isBookmark = Data::getUserAndProduct('bookmarks' , $userId , $id);
+        $isBookmark = Data::getUserAndProduct('bookmarks', $id , $userId);
 
         // params for send to view
 
@@ -36,7 +36,7 @@ class MorePageController extends Controller
             'product' => $product,
             'comment' => $comments,
             'likeCount' => $likeCount,
-            // 'isBookmark' => $isBookmark,
+            'isBookmark' => $isBookmark,
             'score' => $score,
         ];
 
@@ -89,6 +89,7 @@ class MorePageController extends Controller
             $data['user_id'] = $_SESSION['user'];
 
             $result = Data::isUserScore('scores', $data);
+
     
             if ($result) {
                 header("Location:/more?id={$data['product_id']}");
@@ -119,6 +120,30 @@ class MorePageController extends Controller
         }
     }
 
+    public function  addBookMark ()
+    {
+        $data = $_REQUEST;
+
+        if(empty($_SESSION)){
+            CreateUserSession::validUserLogin();
+        }else{
+            $data['user_id'] = $_SESSION['user'];
+            $productId = $data['product_id'];
+
+
+            $result = Data::isUserChecked('bookmarks' , $data);
+
+            // dd($result);
+
+
+            if(!$result){
+                header("Location:/more?id={$productId}");
+                // return;
+            }
+
+            header("Location:/more?id={$productId}");
+        }
+    }
     
 
 }

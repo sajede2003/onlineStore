@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div class="content">
     <div class="post">
@@ -20,10 +21,13 @@
                 </small>
             </span>
             <span>
+            <?php $score ?>
                 <label for="score">score</label>
                 <small id="score" ><?=$score?>/5 </small>
                 <form action="/score" method="POST">
-                    <input type="range" oninput="$('#score').value = this.value" name="value" id="score" min="0" max="5">
+                    <input type="range" id="score" oninput="this.nextElementSibling.value = this.value" min="0" max="5">
+                    <input type="hidden" name="score" id="sv" value="<?=$score?>">
+                    
                     <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
                     <button type="submit">send</button>
                 </form>
