@@ -8,7 +8,12 @@ class User extends Model
     protected $table = 'users';
 
     // register
-
+    /**
+     * register and insert data in user table function
+     *
+     * @param [type] $data
+     * @return array
+     */
     public function register($data)
     {
         unset($data['confirmPassword']);
@@ -44,14 +49,26 @@ class User extends Model
 
     }
 
-    // Find user by email. Email is passed in by the controller
+    /**
+     * Find user by email. Email is passed in by the controller function
+     *
+     * @param [type] $table
+     * @param [type] $field
+     * @param [type] $col
+     * @return array
+     */
     public function checkExists($table, $field, $col)
     {
         $item = $this->where($field, $col)->get();
         return count($item);
     }
 
-
+    /**
+     * this function grouping comment by parents
+     *
+     * @param [type] $productId
+     * @return $array
+     */
     public function groupCommentByParent($productId)
     {
         $comments = $this
@@ -69,6 +86,9 @@ class User extends Model
         return $array;
 
     }
+
+
+    
 
 
 

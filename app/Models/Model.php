@@ -126,12 +126,14 @@ class Model extends Database
      */
     public function delete()
     {
-        $this->query("DELETE FROM {$this->table}");
+       $q= $this->query("DELETE FROM {$this->table}");
 
         $values = [];
         $values = $this->prepareWhereQuery($values);
-
+        
+        dd($this->query);
         return $this->execute();
+
     }
 
 

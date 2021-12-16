@@ -2,7 +2,6 @@
 
 use App\Core\Controller;
 use App\Helper\CreateUserSession;
-use App\Helper\Data;
 use App\Models\BookMark;
 use App\Models\Comment;
 use App\Models\Like;
@@ -48,14 +47,14 @@ class MorePageController extends Controller
         $likeCount = $this->like->getUserLiked($userId, $id);
 
         // avg score
-        $score = Data::avgScore('scores', $id);
+        // $score = Data::avgScore('scores', $id);
 
         // is user book mark this product
         $isBookmark = $this->bookmark->getUserBookmark($id, $userId);
 
         // params for send to view
 
-        return $this->render('product/single/singlePage', compact('product', 'comment', 'likeCount', 'isBookmark', 'score'));
+        return $this->render('product/single/singlePage', compact('product', 'comment', 'likeCount', 'isBookmark'));
     }
 
     public function addLike()

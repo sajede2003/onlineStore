@@ -35,12 +35,12 @@
                         <tr>
                             <th scope="row"><?= $counter++ ?></th>
                                 <td>
-                                    <?= $data->title; ?>
+                                    <?= $data['title']; ?>
                                 </td>
                                 <td>
                                     <div style="display:flex; justify-content:end;">
-                                        <a href="/dashboard/product/delete?id=<?=$data->id?>" class="btn btn-danger text-white">delete</a>
-                                        <a href="/dashboard/product/edit?id=<?= $data->id ?>" class="btn btn-info text-white mx-2">edit</a>
+                                        <a href="/dashboard/product/delete?id=<?=$data['id']?>" class="btn btn-danger text-white">delete</a>
+                                        <a href="/dashboard/product/edit?id=<?= $data['id'] ?>" class="btn btn-info text-white mx-2">edit</a>
                                     </div>
                                 </td>
                             </tr>

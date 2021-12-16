@@ -3,7 +3,9 @@
 <div class="content">
     <div class="post">
 
-        
+        <div class="w-100" style="height: 640px;">
+            <img class="w-100 h-100" src="<?=$product->pic?>" alt="#">
+        </div>
         <h1>title :<?=$product->title?> </h1>
 
         <div>
@@ -21,10 +23,10 @@
             <span>
             <?php $score ?>
                 <label for="score">score</label>
-                <small id="score" ><?=$score?>/5 </small>
+                <small id="score" >0/5 </small>
                 <form action="/score" method="POST">
                     <input type="range" id="score" oninput="this.nextElementSibling.value = this.value" min="0" max="5">
-                    <input type="hidden" name="score" id="sv" value="<?=$score?>">         
+                    <input type="hidden" name="score" id="sv" value="">         
                     <input type="hidden" name="product_id" value="<?=$product->id?>">
                     <button type="submit">send</button>
                 </form>

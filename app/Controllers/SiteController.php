@@ -2,15 +2,14 @@
 
 
 use App\Core\Controller;
-use App\Helper\Data;
-use App\Models\Products;
+use App\Models\Product;
 
 class SiteController extends Controller
 {
-    protected Products $products;
+    protected Product $products;
 
     public function __construct() {
-        $this->products = new Products;
+        $this->products = new Product;
     }
 
     public function home()

@@ -33,10 +33,10 @@
           ?>
           <tr>
             <td><?= $counter++ ?></td>
-            <td><?=$data->title;?></td>
+            <td><?=$data['title'];?></td>
             <td class="f-flex col-2">
-              <a href="/dashboard/category/delete?id=<?=$data->id?>" class="btn  btn-danger "> delete</a>
-              <a href="/dashboard/category/edit?id=<?=$data->id ?>" class="btn btn-info"> edit</a>
+              <a href="/dashboard/category/delete?id=<?=$data['id']?>" class="btn  btn-danger "> delete</a>
+              <a href="/dashboard/category/edit?id=<?=$data['id'] ?>" class="btn btn-info"> edit</a>
             </td>
           </tr>
           <?php endforeach; ?>

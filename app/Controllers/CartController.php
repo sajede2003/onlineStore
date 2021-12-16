@@ -2,23 +2,23 @@
 
 use App\Core\Controller;
 use App\Helper\CreateUserSession;
-use App\Helper\Data;
-
+use App\Models\Product;
 class CartController extends Controller
 {
+    protected Product $product;
+
+    public function __construct() {
+        $this->product = new Product();
+    }
 
     public function cart()
     {
+
         if (!isset($_SESSION['IsLogin'])) {
             CreateUserSession::validUserLogin();
         } else {
             $cartData = $_SESSION['cart'];
-
-            $params = [
-                'cartData' => $cartData,
-            ];
-
-            return $this->render('product/cart', $params);
+            return $this->render('product/cart', compact('cartData'));
         }
     }
 
@@ -31,7 +31,7 @@ class CartController extends Controller
             $productId = $_GET['product_id'];
 
             // get ols=d data of product by product id
-            $product = Data::getOldData('products', $productId);
+            $product = $this->product->where('id' , $productId)->get();
 
             // add product to session
             self::addDataInCartSession($product);
@@ -46,7 +46,7 @@ class CartController extends Controller
     {
         $productId = $_GET['product_id'];
 
-        $product = Data::getOldData('products', $productId);
+        $product = $this->product->where('id' , $productId)->get();
 
         self::removeDataInSession($product);
 
@@ -66,7 +66,7 @@ class CartController extends Controller
 
         foreach ($product as $key => $value) {
             // product id
-            $product_id = $value->id;
+            $product_id = $value['id'];
         }
 
         // set the cart session
@@ -74,14 +74,14 @@ class CartController extends Controller
         // cart page action
         if (isset($cart[$product_id])) {
             $_SESSION['cart'][$product_id]['count'] += 1;
-            $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]->price;
+            $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]['price'];
         } else {
             $_SESSION['cart'][$product_id] = [
                 'product_id' => $product_id,
-                'name' => $product[0]->title,
-                'price' => $product[0]->price,
+                'name' => $product[0]['title'],
+                'price' => $product[0]['price'],
                 'count' => 1,
-                'sum' => $product[0]->price,
+                'sum' => $product[0]['price'],
             ];
         }
     }
@@ -89,11 +89,11 @@ class CartController extends Controller
     public static function removeDataInSession($product)
     {
         foreach ($product as $key => $value) {
-            $product_id = $value->id;
+            $product_id = $value['id'];
         }
 
         $_SESSION['cart'][$product_id]['count'] -= 1;
-        $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]->price;
+        $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]['price'];
 
         if ($_SESSION['cart'][$product_id]['count'] <= 0) {
             unset($_SESSION['cart'][$product_id]);

@@ -3,7 +3,13 @@
 use App\Core\Controller;
 use App\Core\DashboardValid;
 use App\Core\Validation;
-use App\Helper\Data;
+use App\Models\BookMark;
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Product;
+use App\Models\Score;
+use App\Models\User;
 
 /**
  * render dashboard content class
@@ -12,12 +18,27 @@ class AdminController extends Controller
 {
 
     protected Validation $validation;
+    protected User $user;
+    protected Product $product;
+    protected BookMark $bookmarks;
+    protected Like $likes;
+    protected Score $scores;
+    protected Comment $comment;
+    protected Category $category;
+
 
     public function __construct()
     {
         $this->setLayout('Auth');
         DashboardValid::checkAdminUser();
         $this->validation = new Validation;
+        $this->user = new User;
+        $this->product = new Product;
+        $this->bookmark = new BookMark;
+        $this->like = new Like;
+        $this->score = new Score;
+        $this->comment = new Comment;
+        $this->category = new Category;
     }
 
     /**
@@ -37,9 +58,8 @@ class AdminController extends Controller
      */
     public function users()
     {
-        $allData = Data::getData("users");
-        // $users = User::get();
-   
+        $allData = $this->user->get();   
+
         return $this->render('dashboard/users/table', compact('allData'));
     }
 
@@ -53,12 +73,10 @@ class AdminController extends Controller
         // get inputs value
         $data = $_REQUEST;
 
-        // User::update($data);
-
-        if (Data::editItem('users', $data)) {
+        $userId = $data['id'];
+        if ($this->user->where('id' , $userId)->update($data)) {
             header("Location:/dashboard/users");
         } else {
-            $userId = $data['id'];
             header("Location:/dashboard/users/edit?id={$userId}");
         }
 
@@ -72,7 +90,7 @@ class AdminController extends Controller
     public function userEdit()
     {
         $userId = $_GET['id'];
-        $userData = Data::getOldData('users', $userId);
+        $userData = $this->user->where('id' , $userId)->get();
 
 
         //$user = User::find(20);
@@ -92,9 +110,9 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
 
-        $result = Data::deleteItem('users', $userId);
+        // dd($this->user->where('id' , $userId)->delete());
+        $result = $this->user->where('id' , $userId)->delete();
 
-        // $result = User::delete($userId)
 
         if (!$result) {
             header("Location:/dashboard/users");
@@ -110,7 +128,7 @@ class AdminController extends Controller
      */
     public function Category()
     {
-        $allData = Data::getData('categories');
+        $allData =$this->category->get();
 
         $params = [
             'allData' => $allData,
@@ -133,7 +151,7 @@ class AdminController extends Controller
             'title' => 'required',
         ]);
         if ($validation->valid()) {
-            if (Data::addItem('categories', $data)) {
+            if ($this->category->create($data)) {
                 header("Location:/dashboard/category");
                 return;
             }
@@ -150,7 +168,8 @@ class AdminController extends Controller
     {
         // get inputs value
         $data = $_REQUEST;
-        if (Data::editItem('categories', $data)) {
+        $userId = $data['id'];
+        if ($this->category->where('id' , $userId)->update($data)){
             header("Location:/dashboard/category");
         } else {
             $userId = $data['id'];
@@ -167,7 +186,7 @@ class AdminController extends Controller
     public function categoryEdit()
     {
         $userId = $_GET['id'];
-        $userData = Data::getOldData('categories', $userId);
+        $userData =$this->category->where('id' , $userId);
 
         $params = [
             'data' => $userData,
@@ -185,7 +204,7 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
 
-        $result = Data::deleteItem('categories', $userId);
+        $result =$this->category->where('id' , $userId)->delete();
 
         if (!$result) {
             header("Location:/dashboard/category");
@@ -203,7 +222,7 @@ class AdminController extends Controller
 
     public function product()
     {
-        $allData = Data::getData('products');
+        $allData =$this->product->get();
 
         $params = [
             'allData' => $allData,
@@ -214,7 +233,7 @@ class AdminController extends Controller
 
     public function addProduct()
     {
-        $category = Data::getData('categories');
+        $category = $this->category->get();
         $params = [
             'category' => $category,
         ];
@@ -230,7 +249,7 @@ class AdminController extends Controller
 
         $data['pic'] = $imgPath;
 
-        if(Data::addItem('products' , $data)){
+        if($this->product->create($data)){
             header("Location:/dashboard/product");
             return;
         }
@@ -248,11 +267,10 @@ class AdminController extends Controller
         $imgPath = $this->imgUploader($pic);
 
         $data['pic'] = $imgPath;
-
-        if (Data::editItem('products', $data)) {
+        $userId = $data['id'];
+        if ($this->product->where('id' , $userId)->update($data)) {
             header("Location:/dashboard/product");
         } else {
-            $userId = $data['id'];
             header("Location:/dashboard/product/edit?id={$userId}");
         }
 
@@ -266,8 +284,8 @@ class AdminController extends Controller
     public function productEdit()
     {
         $userId = $_GET['id'];
-        $userData = Data::getOldData('products', $userId);
-        $category = Data::getData('categories');
+        $userData = $this->product->where('id' , $userId)->get();
+        $category = $this->category->get();
 
         $params = [
             'data' => $userData,
@@ -286,9 +304,9 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
         // dd($userId);
-        $userData = Data::getOldData('products', $userId);
+        $userData = $this->product->where('id' , $userId)->get();
         // dd($userData);
-        $result = Data::deleteItem('products', $userId);
+        $result = $this->product->where('id' , $userId)->delete();
 
         if (!$result) {
             header("Location:/dashboard/product");

@@ -32,7 +32,9 @@
                         <h3> there is no item to show </h3>
                     <?php else : ?>
                         <?php $counter = 1;
-                        foreach ($cartData as $key => $value): ?>
+                        foreach ($cartData as $key => $value): 
+                        // dd($value);
+                        ?>
                             <tr>
                                 <th scope="row"><?=$counter++?>
                             </th>

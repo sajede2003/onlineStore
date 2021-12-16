@@ -6,18 +6,17 @@ use App\Core\ErrorMessage;
 use App\Core\Request;
 use App\Core\Validation;
 use App\Helper\CreateUserSession;
-use App\Models\Model;
-use App\Models\Users;
+use App\Models\User;
 
 class UsersController extends Controller
 {
-    protected Users $users;
+    protected User $users;
     protected ErrorMessage $errorMessage;
     protected Validation $validation;
     
     public function __construct()
     {
-        $this->users = new Users();
+        $this->users = new User();
         $this->errorMessage = new ErrorMessage();
         $this->validation = new Validation();
 

@@ -8,18 +8,18 @@
 </head>
 <body>
     <form action="/dashboard/users/edit" method="POST">
-        <input type="hidden" name="id" value="<?=$data[0]->id?>">
+        <input type="hidden" name="id" value="<?=$data[0]['id']?>">
         <div class="form-floating mb-3 col-5">
-            <input type="text" name="full_name" value="<?=$data[0]->full_name;?>" class="form-control mb-2" id="FullName" placeholder="name@example.com">
+            <input type="text" name="full_name" value="<?=$data[0]['full_name']?>" class="form-control mb-2" id="FullName" placeholder="name@example.com">
             <label for="FullName">Full name</label>
         </div>
         <div class="form-floating mb-3 col-5">
-            <input type="text" name="phone_number" value="<?=$data[0]->phone_number?>" class="form-control mb-2" id="PhoneNumber" placeholder="name@example.com">
+            <input type="text" name="phone_number" value="<?=$data[0]['phone_number']?>" class="form-control mb-2" id="PhoneNumber" placeholder="name@example.com">
             <label for="PhoneNumber">phone number</label>
         </div>
         <div class="mb-3 col-5">
             <label for="email" class="form-label ">email : </label>
-            <textarea name="email" class="form-control mb-2" id="email" rows="3"><?=$data[0]->email?></textarea>
+            <textarea name="email" class="form-control mb-2" id="email" rows="3"><?=$data[0]['email']?></textarea>
         </div>
 
         <span>

@@ -2,15 +2,15 @@
 namespace App\Core;
 
 use App\Core\ErrorMessage;
-use App\Models\Users;
+use App\Models\User;
 
 class Validation extends ErrorMessage{
     
-    public Users $users;
+    public User $users;
     public $data;
 
     public function __construct() {
-        $this->users = new Users();
+        $this->users = new User();
     }
     /**
      * Performance rules

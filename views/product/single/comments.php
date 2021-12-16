@@ -23,7 +23,7 @@ if (!isset($comment[0])): ?>
 <!-- replay comment -->
 <?php function recursive($array , $comment){
     foreach ( $array as $childItem): ?>
-       <div class="card p-2 mb-2 bg-info">
+       <div class="card p-2 mb-2 bg-info" style="margin-left: 50px;">
             <div>
                 <h4><?=$childItem['full_name']?></h4>
             </div>
