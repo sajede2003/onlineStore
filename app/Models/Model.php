@@ -9,6 +9,8 @@ class Model extends Database
     protected $query;
     protected $selectedFields = '*';
     protected $whereClause = [];
+    protected $additionalQueries = [];
+    protected $joinTable;
 
     // create : insert
     /**
@@ -76,8 +78,9 @@ class Model extends Database
         $q = $this->query = "SELECT {$this->selectedFields} FROM {$this->table}";
         $values = [];
 
-        $values = $this->prepareWhereQuery($values);
+        $this->prepareAdditionalQueries();
 
+        $values = $this->prepareWhereQuery($values);
 
         $statement = $this->pdo->prepare($this->query);
 
@@ -142,13 +145,34 @@ class Model extends Database
      */
      public function where($field, $value, $operator = "=")
      {
+        $originalField = $field;
+
+        if(count($bindField = explode("." , $field)) > 1) 
+            $field = $bindField[1];
+
+
          $where = [];
-         $where['query'] = "{$field} {$operator} :{$field}";
- 
+        //  id = :id
+         $where['query'] = "{$originalField} {$operator} :{$field}";
+        
+         // id , 5
          $where['bind'] = ['field' => $field, 'value' => $value];
  
          $this->whereClause[] = $where;
          return $this;
+     }
+
+     /**
+      * Undocumented function
+      *
+      * @param [type] $query
+      * @return Model
+      */
+     public function addQuery($query)
+     {
+        //  {right join} {joinTable} on {table}.{field} =  {joinTable}.{field}
+        $this->additionalQueries[] = $query;
+        return $this;
      }
 
         /**
@@ -160,7 +184,7 @@ class Model extends Database
         if ($this->whereClause) {
             foreach ($this->whereClause as $index => $where) {
                 if ($index === 0) {
-                    $this->query .= " Where";
+                    $this->query .= " WHERE";
                 }
 
                 if ($index !== 0) {
@@ -168,9 +192,18 @@ class Model extends Database
                 }
 
                 $this->query .= " {$where['query']} ";
+                // [:id] [value]
                 $values[$where['bind']['field']] = $where['bind']['value'];
             }
         }
         return $values;
+    }
+
+
+    public function prepareAdditionalQueries()
+    {
+        foreach ($this->additionalQueries as $query) {
+            $this->query .= " $query " ;
+        }
     }
 }

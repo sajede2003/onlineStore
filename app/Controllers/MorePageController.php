@@ -4,9 +4,11 @@ use App\Core\Controller;
 use App\Helper\CreateUserSession;
 use App\Helper\Data;
 use App\Models\BookMarks;
+use App\Models\Comments;
 use App\Models\Likes;
 use App\Models\Products;
 use App\Models\Scores;
+use App\Models\Users;
 
 class MorePageController extends Controller
 {
@@ -14,6 +16,8 @@ class MorePageController extends Controller
     protected BookMarks $bookmarks;
     protected Likes $likes;
     protected Scores $scores;
+    protected Comments $comment;
+    protected Users $users;
 
     public function __construct()
     {
@@ -21,6 +25,9 @@ class MorePageController extends Controller
         $this->bookmarks = new BookMarks;
         $this->likes = new Likes;
         $this->scores = new Scores;
+        $this->comment = new Comments;
+        $this->users = new Users;
+
     }
 
     public function more()
@@ -35,7 +42,7 @@ class MorePageController extends Controller
         $product = $this->products->where('id', $id)->first();
 
         // reply or return function
-        $comment = Data::groupCommentByParent($id);
+        $comment = $this->users->groupCommentByParent($id);
 
         //  get all like for this product
         $likeCount = $this->likes->getUserLiked($userId, $id);
@@ -44,17 +51,9 @@ class MorePageController extends Controller
         $score = Data::avgScore('scores', $id);
 
         // is user book mark this product
-        $isBookmark = $this->bookmarks->getUserBookmark($id , $userId);
+        $isBookmark = $this->bookmarks->getUserBookmark($id, $userId);
 
         // params for send to view
-
-        $params = [
-            'product' => $product,
-            'comment' => $comment,
-            'likeCount' => $likeCount,
-            'isBookmark' => $isBookmark,
-            'score' => $score,
-        ];
 
         return $this->render('product/single/singlePage', compact('product', 'comment', 'likeCount', 'isBookmark', 'score'));
     }
@@ -97,7 +96,7 @@ class MorePageController extends Controller
             $userId = $data['user_id'];
             $productId = $data['product_id'];
 
-            $result = $this->bookmarks->bookmark($data , $userId , $productId);
+            $result = $this->bookmarks->bookmark($data, $userId, $productId);
 
             if (!$result) {
                 header("Location:/more?id={$productId}");
@@ -115,10 +114,10 @@ class MorePageController extends Controller
             CreateUserSession::validUserLogin();
         } else {
             $data['user_id'] = $_SESSION['user'];
-            $userId = $data['user_id'] ;
-            $productId = $data['product_id'] ;
+            $userId = $data['user_id'];
+            $productId = $data['product_id'];
 
-            $result = $this->scores->score($data, $userId , $productId);
+            $result = $this->scores->score($data, $userId, $productId);
 
             if ($result) {
                 header("Location:/more?id={$data['product_id']}");
@@ -129,26 +128,24 @@ class MorePageController extends Controller
 
     }
 
-    // public function addComment()
-    // {
-    //     $data = $_REQUEST;
+    public function addComment()
+    {
+        $data = $_REQUEST;
 
-    //     if (empty($_SESSION)) {
-    //         CreateUserSession::validUserLogin();
-    //     } else {
+        if (!isset($_SESSION['user'])) {
+            CreateUserSession::validUserLogin();
+        } else {
 
-    //         $data['user_id'] = $_SESSION['user'];
+            $data['user_id'] = $_SESSION['user'];
 
-    //         $result = Data::addItem('comments', $data);
+            $result = $this->comment->create($data);
 
-    //         if (!$result) {
-    //             header("Location:/more?id={$data['product_id']}");
-    //         }
+            if (!$result) {
+                header("Location:/more?id={$data['product_id']}");
+            }
 
-    //         header("Location:/more?id={$data['product_id']}");
-    //     }
-    // }
-
-
+            header("Location:/more?id={$data['product_id']}");
+        }
+    }
 
 }

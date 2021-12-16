@@ -1,8 +1,10 @@
 <?php namespace App\Models;
 
 
-class Comments {
+class Comments extends Model {
 
     protected $table = "comments";
 
+    
+   
 }

@@ -1,8 +1,8 @@
-<?php
+<?php 
 if (!isset($comment[0])): ?>
     <h4>the comments are empty</h4>
 <?php else:?>
-    <?php foreach ($comment[0] as $fatherItem) :?>
+    <?php foreach ($comment[0] as $fatherItem) : ?>
         <div class="card p-2 mb-2" >
             <div>
                 <h4><?=$fatherItem['full_name']?></h4>
@@ -22,7 +22,7 @@ if (!isset($comment[0])): ?>
 <?php endif;?>
 <!-- replay comment -->
 <?php function recursive($array , $comment){
-    foreach ( $array as $childItem):?>
+    foreach ( $array as $childItem): ?>
        <div class="card p-2 mb-2 bg-info">
             <div>
                 <h4><?=$childItem['full_name']?></h4>
@@ -35,8 +35,8 @@ if (!isset($comment[0])): ?>
                 <input type="radio" name="replay" class="replay" value="<?=$childItem['id']?>">
             </div>
        </div> 
-        <?php
-        if(isset($comment[$childItem['id']]))
-            recursive($comment[$childItem['id']],$comment);?>
+       <?php  
+            if(isset($comment[$childItem['id']]))
+                recursive($comment[$childItem['id']] ,$comment); ?>
         
     <?php endforeach; }?>

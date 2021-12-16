@@ -3,9 +3,7 @@
 <div class="content">
     <div class="post">
 
-        <div class="w-100" style="height: 640px;">
-            <img class="w-100 h-100" src="<?=$product->pic?>" alt="#">
-        </div>
+        
         <h1>title :<?=$product->title?> </h1>
 
         <div>

@@ -51,4 +51,25 @@ class Users extends Model
         return count($item);
     }
 
+
+    public function groupCommentByParent($productId)
+    {
+        $comments = $this
+            ->addQuery("right join comments on  users.id = comments.user_id")
+            ->where('comments.product_id' , $productId)
+            ->get();
+
+
+        $array = array();
+
+        foreach ($comments as $key => $value) {
+            $array[$value['parent_comment']][] = $value;
+        }
+
+        return $array;
+
+    }
+
+
+
 }
