@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class Products extends Model{
+class Product extends Model{
 
     protected $table = 'products'; 
 

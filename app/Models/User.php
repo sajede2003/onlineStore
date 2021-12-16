@@ -3,7 +3,7 @@
 use App\Helper\CreateUserSession;
 use App\Models\Model;
 
-class Users extends Model
+class User extends Model
 {
     protected $table = 'users';
 

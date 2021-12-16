@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class Scores extends Model
+class Score extends Model
 {
 
     protected $table = 'scores';

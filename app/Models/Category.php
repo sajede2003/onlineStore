@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class Categories extends Model
+class Category extends Model
 {
     protected $table = 'categories';
 

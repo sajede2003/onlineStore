@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class BookMarks extends Model
+class BookMark extends Model
 {
     protected $table = 'bookmarks';
 

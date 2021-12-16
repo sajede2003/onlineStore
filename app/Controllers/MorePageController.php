@@ -3,30 +3,30 @@
 use App\Core\Controller;
 use App\Helper\CreateUserSession;
 use App\Helper\Data;
-use App\Models\BookMarks;
-use App\Models\Comments;
-use App\Models\Likes;
-use App\Models\Products;
-use App\Models\Scores;
-use App\Models\Users;
+use App\Models\BookMark;
+use App\Models\Comment;
+use App\Models\Like;
+use App\Models\Product;
+use App\Models\Score;
+use App\Models\User;
 
 class MorePageController extends Controller
 {
-    protected Products $products;
-    protected BookMarks $bookmarks;
-    protected Likes $likes;
-    protected Scores $scores;
-    protected Comments $comment;
-    protected Users $users;
+    protected Product $products;
+    protected BookMark $bookmarks;
+    protected Like $likes;
+    protected Score $scores;
+    protected Comment $comment;
+    protected User $users;
 
     public function __construct()
     {
-        $this->products = new Products;
-        $this->bookmarks = new BookMarks;
-        $this->likes = new Likes;
-        $this->scores = new Scores;
-        $this->comment = new Comments;
-        $this->users = new Users;
+        $this->product = new Product;
+        $this->bookmark = new BookMark;
+        $this->like = new Like;
+        $this->score = new Score;
+        $this->comment = new Comment;
+        $this->user = new User;
 
     }
 
@@ -39,19 +39,19 @@ class MorePageController extends Controller
         $userId = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 
         // get product for show in more page
-        $product = $this->products->where('id', $id)->first();
+        $product = $this->product->where('id', $id)->first();
 
         // reply or return function
-        $comment = $this->users->groupCommentByParent($id);
+        $comment = $this->user->groupCommentByParent($id);
 
         //  get all like for this product
-        $likeCount = $this->likes->getUserLiked($userId, $id);
+        $likeCount = $this->like->getUserLiked($userId, $id);
 
         // avg score
         $score = Data::avgScore('scores', $id);
 
         // is user book mark this product
-        $isBookmark = $this->bookmarks->getUserBookmark($id, $userId);
+        $isBookmark = $this->bookmark->getUserBookmark($id, $userId);
 
         // params for send to view
 
@@ -75,7 +75,7 @@ class MorePageController extends Controller
             $userId = $data['user_id'];
             $productId = $data['product_id'];
 
-            $result = $this->likes->like($data, $userId, $productId);
+            $result = $this->like->like($data, $userId, $productId);
 
             if (!$result) {
                 header("Location:/more?id={$productId}");
@@ -96,7 +96,7 @@ class MorePageController extends Controller
             $userId = $data['user_id'];
             $productId = $data['product_id'];
 
-            $result = $this->bookmarks->bookmark($data, $userId, $productId);
+            $result = $this->bookmark->bookmark($data, $userId, $productId);
 
             if (!$result) {
                 header("Location:/more?id={$productId}");
@@ -117,7 +117,7 @@ class MorePageController extends Controller
             $userId = $data['user_id'];
             $productId = $data['product_id'];
 
-            $result = $this->scores->score($data, $userId, $productId);
+            $result = $this->score->score($data, $userId, $productId);
 
             if ($result) {
                 header("Location:/more?id={$data['product_id']}");
