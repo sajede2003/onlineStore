@@ -5,11 +5,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 
 use App\Core\Application;
-// use App\Core\Error;
 
 // error_reporting(E_ALL);
-// set_error_handler('app\Core\Error::errorHandler');
-// set_exception_handler('app\Core\Error::exceptionHandler');
+// set_error_handler(Error::errorHandler());
+// set_exception_handler(Error::exceptionHandler());
 
 $app = new Application(dirname(__DIR__));
 

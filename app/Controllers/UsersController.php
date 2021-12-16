@@ -97,15 +97,11 @@ class UsersController extends Controller
                 $this->validation->set('password' , 'email or password is incorrect. please try again.');
             }
         }
+        $error = $this->validation->errors;
 
-
-            $params = [
-                "error" => $this->validation->errors,
-            ];
-
-            // show in register view
-            $this->setLayout('main');
-            return $this->render('auth/login', $params);
+        // show in register view
+        $this->setLayout('main');
+        return $this->render('auth/login', compact('error'));
     }
 
         
@@ -117,7 +113,6 @@ class UsersController extends Controller
 
     public function loginGet()
     {
-
         $this->setLayout('main');
         return $this->render('auth/login');
     }

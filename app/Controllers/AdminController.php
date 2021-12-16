@@ -10,9 +10,10 @@ use App\Models\Like;
 use App\Models\Product;
 use App\Models\Score;
 use App\Models\User;
+use App\Helper\ImgUploader;
 
 /**
- * render dashboard content class
+ * render dashboard page class
  */
 class AdminController extends Controller
 {
@@ -25,6 +26,7 @@ class AdminController extends Controller
     protected Score $scores;
     protected Comment $comment;
     protected Category $category;
+    protected ImgUploader $img;
 
 
     public function __construct()
@@ -39,6 +41,7 @@ class AdminController extends Controller
         $this->score = new Score;
         $this->comment = new Comment;
         $this->category = new Category;
+        $this->img = new ImgUploader;
     }
 
     /**
@@ -83,7 +86,7 @@ class AdminController extends Controller
     }
 
     /**
-     * edit view function
+     * edit users view page function
      *
      * @return void
      */
@@ -91,14 +94,7 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
         $userData = $this->user->where('id' , $userId)->get();
-
-
-        //$user = User::find(20);
-        $params = [
-            'data' => $userData,
-        ];
-
-        return $this->render('dashboard/users/edit', $params);
+        return $this->render('dashboard/users/edit',compact('userData'));
     }
 
     /**
@@ -110,10 +106,7 @@ class AdminController extends Controller
     {
         $userId = $_GET['id'];
 
-        // dd($this->user->where('id' , $userId)->delete());
         $result = $this->user->where('id' , $userId)->delete();
-
-
         if (!$result) {
             header("Location:/dashboard/users");
             return;
@@ -129,20 +122,16 @@ class AdminController extends Controller
     public function Category()
     {
         $allData =$this->category->get();
-
-        $params = [
-            'allData' => $allData,
-        ];
-
-        return $this->render('dashboard/category/table', $params);
+        return $this->render('dashboard/category/table', compact('allData'));
     }
 
+    // add category page render
     public function addCategory()
     {
-
         return $this->render('dashboard/category/add');
     }
 
+    // add category function
     public function addCategoryPost()
     {
         $data = $_REQUEST;
@@ -156,14 +145,12 @@ class AdminController extends Controller
                 return;
             }
         }
-        $params = [
-            "error" => $this->validation->errors,
-        ];
+        $error = $this->validation->errors ;
 
-        return $this->render('dashboard/category/add', $params);
-
+        return $this->render('dashboard/category/add', compact('error'));
     }
 
+    // category edit page
     public function categoryEditPost()
     {
         // get inputs value
@@ -179,7 +166,7 @@ class AdminController extends Controller
     }
 
     /**
-     * edit view function
+     * category edit view function
      *
      * @return void
      */
@@ -188,11 +175,7 @@ class AdminController extends Controller
         $userId = $_GET['id'];
         $userData =$this->category->where('id' , $userId);
 
-        $params = [
-            'data' => $userData,
-        ];
-
-        return $this->render('dashboard/category/edit', $params);
+        return $this->render('dashboard/category/edit', compact('userData'));
     }
 
     /**
@@ -223,29 +206,21 @@ class AdminController extends Controller
     public function product()
     {
         $allData =$this->product->get();
-
-        $params = [
-            'allData' => $allData,
-        ];
-
-        return $this->render('dashboard/product/table', $params);
+        return $this->render('dashboard/product/table', compact('allData'));
     }
-
+    // add product view render
     public function addProduct()
     {
         $category = $this->category->get();
-        $params = [
-            'category' => $category,
-        ];
-
-        return $this->render('dashboard/product/add', $params);
+        return $this->render('dashboard/product/add', compact('category'));
     }
+    // add product function
     public function addProductPost()
     {
         $data = $_REQUEST;
         $pic = $_FILES['pic'];
 
-        $imgPath = $this->imgUploader($pic);
+        $imgPath = $this->img->imgUploader($pic);
 
         $data['pic'] = $imgPath;
 
@@ -255,19 +230,16 @@ class AdminController extends Controller
         }
 
     }
-
+    // edit product function
     public function productEditPost()
     {
         // get inputs value
         $data = $_REQUEST;
+        $userId = $data['id'];
 
         $pic = $_FILES['pic'];
-
-        // $imagePath = Image::update($_file , )
-        $imgPath = $this->imgUploader($pic);
-
+        $imgPath = $this->img->imgUploader($pic);
         $data['pic'] = $imgPath;
-        $userId = $data['id'];
         if ($this->product->where('id' , $userId)->update($data)) {
             header("Location:/dashboard/product");
         } else {
@@ -277,7 +249,7 @@ class AdminController extends Controller
     }
 
     /**
-     * edit view function
+     *  edit product view function
      *
      * @return void
      */
@@ -287,25 +259,18 @@ class AdminController extends Controller
         $userData = $this->product->where('id' , $userId)->get();
         $category = $this->category->get();
 
-        $params = [
-            'data' => $userData,
-            'category' => $category
-        ];
-
-        return $this->render('dashboard/product/edit', $params);
+        return $this->render('dashboard/product/edit', compact('userData' , 'category'));
     }
 
     /**
-     * delete product button function
+     * delete product function
      *
      * @return void
      */
     public function productDelete()
     {
         $userId = $_GET['id'];
-        // dd($userId);
         $userData = $this->product->where('id' , $userId)->get();
-        // dd($userData);
         $result = $this->product->where('id' , $userId)->delete();
 
         if (!$result) {
@@ -315,46 +280,5 @@ class AdminController extends Controller
         header("Location:/dashboard/product");
     }
 
-    // image uploader
-
-    public function imgUploader($pic)
-    {
-        if (!file_exists($pic['tmp_name'])) {
-            $this->validation->set('pic', 'no file founded');
-            return;
-        }
-
-        // validation the img direction path
-        if (!is_dir('/uploads'))
-            mkdir('/uploads');
-
-        // declare the img path
-        $ImgUrl = './uploads/' . $pic['name'];
-
-        // add img to the path
-        $result = move_uploaded_file($pic['tmp_name'], $ImgUrl);
-
-        // validate the upload result
-        if ($result) {
-            echo ($ImgUrl);
-        } else {
-            $this->validation->set('pic', 'there is no path for file');
-            return;
-        }
-
-        return $ImgUrl;
-
-    }
-
-    public function DeleteFile($FilePath)
-    {
-        if (file_exists($FilePath))
-            $result = unlink($FilePath);
-
-        if (!$result) {
-            $this->validation->set('pic', 'there is no file for delete');
-            return;
-        }
-    }
-
+  
 }

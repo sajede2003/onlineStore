@@ -8,9 +8,9 @@
 </head>
 <body>
     <form action="/dashboard/category/edit" method="POST">
-        <input type="hidden" name="id" value="<?=$data[0]->id?>">
+        <input type="hidden" name="id" value="<?=$userData[0]->id?>">
         <div class="form-floating mb-3 col-5">
-            <input type="text" name="title" value="<?=$data[0]->title?>" class="form-control mb-2" id="title" placeholder="name@example.com">
+            <input type="text" name="title" value="<?=$userData[0]->title?>" class="form-control mb-2" id="title" placeholder="name@example.com">
             <label for="FullName">Full name</label>
         </div>
         <span>

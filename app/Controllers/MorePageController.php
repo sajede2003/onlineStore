@@ -8,7 +8,6 @@ use App\Models\Like;
 use App\Models\Product;
 use App\Models\Score;
 use App\Models\User;
-
 class MorePageController extends Controller
 {
     protected Product $products;
@@ -26,9 +25,8 @@ class MorePageController extends Controller
         $this->score = new Score;
         $this->comment = new Comment;
         $this->user = new User;
-
     }
-
+    // render more page
     public function more()
     {
         // get product id url
@@ -52,17 +50,16 @@ class MorePageController extends Controller
         // is user book mark this product
         $isBookmark = $this->bookmark->getUserBookmark($id, $userId);
 
-        // params for send to view
-
+        // params for send into view
         return $this->render('product/single/singlePage', compact('product', 'comment', 'likeCount', 'isBookmark'));
     }
 
+    // add like product
     public function addLike()
     {
         $data = $_REQUEST;
 
         // check login for login
-
         if (!isset($_SESSION['user'])) {
             CreateUserSession::validUserLogin();
         } else {
@@ -81,9 +78,8 @@ class MorePageController extends Controller
             }
             header("Location:/more?id={$productId}");
         }
-
     }
-
+    // add bookmark product
     public function addBookMark()
     {
         $data = $_REQUEST;
@@ -100,11 +96,10 @@ class MorePageController extends Controller
             if (!$result) {
                 header("Location:/more?id={$productId}");
             }
-
             header("Location:/more?id={$productId}");
         }
     }
-
+    // add score product
     public function addScore()
     {
         $data = $_REQUEST;
@@ -126,17 +121,18 @@ class MorePageController extends Controller
         }
 
     }
-
+    // add comment for product
     public function addComment()
     {
+        // get data
         $data = $_REQUEST;
-
+        // check user login
         if (!isset($_SESSION['user'])) {
             CreateUserSession::validUserLogin();
         } else {
-
+            // create user id
             $data['user_id'] = $_SESSION['user'];
-
+            // insert data into user table
             $result = $this->comment->create($data);
 
             if (!$result) {

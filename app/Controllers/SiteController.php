@@ -11,7 +11,7 @@ class SiteController extends Controller
     public function __construct() {
         $this->products = new Product;
     }
-
+    //render home page view
     public function home()
     {
         (isset($_SESSION['user_fullName']))?$_SESSION['user_fullName']:$_SESSION['user_fullName']=null;
@@ -20,7 +20,7 @@ class SiteController extends Controller
         ];
         return $this->render('home', $params);
     }
-
+    // render product page view
     public function product()
     {
         $allProducts = $this->products->get();

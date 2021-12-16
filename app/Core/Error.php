@@ -2,8 +2,6 @@
 
 class Error
 {
-
-
     public static function errorHandler($level , $message , $file , $line)
     {
         if(error_reporting() !== 0){

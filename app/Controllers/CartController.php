@@ -30,7 +30,7 @@ class CartController extends Controller
             // set product id
             $productId = $_GET['product_id'];
 
-            // get ols=d data of product by product id
+            // get data in product by product id
             $product = $this->product->where('id' , $productId)->get();
 
             // add product to session
@@ -41,7 +41,7 @@ class CartController extends Controller
         }
 
     }
-
+    // remove product from cart
     public function removeFromCart()
     {
         $productId = $_GET['product_id'];
@@ -61,9 +61,6 @@ class CartController extends Controller
      */
     public static function addDataInCartSession($product)
     {
-        
-        $result = false;
-
         foreach ($product as $key => $value) {
             // product id
             $product_id = $value['id'];
@@ -91,14 +88,11 @@ class CartController extends Controller
         foreach ($product as $key => $value) {
             $product_id = $value['id'];
         }
-
         $_SESSION['cart'][$product_id]['count'] -= 1;
         $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]['price'];
 
         if ($_SESSION['cart'][$product_id]['count'] <= 0) {
             unset($_SESSION['cart'][$product_id]);
         }
-
     }
-
 }

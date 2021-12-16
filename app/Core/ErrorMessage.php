@@ -2,7 +2,6 @@
 
 class ErrorMessage
 {
-
     public array $errors = [];
 
     public function set($name, $error)
