@@ -4,20 +4,20 @@
     <div class="post">
 
         <div class="w-100" style="height: 640px;">
-            <img class="w-100 h-100" src="<?=$product[0]->pic?>" alt="#">
+            <img class="w-100 h-100" src="<?=$product->pic?>" alt="#">
         </div>
-        <h1>title :<?=$product[0]->title?> </h1>
+        <h1>title :<?=$product->title?> </h1>
 
         <div>
             <p>
-                <?=$product[0]->description?>
+                <?=$product->description?>
             </p>
         </div>
         <div style="display: flex; justify-content:space-between;">
             <span>
-                <a href="/like?product_id=<?=$product[0]->id?>" class="btn btn-danger">like</a>
+                <a href="/like?product_id=<?=$product->id?>" class="btn btn-danger">like</a>
                 <small>
-                    <?=$likeCount?>
+                    <?=$likeCount[0]['count']?>
                 </small>
             </span>
             <span>
@@ -26,9 +26,8 @@
                 <small id="score" ><?=$score?>/5 </small>
                 <form action="/score" method="POST">
                     <input type="range" id="score" oninput="this.nextElementSibling.value = this.value" min="0" max="5">
-                    <input type="hidden" name="score" id="sv" value="<?=$score?>">
-                    
-                    <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
+                    <input type="hidden" name="score" id="sv" value="<?=$score?>">         
+                    <input type="hidden" name="product_id" value="<?=$product->id?>">
                     <button type="submit">send</button>
                 </form>
 
@@ -37,19 +36,19 @@
                 <form action="/add-bookmark" method="POST">
                     <label for="bookmark"> bookmark</label>
                     <input type="checkbox" id="bookmark">
-                    <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
+                    <input type="hidden" name="product_id" value="<?=$product->id?>">
                     <button type="submit" id="bookmark_btn" style="display:none;"></button>
                 </form>
             </span>
             <span>
-                <a href="/add-to-cart?product_id=<?=$product[0]->id?>" class="btn btn-success">add to cart</a>
+                <a href="/add-to-cart?product_id=<?=$product->id?>" class="btn btn-success">add to cart</a>
             </span>
         </div>
     </div>
     <hr>
     <div class="comments border py-5 px-2">
         <form action="/comment" method="POST">
-            <input type="hidden" name="product_id" value="<?=$product[0]->id?>">
+            <input type="hidden" name="product_id" value="<?=$product->id?>">
             <div>
                 <label for="comment"> your comment : </label>
             </div>
@@ -60,7 +59,7 @@
             </span>
         </form>
         <h3>comments</h3>
-        <?php require_once 'comments.php'?>
+        <?php require_once 'Comments.php'?>
     </div>
 </div>
 

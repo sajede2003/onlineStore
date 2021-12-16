@@ -36,7 +36,7 @@
 #7 C:\Users\Negin Rayaneh\Desktop\onlineStore\app\Core\Application.php(30): App\Core\Router->resolve()
 #8 C:\Users\Negin Rayaneh\Desktop\onlineStore\public\index.php(44): App\Core\Application->run()
 #9 {main}</pre></p>
-<p> throw in'C:\Users\Negin Rayaneh\Desktop\onlineStore\views\login.php'on line9</p>
+<p> throw in'C:\Users\Negin Rayaneh\Desktop\onlineStore\Views\login.php'on line9</p>
 
 [27-Nov-2021 10:17:37 Europe/Berlin] 
 <h1> Fatal error :</h1>

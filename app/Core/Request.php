@@ -24,6 +24,7 @@ class Request{
     public function isPost(){
         return $this->Method() === 'post';
     }
+    
 
     public function getBody()
     {

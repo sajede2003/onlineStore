@@ -1,24 +1,22 @@
 <?php namespace App\Core;
+namespace App\Core;
 
 use App\Core\ErrorMessage;
-use App\Models\LoginModel;
-use App\Models\RegisterModel;
+use App\Models\Users;
 
 class Validation extends ErrorMessage{
     
-    public RegisterModel $registerModel;
-    public LoginModel $loginModel;
+    public Users $users;
     public $data;
 
     public function __construct() {
-        $this->registerModel = new RegisterModel();
-        $this->loginModel = new LoginModel();
+        $this->users = new Users();
     }
     /**
      * Performance rules
      * @param $inputData
      * @param array $rulesInputs
-     * @return bool
+     * @return Validation
      */
     public  function make($inputData , $rulesInputs = [])
     {
@@ -123,27 +121,20 @@ class Validation extends ErrorMessage{
 
         $dbData = explode("," , $value);
 
+
         if(empty($dbData[1])){
             $dbData[1] = $key;
-            if($this->registerModel->checkExists($dbData[0] , $dbData[1] , $this->data[$key])){
-                $this->errors[$key][] = "{$key} is exist.";
-            }
         }
 
-        
+        if($this->users->checkExists($dbData[0] , $dbData[1] , $this->data[$key])){
+            $this->errors[$key][] = "{$key} is exist.";
+        }
         
     }
 
-
-  
-
-    
-
-
-
     // finish validation functions 
     /**
-     * checked has error
+     * checked has error?
      */
     public function valid()
     {

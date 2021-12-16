@@ -4,7 +4,7 @@ use App\Core\Application;
 
 class Controller 
 {
-    public string $layout = 'main';
+    public string $layout = 'Main';
 
     public function setLayout($layout){
         $this -> layout = $layout;

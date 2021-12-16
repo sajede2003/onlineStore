@@ -39,6 +39,7 @@ class CreateUserSession{
     }
 }
 
-isset($_SESSION['cart'])? $_SESSION['cart'] : $_SESSION['cart'] = [] ;
 
 isset($_SESSION['user_fullName'])?$_SESSION['user_fullName']:$_SESSION['user_fullName'] = null;
+
+isset($_SESSION['cart'])? $_SESSION['cart'] : $_SESSION['cart'] = [] ;

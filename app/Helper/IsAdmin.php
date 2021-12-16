@@ -1,6 +1,7 @@
 <?php namespace App\Helper;
 
 use App\Core\Database;
+use PDO;
 class IsAdmin{
     /**
      * check user is admin or not function
@@ -18,9 +19,9 @@ class IsAdmin{
 
         $db->bind(':id' , $userIdSession);
 
-        $user = $db->single();
+        $user = $db->fetch(PDO::FETCH_OBJ);
         
         if($user->is_admin == 0)
-            header('Location:/dashboard');
+            header('Location:/');
     }
 }

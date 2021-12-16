@@ -1,7 +1,7 @@
 <?php namespace App\Core;
 
 use Exception;
-use pdo;
+use PDO;
 
 /**
  * connecting  class
@@ -21,20 +21,19 @@ class Database
 
     private $statement;
     private $error;
+    protected $pdo;
 
-    public function pdo()
-    {
+
+    public function __construct() {
         try {
-            $pdo = new PDO($this->DBType . ":host=" . $this->host . ";
+            $this->pdo = new PDO($this->DBType . ":host=" . $this->host . ";
             dbname=" . $this->DBName,
                 $this->userName,
                 $this->password);
-            return $pdo;
-
         } catch (Exception $e) {
 
             $this->error = $e->getMessage();
-            echo $this->error;
+            die($this->error);
 
         }
     }
@@ -42,10 +41,10 @@ class Database
     //Allows us to write queries
     public function query($sql)
     {
-        $this->statement = $this->pdo()->prepare($sql);
+        $this->statement = $this->pdo->prepare($sql);
     }
 
-//     //Bind values
+    //Bind values
     public function bind($parameter, $value, $type = null)
     {
         switch (is_null($type)) {
@@ -70,35 +69,46 @@ class Database
         return $this->statement->execute();
     }
 
-//     //Return an array
-    public function resultSet()
+
+    //Return a specific row
+    public function fetch($type = null)
     {
         $this->execute();
-        return $this->statement->fetchAll(PDO::FETCH_OBJ);
+        return $this->statement->fetch($type);
     }
 
-//     //Return a specific row as an object
-    public function single()
+    // PDO::FETCH_ASSOC
+    public function fetchAll($type)
     {
         $this->execute();
-        return $this->statement->fetch(PDO::FETCH_OBJ);
+        return $this->statement->fetchAll($type);
     }
 
-    public function fetch()
-    {
-        $this->execute();
-        return $this->statement->fetch(PDO::FETCH_ASSOC | PDO::FETCH_COLUMN);
-    }
-
-    public function fetchAll()
-    {
-        $this->execute();
-        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-//     //Get's the row count
+     //Get's the row count
     public function rowCount()
     {
         return $this->statement->rowCount();
+    }
+
+    public function PrepareInsertData(array $data)
+    {
+        $DataArray = [];
+        $fields = join(",", array_keys($data));
+        $DataArray['fields'] = $fields;
+        $params = join(",", array_map(fn($item) => ":$item", array_keys($data)));
+        $DataArray['params'] = $params;
+        return $DataArray;
+    }
+
+    public function PrepareUpdateData(array $data)
+    {
+        $PrepareData = "";
+
+        foreach ($data as $key => $value) {
+            $PrepareData .= " {$key} = :{$key},";
+        }
+        //remove last char(,)
+        $PrepareData = substr_replace($PrepareData, "", -1);
+        return $PrepareData;
     }
 }

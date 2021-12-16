@@ -21,10 +21,11 @@
           <li><a href="/dashboard" class="nav-link px-2 text-white">dashboard</a></li>
         </ul>
         <div class="text-end">
-        <a href="/cart" class="btn btn-success me-2">cart</a>
-          <a href="/login" class="btn btn-outline-light me-2">Login</a>
-          <a href="/register" class="btn btn-warning">Sign-up</a>
-          <?php if(!empty($_SESSION['user'])): ?>
+          <?php if(empty($_SESSION['user'])): ?>
+            <a href="/login" class="btn btn-outline-light me-2">Login</a>
+            <a href="/register" class="btn btn-warning">Sign-up</a>
+          <?php elseif(!empty($_SESSION['user'])): ?>
+            <a href="/cart" class="btn btn-success me-2">cart</a>
             <a href="/logout" class="btn btn-danger">logOut</a>
           <?php endif; ?>
         </div>

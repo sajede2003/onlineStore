@@ -3,9 +3,7 @@
 use App\Core\Controller;
 
 /**
- * 
  * @package Core
- * 
  */
 class Application{
 

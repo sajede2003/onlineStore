@@ -6,20 +6,18 @@ use App\Core\ErrorMessage;
 use App\Core\Request;
 use App\Core\Validation;
 use App\Helper\CreateUserSession;
-use App\Models\LoginModel;
-use App\Models\RegisterModel;
+use App\Models\Model;
+use App\Models\Users;
 
 class UsersController extends Controller
 {
-    protected RegisterModel $registerModel;
-    protected LoginModel $loginModel;
+    protected Users $users;
     protected ErrorMessage $errorMessage;
     protected Validation $validation;
     
     public function __construct()
     {
-        $this->registerModel = new RegisterModel();
-        $this->loginModel = new LoginModel();
+        $this->users = new Users();
         $this->errorMessage = new ErrorMessage();
         $this->validation = new Validation();
 
@@ -46,7 +44,7 @@ class UsersController extends Controller
         if ($validation ->valid()) {
             // Hash password
             $_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            if ($this->registerModel->register($_POST)) {
+            if ($this->users->register($_POST)) {
                 // redirect to the login
                 header('location:/login');
             } else {
@@ -58,7 +56,7 @@ class UsersController extends Controller
             ];
             // show in register view
             $this->setLayout('main');
-            return $this->render('register', $params);
+            return $this->render('auth/register', $params);
 
         }
     }
@@ -72,7 +70,7 @@ class UsersController extends Controller
     public function registerGet(Request $request)
     {
         $this->setLayout('main');
-        return $this->render('register');
+        return $this->render('auth/register');
     }
 
     /**
@@ -92,7 +90,7 @@ class UsersController extends Controller
 
         if ($validation->valid()) {
             // register user from model function
-            if ($this->loginModel->login($_POST)) {
+            if ($this->users->login($_POST)) {
                 // redirect to the login
                 header('location:/');
                 return;
@@ -108,7 +106,7 @@ class UsersController extends Controller
 
             // show in register view
             $this->setLayout('main');
-            return $this->render('login', $params);
+            return $this->render('auth/login', $params);
     }
 
         
@@ -122,7 +120,7 @@ class UsersController extends Controller
     {
 
         $this->setLayout('main');
-        return $this->render('login');
+        return $this->render('auth/login');
     }
 
     public function logOut()

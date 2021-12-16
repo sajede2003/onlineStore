@@ -2,11 +2,16 @@
 
 
 use App\Core\Controller;
-use App\Helper\CreateUserSession;
 use App\Helper\Data;
+use App\Models\Products;
 
 class SiteController extends Controller
 {
+    protected Products $products;
+
+    public function __construct() {
+        $this->products = new Products;
+    }
 
     public function home()
     {
@@ -17,31 +22,15 @@ class SiteController extends Controller
         return $this->render('home', $params);
     }
 
-    public function table(){
-        
-        // get all contact data from db with get data method
-        $allData= Data::getData("contact_us");
-
-        $params = [
-            'allData' =>  $allData ,
-        ];
-        
-        return $this-> render('table', $params);
-    }
-
     public function product()
     {
-        $allProducts = Data::getData('products');
+        $allProducts = $this->products->get();
+        
         $params = [
             'products' => $allProducts
         ];
 
-        return $this->render('productList' , $params);
-    }
-
-    public function cart()
-    {
-        return $this->render('cart');
+        return $this->render('product/list' , $params);
     }
     
 }

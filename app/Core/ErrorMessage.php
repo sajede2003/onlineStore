@@ -1,10 +1,11 @@
 <?php namespace App\Core;
 
-class ErrorMessage{
+class ErrorMessage
+{
 
     public array $errors = [];
 
-    public function set($name , $error)
+    public function set($name, $error)
     {
         $this->errors[$name][] = $error;
     }
@@ -21,9 +22,9 @@ class ErrorMessage{
 
     public function get($name)
     {
-        if($this->has($name)){
-            return $this->errors[$name];
-        }return null;
+        return $this->has($name) ?
+        $this->errors[$name] : null;
+
     }
 
 }

@@ -9,7 +9,7 @@ class CartController extends Controller
 
     public function cart()
     {
-        if (empty($_SESSION)) {
+        if (!isset($_SESSION['IsLogin'])) {
             CreateUserSession::validUserLogin();
         } else {
             $cartData = $_SESSION['cart'];
@@ -18,7 +18,7 @@ class CartController extends Controller
                 'cartData' => $cartData,
             ];
 
-            return $this->render('cart', $params);
+            return $this->render('product/cart', $params);
         }
     }
 

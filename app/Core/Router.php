@@ -50,7 +50,7 @@ class Router{
         {
             Application::$app->controller = new Controller();
             $this->response->setStatusCode(404);
-            return $this->renderView("_404");
+            return $this->renderView("error/_404");
             die;
         }
 
@@ -72,7 +72,7 @@ class Router{
        $layoutContent = $this->layoutContent();
        $viewContent = $this->renderOnlyView($view , $params);
        return str_replace('{{content}}' , $viewContent , $layoutContent);
-       include_once Application::$ROOT_DIR."/app/views/$view.php";
+       include_once Application::$ROOT_DIR."/views/$view.php";
    }
 
    public function renderContent($viewContent)
@@ -86,7 +86,7 @@ class Router{
    {
        $layout= Application::$app->controller->layout;
        ob_start();
-       include_once Application::$ROOT_DIR."/app/views/layouts/$layout.php";
+       include_once Application::$ROOT_DIR."/views/layouts/$layout.php";
        return ob_get_clean();
    }
 
@@ -96,7 +96,7 @@ class Router{
            $$key = $value;
        }
        ob_start();
-       include_once Application::$ROOT_DIR."/app/views/$view.php";
+       include_once Application::$ROOT_DIR."/views/$view.php";
        return ob_get_clean();
    }
 

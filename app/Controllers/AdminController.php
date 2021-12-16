@@ -15,7 +15,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->setLayout('auth');
+        $this->setLayout('Auth');
         DashboardValid::checkAdminUser();
         $this->validation = new Validation;
     }
@@ -26,7 +26,7 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        return $this->render('dashboard');
+        return $this->render('dashboard/dashboard');
     }
 
     /**
@@ -38,10 +38,9 @@ class AdminController extends Controller
     public function users()
     {
         $allData = Data::getData("users");
-        $params = [
-            'allData' => $allData,
-        ];
-        return $this->render('users', $params);
+        // $users = User::get();
+   
+        return $this->render('dashboard/users/table', compact('allData'));
     }
 
     /**
@@ -53,6 +52,9 @@ class AdminController extends Controller
     {
         // get inputs value
         $data = $_REQUEST;
+
+        // User::update($data);
+
         if (Data::editItem('users', $data)) {
             header("Location:/dashboard/users");
         } else {
@@ -72,11 +74,13 @@ class AdminController extends Controller
         $userId = $_GET['id'];
         $userData = Data::getOldData('users', $userId);
 
+
+        //$user = User::find(20);
         $params = [
             'data' => $userData,
         ];
 
-        return $this->render('editUsers', $params);
+        return $this->render('dashboard/users/edit', $params);
     }
 
     /**
@@ -89,6 +93,8 @@ class AdminController extends Controller
         $userId = $_GET['id'];
 
         $result = Data::deleteItem('users', $userId);
+
+        // $result = User::delete($userId)
 
         if (!$result) {
             header("Location:/dashboard/users");
@@ -110,14 +116,15 @@ class AdminController extends Controller
             'allData' => $allData,
         ];
 
-        return $this->render('category', $params);
+        return $this->render('dashboard/category/table', $params);
     }
 
     public function addCategory()
     {
 
-        return $this->render('addCategories');
+        return $this->render('dashboard/category/add');
     }
+
     public function addCategoryPost()
     {
         $data = $_REQUEST;
@@ -135,7 +142,7 @@ class AdminController extends Controller
             "error" => $this->validation->errors,
         ];
 
-        return $this->render('addCategories', $params);
+        return $this->render('dashboard/category/add', $params);
 
     }
 
@@ -166,7 +173,7 @@ class AdminController extends Controller
             'data' => $userData,
         ];
 
-        return $this->render('editCategory', $params);
+        return $this->render('dashboard/category/edit', $params);
     }
 
     /**
@@ -202,7 +209,7 @@ class AdminController extends Controller
             'allData' => $allData,
         ];
 
-        return $this->render('product', $params);
+        return $this->render('dashboard/product/table', $params);
     }
 
     public function addProduct()
@@ -212,7 +219,7 @@ class AdminController extends Controller
             'category' => $category,
         ];
 
-        return $this->render('addProduct', $params);
+        return $this->render('dashboard/product/add', $params);
     }
     public function addProductPost()
     {
@@ -237,6 +244,7 @@ class AdminController extends Controller
 
         $pic = $_FILES['pic'];
 
+        // $imagePath = Image::update($_file , )
         $imgPath = $this->imgUploader($pic);
 
         $data['pic'] = $imgPath;
@@ -266,7 +274,7 @@ class AdminController extends Controller
             'category' => $category
         ];
 
-        return $this->render('editProduct', $params);
+        return $this->render('dashboard/product/edit', $params);
     }
 
     /**
