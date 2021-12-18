@@ -68,7 +68,7 @@ class Database
         $this->statement->bindValue($parameter, $value, $type);
     }
 
-//     //Execute the prepared statement
+    //Execute the prepared statement
     public function execute()
     {
         return $this->statement->execute();
@@ -82,7 +82,6 @@ class Database
         return $this->statement->fetch($type);
     }
 
-    // PDO::FETCH_ASSOC
     public function fetchAll($type)
     {
         $this->execute();

@@ -20,6 +20,7 @@ class CreateUserSession{
         self::MakeSession('user_fullName' , $user->full_name);
         self::MakeSession('user' , $user->id);
         self::MakeSession('IsLogin' , true);
+        self::MakeSession('errors' , null);
 
     }
 
