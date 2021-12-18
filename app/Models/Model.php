@@ -3,7 +3,7 @@
 use App\Core\Database;
 use PDO;
 
-class Model extends Database 
+class Model extends Database
 {
     protected $table;
     protected $query;
@@ -11,6 +11,7 @@ class Model extends Database
     protected $whereClause = [];
     protected $additionalQueries = [];
     protected $joinTable;
+    protected $values = [];
 
     // create : insert
     /**
@@ -22,12 +23,10 @@ class Model extends Database
     public function create($data)
     {
         $prepareData = $this->PrepareInsertData($data);
-        $this->query("INSERT INTO {$this->table} ({$prepareData['fields']}) VALUE ({$prepareData['params']})");
 
-        foreach ($data as $key => $value) {
-            $this->bind(":{$key}" , $value);
-        }
-        return $this->execute();
+        return $this->query("INSERT INTO {$this->table} ({$prepareData['fields']}) VALUE ({$prepareData['params']})")
+            ->bindValues($data)
+            ->execute();
 
     }
 
@@ -41,19 +40,13 @@ class Model extends Database
     public function update($data)
     {
         $prepareData = $this->PrepareUpdateData($data);
-        $this->query("UPDATE {$this->table} SET {$prepareData}");
-
-        $values = [];
-        $values = $this->prepareWhereQuery($values);
-
-        foreach ($data as $key => $value) {
-            $this->bind(":{$key}", $value);
-        }
-    
-        return $this->execute();
+        return $this->query("UPDATE {$this->table} SET {$prepareData}")
+            ->prepareWhereQuery()
+            ->bindValues($data)
+            ->execute();
     }
 
-    // get : select 
+    // get : select
     /**
      * select in get query function
      * select "id , name , email" from users
@@ -70,52 +63,31 @@ class Model extends Database
     /**
      * get field query function
      *  "select * from users where id AND name"
-     * 
+     *
      * @return array
      */
     public function get()
     {
-        $q = $this->query = "SELECT {$this->selectedFields} FROM {$this->table}";
-        $values = [];
-
-        $this->prepareAdditionalQueries();
-
-        $values = $this->prepareWhereQuery($values);
-
-        $statement = $this->pdo->prepare($this->query);
-
-        foreach ($values as $key => $value) {
-            $statement->bindValue(":{$key}", $value);
-        }
-
-
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->query("SELECT {$this->selectedFields} FROM {$this->table}")
+            ->prepareAdditionalQueries()
+            ->prepareWhereQuery()
+            ->bindValues()
+            ->fetchAll(PDO::FETCH_ASSOC);
     }
 
-       /**
+    /**
      * get field query function
      *  "select * from users where id AND name"
-     * 
+     *
      * @return object
      */
     public function first()
     {
-        $this->query = "SELECT {$this->selectedFields} FROM {$this->table} ";
-        $values = [];
-
-        $values = $this->prepareWhereQuery($values);
-
-        $this->query .= " LIMIT 1";
-
-        $statement = $this->pdo->prepare($this->query);
-
-        foreach ($values as $key => $value) {
-            $statement->bindValue(":{$key}", $value);
-        }
-
-        $statement->execute();
-        return $statement->fetch(PDO::FETCH_OBJ);
+        return $this->query("SELECT {$this->selectedFields} FROM {$this->table} ")
+            ->prepareWhereQuery()
+            ->setLimit(1)
+            ->bindValues()
+            ->fetch(PDO::FETCH_OBJ);
     }
 
     // delete : delete
@@ -126,17 +98,24 @@ class Model extends Database
      */
     public function delete()
     {
-       $q= $this->query("DELETE FROM {$this->table}");
-
-        $values = [];
-        $values = $this->prepareWhereQuery($values);
-        
-        dd($this->query);
-        return $this->execute();
-
+        return $this->query("DELETE FROM {$this->table}")
+            ->prepareWhereQuery()
+            ->bindValues()
+            ->execute();
     }
 
+    //Allows us to write queries
+    public function query($sql)
+    {
+        $this->query = $sql;
+        return $this;
+    }
 
+    public function setLimit($limit)
+    {
+        $this->query .= " LIMIT $limit";
+        return $this;
+    }
     /**
      * Undocumented function
      *
@@ -145,43 +124,43 @@ class Model extends Database
      * @param string $operator
      * @return Model
      */
-     public function where($field, $value, $operator = "=")
-     {
+    public function where($field, $value, $operator = "=")
+    {
         $originalField = $field;
 
-        if(count($bindField = explode("." , $field)) > 1) 
+        if (count($bindField = explode(".", $field)) > 1) {
             $field = $bindField[1];
+        }
 
-
-         $where = [];
+        $where = [];
         //  id = :id
-         $where['query'] = "{$originalField} {$operator} :{$field}";
-        
-         // id , 5
-         $where['bind'] = ['field' => $field, 'value' => $value];
- 
-         $this->whereClause[] = $where;
-         return $this;
-     }
+        $where['query'] = "{$originalField} {$operator} :{$field}";
 
-     /**
-      * Undocumented function
-      *
-      * @param [type] $query
-      * @return Model
-      */
-     public function addQuery($query)
-     {
+        // id , 5
+        $where['bind'] = ['field' => $field, 'value' => $value];
+
+        $this->whereClause[] = $where;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $query
+     * @return Model
+     */
+    public function addQuery($query)
+    {
         //  {right join} {joinTable} on {table}.{field} =  {joinTable}.{field}
         $this->additionalQueries[] = $query;
         return $this;
-     }
+    }
 
-        /**
+    /**
      * @param array $values
-     * @return array
+     * @return Model
      */
-    protected function prepareWhereQuery(array $values)
+    protected function prepareWhereQuery()
     {
         if ($this->whereClause) {
             foreach ($this->whereClause as $index => $where) {
@@ -195,17 +174,39 @@ class Model extends Database
 
                 $this->query .= " {$where['query']} ";
                 // [:id] [value]
-                $values[$where['bind']['field']] = $where['bind']['value'];
+                $this->values[$where['bind']['field']] = $where['bind']['value'];
             }
         }
-        return $values;
+
+        return $this;
     }
 
+    public function setTable($tableName)
+    {
+        $this->table = $tableName;
+    }
 
     public function prepareAdditionalQueries()
     {
         foreach ($this->additionalQueries as $query) {
-            $this->query .= " $query " ;
+            $this->query .= " $query ";
         }
+
+        return $this;
+    }
+
+    public function bindValues($values = [])
+    {
+        $this->createStatment();
+
+        if (count($values) > 0) {
+            $this->values = array_merge($this->values, $values);
+        }
+
+        foreach ($this->values as $key => $value) {
+            $this->bind(":{$key}", $value);
+        }
+
+        return $this;
     }
 }

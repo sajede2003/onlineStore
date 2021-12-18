@@ -38,10 +38,15 @@ class Database
         }
     }
 
-    //Allows us to write queries
-    public function query($sql)
+
+    public function prepare()
     {
-        $this->statement = $this->pdo->prepare($sql);
+        $this->statement = $this->pdo->prepare($this->query);
+    }
+
+    public function createStatment()
+    {
+        $this->prepare();
     }
 
     //Bind values

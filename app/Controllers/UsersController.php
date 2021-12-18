@@ -45,7 +45,7 @@ class UsersController extends Controller
             $_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
             if ($this->users->register($_POST)) {
                 // redirect to the login
-                header('location:/login');
+                header('location: /login');
             } else {
                 $this->validation->set('confirmPassword' , 'something is wrong. please try again.');
             }

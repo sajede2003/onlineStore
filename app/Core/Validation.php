@@ -2,6 +2,7 @@
 namespace App\Core;
 
 use App\Core\ErrorMessage;
+use App\Models\Model;
 use App\Models\User;
 
 class Validation extends ErrorMessage{
@@ -118,19 +119,40 @@ class Validation extends ErrorMessage{
      */
     public function unique($key , $value = null ,$dbData =null)
     {
-
+        $model =new Model();
+        
         $dbData = explode("," , $value);
+        $model->setTable($dbData[0]);
 
 
         if(empty($dbData[1])){
             $dbData[1] = $key;
         }
-
-        if($this->users->checkExists($dbData[0] , $dbData[1] , $this->data[$key])){
+        
+       
+        $item = $model->where($dbData[1] , $this->data[$key])->first();
+      
+        if($item){
             $this->errors[$key][] = "{$key} is exist.";
         }
         
     }
+
+    //   /**
+    //  * Find user by email. Email is passed in by the controller function
+    //  *
+    //  * @param [type] $table
+    //  * @param [type] $field
+    //  * @param [type] $col
+    //  * @return array
+    //  */
+    // public function checkExists($table, $field, $col)
+    // {
+    //     $item = $->where( $col ,$field)
+    //     ->get();
+    //     // dd($item);
+    //     return count($item);
+    // }
 
     // finish validation functions 
     /**

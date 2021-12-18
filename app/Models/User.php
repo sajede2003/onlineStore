@@ -49,19 +49,7 @@ class User extends Model
 
     }
 
-    /**
-     * Find user by email. Email is passed in by the controller function
-     *
-     * @param [type] $table
-     * @param [type] $field
-     * @param [type] $col
-     * @return array
-     */
-    public function checkExists($table, $field, $col)
-    {
-        $item = $this->where($field, $col)->get();
-        return count($item);
-    }
+
 
     /**
      * this function grouping comment by parents
