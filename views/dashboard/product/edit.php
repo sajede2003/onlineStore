@@ -17,22 +17,47 @@
         <div class="form-floating mb-3 col-5">
             <input type="text" name="title" value="<?=$userData[0]['title'];?>" class="form-control mb-2" id="title" placeholder="name@example.com">
             <label for="title">title</label>
+            <span class="text-danger">
+                <?php if(isset($errors['title'])): ?>
+                    <?=$errors['title'][0]?>
+                <?php endif; ?>
+            </span>
         </div>
         <div class=" mb-3 col-5">
             <label for="description">description</label>
-            <textarea name="description" id="description" <?=$userData[0]['description']; ?> cols="30" rows="10"></textarea>
+            <textarea name="description" id="description" cols="30" rows="10"> <?=$userData[0]['description']; ?></textarea>
+            <span class="text-danger">
+                <?php if (isset($errors['description'])): ?>
+                    <?=$errors['description'][0]?>
+                <?php endif;?>
+            </span>
         </div>
         <div class=" mb-3 col-5">
             <label for="pic">pic</label>
             <input type="file" name="pic" class=" mb-2" id="pic" >
+            <span class="text-danger">
+                <?php if (isset ($errors['pic'])): ?>
+                    <?=$errors['pic'][0];?>
+                <?php endif;?>
+            </span>
         </div>
         <div class="form-floating mb-3 col-5">
             <input type="number" name="price" value="<?= $userData[0]['price']; ?>" class="form-control mb-2" id="price" placeholder="name@example.com">
             <label for="price">price</label>
+            <span class="text-danger">
+                <?php if (isset($errors['price'])) :?>
+                    <?=$errors['price'][0]?>
+                <?php endif;?>
+            </span>
         </div>
         <div class="form-floating mb-3 col-5">
             <input type="number" name="count" value="<?= $userData[0]['count']; ?>" class="form-control mb-2" id="count" placeholder="name@example.com">
             <label for="count">count</label>
+            <span class="text-danger">
+                <?php if(isset($errors['count'])):?>
+                    <?=$errors['count'][0]?>
+                <?php endif; ?>
+            </span>
         </div>
         <div class=" mb-3 col-5">
             <label for="CategoryId"> category </label>
@@ -52,38 +77,5 @@
 
     </form>
 
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- <form action="/dashboard/product/edit" method="POST">
-        <input type="hidden" name="id" value="<?=$data[0]->id?>">
-        <div class="form-floating mb-3 col-5">
-            <input type="text" name="title" value="<?=$data[0]->title?>" class="form-control mb-2" id="title" placeholder="name@example.com">
-            <label for="FullName">Full name</label>
-        </div>
-        <span>
-            <button class=" btn btn-lg btn-primary col-1" type="submit">edit</button>
-            <a class=" btn btn-lg btn-danger" href="/dashboard/product">back</a>
-        </span>
-    </form> -->
 </body>
 </html>

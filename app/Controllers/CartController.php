@@ -1,7 +1,6 @@
 <?php namespace App\Controllers;
 
-use App\Core\Controller;
-use App\Helper\CreateUserSession;
+use App\Controllers\Controller;
 use App\Models\Product;
 class CartController extends Controller
 {
@@ -14,18 +13,20 @@ class CartController extends Controller
     public function cart()
     {
 
-        if (!isset($_SESSION['IsLogin'])) {
-            CreateUserSession::validUserLogin();
+        if (!auth()->check()) {
+            return redirect('/login');
         } else {
-            $cartData = $_SESSION['cart'];
-            return $this->render('product/cart', compact('cartData'));
+            $cartData = (session()->get('cart'))?session()->get('cart'):[] ;
+            $message = session()->get('message');
+            return $this->render('product/cart', compact('cartData' , 'message'));
         }
     }
 
     public function addToCart()
     {
-        if (empty($_SESSION)) {
-            CreateUserSession::validUserLogin();
+        if (!auth()->check()) {
+            return redirect('/login');
+
         } else {
             // set product id
             $productId = $_GET['product_id'];
@@ -37,7 +38,8 @@ class CartController extends Controller
             self::addDataInCartSession($product);
 
             // success redirect
-            header('Location:/cart');
+            redirect("/cart");
+
         }
 
     }
@@ -50,7 +52,8 @@ class CartController extends Controller
 
         self::removeDataInSession($product);
 
-        header('Location:/cart');
+        redirect('/cart');
+
     }
 
     /**
@@ -61,38 +64,44 @@ class CartController extends Controller
      */
     public static function addDataInCartSession($product)
     {
-        foreach ($product as $key => $value) {
+        foreach ($product as $key => $product) {
             // product id
-            $product_id = $value['id'];
+            $product_id = $product['id'];
         }
 
+
         // set the cart session
-        $cart = CreateUserSession::cartSession();
+        $cart = $_SESSION['cart'] ?? []; 
+
+   
         // cart page action
         if (isset($cart[$product_id])) {
             $_SESSION['cart'][$product_id]['count'] += 1;
-            $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]['price'];
+            $_SESSION['cart'][$product_id]['sum'] =   $_SESSION['cart'][$product_id]['count'] * $product['price'];
         } else {
             $_SESSION['cart'][$product_id] = [
                 'product_id' => $product_id,
-                'name' => $product[0]['title'],
-                'price' => $product[0]['price'],
+                'name' => $product['title'],
+                'price' => $product['price'],
                 'count' => 1,
-                'sum' => $product[0]['price'],
+                'sum' => $product['price'],
             ];
         }
     }
 
-    public static function removeDataInSession($product)
-    {
-        foreach ($product as $key => $value) {
-            $product_id = $value['id'];
-        }
-        $_SESSION['cart'][$product_id]['count'] -= 1;
-        $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product[0]['price'];
-
-        if ($_SESSION['cart'][$product_id]['count'] <= 0) {
-            unset($_SESSION['cart'][$product_id]);
-        }
+public static function removeDataInSession($products)
+{
+    foreach ($products as $key => $product) {
+        $product_id = $product['id'];
     }
+
+    $_SESSION['cart'][$product_id]['count'] -= 1;
+    $_SESSION['cart'][$product_id]['sum'] = $_SESSION['cart'][$product_id]['count'] * $product['price'];
+
+    if ($_SESSION['cart'][$product_id]['count'] <= 0) {
+        unset($_SESSION['cart'][$product_id]);
+    }
+
+}
+
 }

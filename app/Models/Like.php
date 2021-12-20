@@ -10,6 +10,14 @@ class Like extends Model
             ->where('user_id', $userId)
             ->where('product_id', $productId)
             ->get();
+
+    }
+
+    public function likeCount($productId)
+    {
+        return $this->select(["COUNT(product_id) as count"])
+        ->where('product_id', $productId)
+        ->get();
     }
 
     public function disLike($userId, $productId)

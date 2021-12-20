@@ -1,72 +1,63 @@
 <?php namespace App\Controllers\Admin;
 
-use App\Core\Controller;
-use App\Core\DashboardValid;
+use App\Controllers\Controller;
 use App\Core\Validation;
-use App\Models\BookMark;
-use App\Models\Category;
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\Product;
-use App\Models\Score;
 use App\Models\User;
-use App\Helper\ImgUploader;
 
-class UsersController extends Controller{
+class UsersController extends Controller
+{
 
-    protected Validation $validation;
     protected User $user;
-    protected Product $product;
-    protected BookMark $bookmarks;
-    protected Like $likes;
-    protected Score $scores;
-    protected Comment $comment;
-    protected Category $category;
-    protected ImgUploader $img;
-
+    protected Validation $validation;
 
     public function __construct()
     {
         $this->setLayout('Auth');
-        DashboardValid::checkAdminUser();
-        $this->validation = new Validation;
-        $this->user = new User;
-        $this->product = new Product;
-        $this->bookmark = new BookMark;
-        $this->like = new Like;
-        $this->score = new Score;
-        $this->comment = new Comment;
-        $this->category = new Category;
-        $this->img = new ImgUploader;
+        $this->user = new User();
+        $this->validation = new Validation();
     }
 
-     /**
+    /**
      * render users function
      * and show users page in dashboard
      *
      */
-    public function users()
+    public function index()
     {
-        $allData = $this->user->get();   
-
-        return $this->render('dashboard/users/table', compact('allData'));
+        $allData = $this->user->get();
+        $message = session()->get('message');
+        return $this->render('dashboard/users/table', compact('allData', 'message'));
     }
 
     /**
      * edit users table function
      *
      */
-    public function usersEditPost()
+    public function update()
     {
         // get inputs value
         $data = $_REQUEST;
-
         $userId = $data['id'];
-        if ($this->user->where('id' , $userId)->update($data)) {
-            header("Location:/dashboard/users");
-        } else {
-            header("Location:/dashboard/users/edit?id={$userId}");
+
+        $_POST = array_map('trim', $data);
+        $validation = $this->validation->make($_POST, [
+            'full_name' => 'required|min:8',
+            'phone_number' => 'required|phone|length:11',
+            'email' => 'required',
+        ]);
+        if ($validation->valid()) {
+            if ($this->user->where('id', $userId)->update($data)) {
+                session()->flash('message', 'user successfully update !!');
+                redirect("/dashboard/users");
+            } else {
+                session()->flash('message', 'something wrong!!');
+                redirect("/dashboard/users/edit?id={$userId}");
+            }
+           
         }
+        $errors = $this->validation->errors;
+        $userData = $this->user->where('id', $userId)->get();
+        return $this->render('dashboard/users/edit', compact('errors', 'userData'));
 
     }
 
@@ -74,26 +65,28 @@ class UsersController extends Controller{
      * edit users view page function
      *
      */
-    public function userEdit()
+    public function edit()
     {
         $userId = $_GET['id'];
-        $userData = $this->user->where('id' , $userId)->get();
-        return $this->render('dashboard/users/edit',compact('userData'));
+        $userData = $this->user->where('id', $userId)->get();
+        return $this->render('dashboard/users/edit', compact('userData'));
     }
 
     /**
      * delete users button function
      *
      */
-    public function userDelete()
+    public function delete()
     {
         $userId = $_GET['id'];
 
-        $result = $this->user->where('id' , $userId)->delete();
+        $result = $this->user->where('id', $userId)->delete();
         if (!$result) {
-            header("Location:/dashboard/users");
+            redirect("/dashboard/users");
+            session()->flash('message', 'some thing wrong !!');
             return;
         }
-        header("Location:/dashboard/users");
+        session()->flash('message', 'product delete successfully !!');
+        redirect("/dashboard/users");
     }
 }

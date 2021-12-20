@@ -6,7 +6,7 @@
  * 
  */
 
- use App\Core\Controller;
+ use App\Controllers\Controller;
 
 class Router{
 
@@ -59,6 +59,7 @@ class Router{
        }
 
        if(is_array($callback)) {
+
            Application::$app->controller = new $callback[0]();
            $callback[0] = Application::$app->controller;
        }

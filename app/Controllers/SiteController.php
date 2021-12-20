@@ -1,7 +1,7 @@
 <?php namespace App\Controllers;
 
 
-use App\Core\Controller;
+use App\Controllers\Controller;
 use App\Models\Product;
 
 class SiteController extends Controller
@@ -14,22 +14,18 @@ class SiteController extends Controller
     //render home page view
     public function home()
     {
-        (isset($_SESSION['user_fullName']))?$_SESSION['user_fullName']:$_SESSION['user_fullName']=null;
-        $params = [
-            'name' => $_SESSION['user_fullName'],
-        ];
-        return $this->render('home', $params);
+        $user_name = session()->get('user_name');
+        $message = session()->get('flash.message');
+        session()->delete('flash.message');
+        return $this->render('home', compact('user_name','message'));
     }
     // render product page view
     public function product()
     {
-        $allProducts = $this->products->get();
-        
-        $params = [
-            'products' => $allProducts
-        ];
+        $products = $this->products->get();
 
-        return $this->render('product/list' , $params);
+
+        return $this->render('product/list' , compact('products'));
     }
     
 }

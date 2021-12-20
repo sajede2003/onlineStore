@@ -7,6 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <div class="container">
@@ -51,5 +53,21 @@
             </div>
         </div>
     </div>
+
+    <input type="hidden" value="<?= isset($message)?$message:''?>" id="message">
+
+<script>
+    // let link = document.querySelector('#contact');
+
+    var SweetAlertMessage = document.querySelector('#message').value;
+    if (SweetAlertMessage.trim() !== '') {
+        Swal.fire({
+            icon: 'success',
+            title: 'yeah',
+            text: SweetAlertMessage,
+            //footer: '<a href="">Why do I have this issue?</a>'
+        })
+    }
+</script>
 </body>
 </html>

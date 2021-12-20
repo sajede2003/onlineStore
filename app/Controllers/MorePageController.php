@@ -1,7 +1,6 @@
 <?php namespace App\Controllers;
 
-use App\Core\Controller;
-use App\Helper\CreateUserSession;
+use App\Controllers\Controller;
 use App\Models\BookMark;
 use App\Models\Comment;
 use App\Models\Like;
@@ -33,7 +32,8 @@ class MorePageController extends Controller
         $id = $_GET['id'];
 
         //get user id
-        $userId = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+        $userId = session()->get('user');
+        // $userId = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 
         // get product for show in more page
         $product = $this->product->where('id', $id)->first();
@@ -42,7 +42,7 @@ class MorePageController extends Controller
         $comment = $this->user->groupCommentByParent($id);
 
         //  get all like for this product
-        $likeCount = $this->like->getUserLiked($userId, $id);
+        $likeCount = $this->like->likeCount( $id);
 
         // avg score
         // $score = Data::avgScore('scores', $id);
@@ -60,12 +60,12 @@ class MorePageController extends Controller
         $data = $_REQUEST;
 
         // check login for login
-        if (!isset($_SESSION['user'])) {
-            CreateUserSession::validUserLogin();
+        if (!auth()->check()) {
+            return redirect('/login');
         } else {
             $data = $_REQUEST;
             // add user id to the data
-            $data['user_id'] = $_SESSION['user'];
+            $data['user_id'] = session()->get('user');
 
             // validate the value
             $userId = $data['user_id'];
@@ -74,9 +74,9 @@ class MorePageController extends Controller
             $result = $this->like->like($data, $userId, $productId);
 
             if (!$result) {
-                header("Location:/more?id={$productId}");
+                redirect("/more?id={$productId}");
             }
-            header("Location:/more?id={$productId}");
+            redirect("/more?id={$productId}");
         }
     }
     // add bookmark product
@@ -84,19 +84,19 @@ class MorePageController extends Controller
     {
         $data = $_REQUEST;
 
-        if (!isset($_SESSION['user'])) {
-            CreateUserSession::validUserLogin();
+        if (!auth()->check()) {
+            return redirect('/login');
         } else {
-            $data['user_id'] = $_SESSION['user'];
+            $data['user_id'] = session()->get('user');
             $userId = $data['user_id'];
             $productId = $data['product_id'];
 
             $result = $this->bookmark->bookmark($data, $userId, $productId);
 
             if (!$result) {
-                header("Location:/more?id={$productId}");
+                redirect("/more?id={$productId}");
             }
-            header("Location:/more?id={$productId}");
+            redirect("/more?id={$productId}");
         }
     }
     // add score product
@@ -104,20 +104,20 @@ class MorePageController extends Controller
     {
         $data = $_REQUEST;
 
-        if (!isset($_SESSION['user'])) {
-            CreateUserSession::validUserLogin();
+        if (!auth()->check()) {
+            return redirect('/login');
         } else {
-            $data['user_id'] = $_SESSION['user'];
+            $data['user_id'] = session()->get('user');
             $userId = $data['user_id'];
             $productId = $data['product_id'];
 
             $result = $this->score->score($data, $userId, $productId);
 
             if ($result) {
-                header("Location:/more?id={$data['product_id']}");
+                redirect("/more?id={$data['product_id']}");
             }
 
-            header("Location:/more?id={$data['product_id']}");
+            redirect("/more?id={$data['product_id']}");
         }
 
     }
@@ -127,19 +127,19 @@ class MorePageController extends Controller
         // get data
         $data = $_REQUEST;
         // check user login
-        if (!isset($_SESSION['user'])) {
-            CreateUserSession::validUserLogin();
+        if (!auth()->check()) {
+            return redirect('/login');
         } else {
             // create user id
-            $data['user_id'] = $_SESSION['user'];
+            $data['user_id'] = session()->get('user');
             // insert data into user table
             $result = $this->comment->create($data);
 
             if (!$result) {
-                header("Location:/more?id={$data['product_id']}");
+                redirect("/more?id={$data['product_id']}");
             }
 
-            header("Location:/more?id={$data['product_id']}");
+            redirect("/more?id={$data['product_id']}");
         }
     }
 

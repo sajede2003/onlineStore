@@ -9,23 +9,23 @@ use App\Controllers\Admin\CategoryController;
 $app->router->get('/dashboard', [AdminController::class, 'dashboard']);
 
 // Users section
-$app->router->get('/dashboard/users', [UsersController::class, 'users']);
-$app->router->get('/dashboard/users/edit' , [UsersController::class , 'userEdit']);
-$app->router->post('/dashboard/users/edit' , [UsersController::class , 'usersEditPost']);
-$app->router->get('/dashboard/users/delete' , [UsersController::class , 'userDelete']);
+$app->router->get('/dashboard/users', [UsersController::class, 'index']);
+$app->router->get('/dashboard/users/edit' , [UsersController::class , 'edit']);
+$app->router->post('/dashboard/users/edit' , [UsersController::class , 'update']);
+$app->router->get('/dashboard/users/delete' , [UsersController::class , 'delete']);
 
 // category section
-$app->router->get('/dashboard/category', [CategoryController::class, 'Category']);
-$app->router->get('/dashboard/category/add' , [CategoryController::class , 'addCategory']);
-$app->router->post('/dashboard/category/add' , [CategoryController::class , 'addCategoryPost']);
-$app->router->get('/dashboard/category/edit' , [CategoryController::class , 'categoryEdit']);
-$app->router->post('/dashboard/category/edit' , [CategoryController::class , 'categoryEditPost']);
-$app->router->get('/dashboard/category/delete' , [CategoryController::class , 'categoryDelete']);
+$app->router->get('/dashboard/category', [CategoryController::class, 'index']);
+$app->router->get('/dashboard/category/add' , [CategoryController::class , 'add']);
+$app->router->post('/dashboard/category/add' , [CategoryController::class , 'store']);
+$app->router->get('/dashboard/category/edit' , [CategoryController::class , 'edit']);
+$app->router->post('/dashboard/category/edit' , [CategoryController::class , 'update']);
+$app->router->get('/dashboard/category/delete' , [CategoryController::class , 'delete']);
 
 // product section
-$app->router->get('/dashboard/product', [ProductController::class, 'product']);
-$app->router->get('/dashboard/product/add' , [ProductController::class , 'addProduct']);
-$app->router->post('/dashboard/product/add' , [ProductController::class , 'addProductPost']);
-$app->router->get('/dashboard/product/edit' , [ProductController::class , 'productEdit']);
-$app->router->post('/dashboard/product/edit' , [ProductController::class , 'productEditPost']);
-$app->router->get('/dashboard/product/delete' , [ProductController::class , 'productDelete']);
+$app->router->get('/dashboard/product', [ProductController::class, 'index']);
+$app->router->get('/dashboard/product/add' , [ProductController::class , 'add']);
+$app->router->post('/dashboard/product/add' , [ProductController::class , 'store']);
+$app->router->get('/dashboard/product/edit' , [ProductController::class , 'edit']);
+$app->router->post('/dashboard/product/edit' , [ProductController::class , 'update']);
+$app->router->get('/dashboard/product/delete' , [ProductController::class , 'delete']);

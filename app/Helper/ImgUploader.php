@@ -1,7 +1,13 @@
 <?php namespace App\Helper;
 
+use App\core\Validation;
+
 class ImgUploader{
+    protected Validation $validation;
       // image uploader
+      public function __construct() {
+          $this->validation = new Validation;
+      }
       public function imgUploader($pic)
       {
           if (!file_exists($pic['tmp_name'])) {

@@ -41,8 +41,10 @@ class User extends Model
         $hashedPassword = $user->password;
 
         if (password_verify($data['password'], $hashedPassword)) {
-            CreateUserSession::loginUserSession($user);
-            header('location:/');
+            session()->add('user' , $user->id);
+            session()->add('user_name' , $user->full_name);
+            session()->add('is_login' , true);
+            redirect('/');
         } else {
             return false;
         }
@@ -74,10 +76,6 @@ class User extends Model
         return $array;
 
     }
-
-
     
-
-
 
 }

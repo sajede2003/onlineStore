@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/style.css">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>table</title>
 </head>
 <body>
@@ -48,6 +49,19 @@
       </table>
     </div>
   </div>
+
+  <input type="hidden" value="<?= isset($message)?$message:''?>" id="message">
+
+<script>
+    var SweetAlertMessage = document.querySelector('#message').value;
+    if (SweetAlertMessage.trim() !== '') {
+        Swal.fire({
+            icon: 'success',
+            title: 'yeah',
+            text: SweetAlertMessage,
+        })
+    }
+</script>
 </body>
 
 </html>

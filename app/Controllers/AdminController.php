@@ -1,7 +1,8 @@
 <?php namespace App\Controllers;
 
-use App\Core\Controller;
+use App\Controllers\Controller;
 use App\Core\DashboardValid;
+
 /**
  * render dashboard page class
  */
@@ -20,9 +21,11 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
+        if (!auth()->check()) {
+            return redirect('/login');
+        }
         return $this->render('dashboard/dashboard');
+
     }
 
-
-  
 }

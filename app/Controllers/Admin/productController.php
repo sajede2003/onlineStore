@@ -1,94 +1,112 @@
 <?php namespace App\Controllers\Admin;
 
-use App\Core\Controller;
-use App\Core\DashboardValid;
+use App\Controllers\Controller;
 use App\Core\Validation;
-use App\Models\BookMark;
-use App\Models\Category;
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\Product;
-use App\Models\Score;
-use App\Models\User;
 use App\Helper\ImgUploader;
+use App\Models\Category;
+use App\Models\Product;
 
-class ProductController extends Controller{
+class ProductController extends Controller
+{
 
-    protected Validation $validation;
-    protected User $user;
     protected Product $product;
-    protected BookMark $bookmarks;
-    protected Like $likes;
-    protected Score $scores;
-    protected Comment $comment;
-    protected Category $category;
     protected ImgUploader $img;
-
+    protected Category $category;
+    protected Validation $validation;
 
     public function __construct()
     {
         $this->setLayout('Auth');
-        DashboardValid::checkAdminUser();
-        $this->validation = new Validation;
-        $this->user = new User;
         $this->product = new Product;
-        $this->bookmark = new BookMark;
-        $this->like = new Like;
-        $this->score = new Score;
-        $this->comment = new Comment;
-        $this->category = new Category;
         $this->img = new ImgUploader;
+        $this->category = new Category;
+        $this->validation = new Validation();
+
     }
 
-        /**
+    /**
      *
      * render product function
      * and show product page in dashboard
      *
      */
-
-    public function product()
+    public function index()
     {
-        $allData =$this->product->get();
-        return $this->render('dashboard/product/table', compact('allData'));
+        $allData = $this->product->get();
+        $message = session()->get('message');
+
+        return $this->render('dashboard/product/table', compact('allData', 'message'));
     }
     // add product view render
-    public function addProduct()
+    public function add()
     {
         $category = $this->category->get();
         return $this->render('dashboard/product/add', compact('category'));
     }
     // add product function
-    public function addProductPost()
+    public function store()
     {
         $data = $_REQUEST;
         $pic = $_FILES['pic'];
-
         $imgPath = $this->img->imgUploader($pic);
-
         $data['pic'] = $imgPath;
 
-        if($this->product->create($data)){
-            header("Location:/dashboard/product");
-            return;
-        }
+        $_POST = array_map('trim', $data);
+        $validation = $this->validation->make($_POST, [
+            'title' => 'required|min:4',
+            'description' => 'required|min:15',
+            'price' => 'required',
+            'count' => 'required',
+            'pic' => 'required',
+        ]);
 
+        if ($validation->valid()) {
+            if ($this->product->create($data)) {
+                session()->flash('message', 'product added successFully!!');
+                redirect("/dashboard/product");
+                return;
+            }
+            session()->flash('message', 'something wrong!!');
+        }
+        $category = $this->category->get();
+        $errors = $this->validation->errors;
+// dd($errors);
+
+        return $this->render('dashboard/product/add', compact('errors', 'category'));
     }
     // edit product function
-    public function productEditPost()
+    public function update()
     {
         // get inputs value
         $data = $_REQUEST;
         $userId = $data['id'];
-
         $pic = $_FILES['pic'];
         $imgPath = $this->img->imgUploader($pic);
         $data['pic'] = $imgPath;
-        if ($this->product->where('id' , $userId)->update($data)) {
-            header("Location:/dashboard/product");
-        } else {
-            header("Location:/dashboard/product/edit?id={$userId}");
+
+        $_POST = array_map('trim', $data);
+        $validation = $this->validation->make($_POST, [
+            'title' => 'required|min:4',
+            'description' => 'required|min:15',
+            'price' => 'required',
+            'count' => 'required',
+            'pic' => 'required',
+        ]);
+
+        if ($validation->valid()) {
+            if ($this->product->where('id', $userId)->update($data)) {
+                session()->flash('message', 'product successfully update !!');
+                redirect("/dashboard/product");
+            } else {
+                session()->flash('message', 'something wrong!!');
+                redirect("/dashboard/product/edit?id={$userId}");
+            }
         }
+        $userData = $this->product->where('id', $userId)->get();
+        $category = $this->category->get();
+        $errors = $this->validation->errors;
+
+        return $this->render('dashboard/product/edit' , compact('userData' , 'category' , 'errors'));
 
     }
 
@@ -97,13 +115,13 @@ class ProductController extends Controller{
      *
      * @return void
      */
-    public function productEdit()
+    public function edit()
     {
         $userId = $_GET['id'];
-        $userData = $this->product->where('id' , $userId)->get();
+        $userData = $this->product->where('id', $userId)->get();
         $category = $this->category->get();
 
-        return $this->render('dashboard/product/edit', compact('userData' , 'category'));
+        return $this->render('dashboard/product/edit', compact('userData', 'category'));
     }
 
     /**
@@ -111,17 +129,18 @@ class ProductController extends Controller{
      *
      * @return void
      */
-    public function productDelete()
+    public function delete()
     {
         $userId = $_GET['id'];
-        // $this->product->where('id' , $userId)->get();
-        $result = $this->product->where('id' , $userId)->delete();
+        $result = $this->product->where('id', $userId)->delete();
 
         if (!$result) {
-            header("Location:/dashboard/product");
+            redirect("/dashboard/product");
+            session()->flash('message', 'something wrong !!');
             return;
         }
-        header("Location:/dashboard/product");
+        session()->flash('message', 'product delete successfully !!');
+        redirect("/dashboard/product");
     }
 
 }

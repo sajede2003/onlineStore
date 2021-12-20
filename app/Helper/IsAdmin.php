@@ -12,12 +12,15 @@ class IsAdmin{
     public static function checkUser()
     {
 
-        $userIdSession = $_SESSION['user'];
+        $userIdSession = session()->get('user');
 
         $user = new User();
         $user = $user->where('id' , $userIdSession)->first();
-        
-        if($user->is_admin == 0)
-            header('Location:/');
+      
+        if($user->is_admin == 0){
+            session()->flash('message' , "you're not admin");
+            return redirect('/');
+        }
+           
     }
 }

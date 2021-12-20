@@ -23,10 +23,12 @@
             <span>
             <?php $score ?>
                 <label for="score">score</label>
-                <small id="score" >0/5 </small>
+                <small id="score" >
+                    <output id="ShowScore">0</output>/5
+                </small>
                 <form action="/score" method="POST">
-                    <input type="range" id="score" oninput="this.nextElementSibling.value = this.value" min="0" max="5">
-                    <input type="hidden" name="score" id="sv" value="">         
+                    <input type="range" id="score" oninput="SaveValue.value = this.value;ShowScore.value=this.value" min="0" max="5">
+                    <input type="hidden" name="score" id="SaveValue" value="">         
                     <input type="hidden" name="product_id" value="<?=$product->id?>">
                     <button type="submit">send</button>
                 </form>

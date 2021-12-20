@@ -1,6 +1,6 @@
 <?php namespace App\Core;
 
-use App\Core\Controller;
+use App\Controllers\Controller;
 
 /**
  * @package Core

@@ -1,11 +1,9 @@
 <?php namespace App\Controllers;
 
-use App\Core\Controller;
-use App\Core\Database;
+use App\Controllers\Controller;
 use App\Core\ErrorMessage;
 use App\Core\Request;
 use App\Core\Validation;
-use App\Helper\CreateUserSession;
 use App\Models\User;
 
 class UsersController extends Controller
@@ -45,17 +43,16 @@ class UsersController extends Controller
             $_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
             if ($this->users->register($_POST)) {
                 // redirect to the login
-                header('location: /login');
+                redirect("/login");
             } else {
                 $this->validation->set('confirmPassword' , 'something is wrong. please try again.');
             }
         } else {
-            $params = [
-                "error" => $this->validation->errors,
-            ];
+            $error = $this->validation->errors;
+
             // show in register view
             $this->setLayout('main');
-            return $this->render('auth/register', $params);
+            return $this->render('auth/register', compact('error'));
 
         }
     }
@@ -91,7 +88,7 @@ class UsersController extends Controller
             // register user from model function
             if ($this->users->login($_POST)) {
                 // redirect to the login
-                header('location:/');
+                redirect('/');
                 return;
             } else {
                 $this->validation->set('password' , 'email or password is incorrect. please try again.');
@@ -119,7 +116,8 @@ class UsersController extends Controller
 
     public function logOut()
     {
-        CreateUserSession::logOutUser();
+        session()->flush();
+        redirect("/");
     }
 
 }

@@ -1,4 +1,4 @@
-<?php namespace App\Core;
+<?php namespace App\Controllers;
 
 use App\Core\Application;
 
@@ -19,4 +19,5 @@ class Controller
         include_once Application::$ROOT_DIR."/app/Models/$model.php";
     }
 
+    
 }

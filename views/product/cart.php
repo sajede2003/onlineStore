@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <div class="border backgroundWhite p-5">
@@ -68,6 +70,17 @@
             </table>
         </div>
     </div>
+    <input type="hidden" value="<?= isset($message)?$message:''?>" id="message">
 
+<script>
+    var SweetAlertMessage = document.querySelector('#message').value;
+    if (SweetAlertMessage.trim() !== '') {
+        Swal.fire({
+            icon: 'success',
+            title: 'yeah',
+            text: SweetAlertMessage,
+        })
+    }
+</script>
 </body>
 </html>

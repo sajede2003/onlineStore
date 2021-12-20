@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,14 +13,29 @@
         <div class="form-floating mb-3 col-5">
             <input type="text" name="full_name" value="<?=$userData[0]['full_name']?>" class="form-control mb-2" id="FullName" placeholder="name@example.com">
             <label for="FullName">Full name</label>
+            <span class="text-danger">
+                <?php if(isset($errors['full_name'][0])):?>
+                    <?=$errors['full_name'][0]?>
+                <?php endif;?>
+            </span>                
         </div>
         <div class="form-floating mb-3 col-5">
             <input type="text" name="phone_number" value="<?=$userData[0]['phone_number']?>" class="form-control mb-2" id="PhoneNumber" placeholder="name@example.com">
             <label for="PhoneNumber">phone number</label>
+            <span class="text-danger">
+                <?php if(isset($errors['phone_number'][0])):?>
+                    <?=$errors['phone_number'][0]?>
+                <?php endif;?>
+            </span>
         </div>
         <div class="mb-3 col-5">
             <label for="email" class="form-label ">email : </label>
             <textarea name="email" class="form-control mb-2" id="email" rows="3"><?=$userData[0]['email']?></textarea>
+            <span class="text-danger">
+                <?php if(isset($errors['email'][0])):?>
+                    <?=$errors['email'][0]?>
+                <?php endif;?>
+            </span>
         </div>
 
         <span>
