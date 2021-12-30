@@ -1,6 +1,5 @@
 <?php namespace App\Models;
 
-use App\Helper\CreateUserSession;
 use App\Models\Model;
 
 class User extends Model
